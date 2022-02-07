@@ -1,0 +1,44 @@
+.container{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.container > input{
+	margin: 5px;
+	max-width: 500px;
+	min-width: 50px;
+}
+
+.container .group{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	max-width: 530px;
+	margin: 5px;
+	justify-content: space-between;
+}
+
+.container .group > input{
+	display: none;
+}
+
+.container .group > button{
+	max-height: 75px;
+	padding: 12px 16px;
+	color: rgba(0, 0, 0, 0.5);
+	background-color: #81d68e;
+	border: none;
+	font-size: 20px;
+	cursor: pointer;
+	box-shadow: 0px 5px 10px 5px rgba(0, 0, 0, 0.1);
+	valign: center;
+	align-items: center;
+
+}
+
+.container .group > button:hover{
+	color: rgba(0, 0, 0, 0.8);
+	background-color: #62aa6d;
+
+}

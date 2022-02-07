@@ -1,0 +1,137 @@
+.container{
+    margin: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.container .table-product{
+    border-collapse: collapse;
+    max-width: 50em;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    box-shadow: 0px 5px 20px 3px rgba(0, 0, 0, 0.15);
+    overflow-x: auto;
+}
+
+.container .table-product thead tr{
+    border-bottom: 1px dashed #219083;
+}
+
+.container .table-product tfoot tr{
+    border-top: 1px dashed #219083;
+}
+
+.container .table-product thead tr td,
+.container .amount .table-amount thead tr td
+{
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: grey;
+    padding: 8px;
+}
+
+.container .table-product tfoot tr td,
+.container .amount .table-amount tfoot tr td{
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #219083;
+    padding: 8px;
+}
+
+.container .table-product tbody tr td,
+.container .amount .table-amount tbody tr td{
+    color: grey;
+    padding: 8px;
+}
+
+.container .table-product tbody tr td img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.container .table-product thead tr td:nth-last-child(1),
+.container .table-product tbody tr td:nth-last-child(1),
+.container .table-product tfoot tr td:nth-last-child(1){
+    text-align: right;
+}
+
+.container .table-product .input-numb{
+    width: 100px;
+    height: 27px;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #219083;
+    border-radius: 5px;
+    align-items: center;
+}
+
+.container .table-product .input-numb #btn{
+    height: 100%;
+    width: 30%;
+}
+.container .table-product .input-numb .numb{
+    height: 100%;
+    width: 40%;
+    background-color: rgba(255, 255, 255, 0.1);
+    align-items: center;
+}
+
+.container .table-product .input-numb .input-text{
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border-radius: 0px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+    text-align: center;
+    pointer-events: none;
+}
+
+.container .amount{
+    max-width: 250px;
+    max-height: 300px;
+    background-color: rgba(255 , 255, 255, 0.1);
+    margin-left: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    color: grey;
+    box-shadow: 0px 5px 20px 3px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container .amount .table-amount{
+    border-collapse: collapse;
+    max-width: 20em;
+}
+
+.container .amount .table-amount thead tr{
+    border-bottom: 1px solid #219083;
+}
+
+.container .amount .table-amount tfoot tr{
+    border-top: 1px solid #219083;
+}
+
+.container .amount button{
+    height: 2.5rem;
+    border: 1px solid #219083;
+    padding: 8px;
+    background-color: rgba(255 , 255, 255, 0);
+    margin-top: 5px;
+    border-radius: 6rem;
+    font-size: 1rem;
+    color: grey;
+}
+
+.container .amount button:hover{
+    background-color: #219083;
+    color: lightgrey;
+    cursor: pointer;
+}

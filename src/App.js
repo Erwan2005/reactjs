@@ -2,7 +2,8 @@
 import "react-toastify/dist/ReactToastify.css"
 import Home from './components/Home';
 import {Route, BrowserRouter,Switch,Redirect } from 'react-router-dom';
-import SingIn from './components/SigninJs';
+//import SingIn from './components/SigninJs';
+import Login from './components/Login'
 import CreataccountCard from './components/CreatUser';
 import Messenger from './components/Messenger';
 import Shop from './components/shop/Home';
@@ -19,7 +20,7 @@ export default function App() {
       <ToastContainer />
       <Switch>
         <Route exact path="/">
-          { user ? <Redirect to="/home" /> : <SingIn />}
+          { user ? <Redirect to="/home" /> : <Login />}
         </Route>
         <Route path="/home">{!user ? <Redirect to="/" /> : <Home />}</Route>
         <Route exact path={`/messenger/:id`} component={Messenger} />

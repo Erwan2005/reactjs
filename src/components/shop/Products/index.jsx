@@ -40,7 +40,7 @@ export class index extends React.Component {
 	  };
 	render() {
 		return (
-			<div className="container">
+			<div className="product">
 				{this.state.product && this.state.product.map((prod, index) => {
 					return(
 						<div className="card" key={prod.id}>

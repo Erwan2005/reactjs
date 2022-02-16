@@ -1,11 +1,10 @@
 import { loginFailure, loginStart, loginSuccess } from "./userRedux";
-import axios from 'axios';
-import apiService from '../APIService';
+import { publicRequest,userRequest } from '../requestMethods';
 
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
   try {
-    const res = await axios.post("http://127.0.0.1:8000/authenticate/", user);
+    const res = await publicRequest.post("authenticate/", user);
     dispatch(loginSuccess(res.data));
   } catch (err) {
     dispatch(loginFailure());

@@ -1,109 +1,104 @@
 import React from 'react'
-import { Remove,Add } from "@material-ui/icons";
 import { connect } from "react-redux";
 import { publicRequest,userRequest } from '../../../requestMethods';
+import axios from 'axios'
+import visa from './visa.png'
 import './style.css'
 export class index extends React.Component {
-	constructor(props){
-		super(props);
-		this.id = this.props.match.params.id_prod;
-		this.state={
-			profile:[],
-		}
+	constructor(props) {
+	    super(props);
+	    this.state = {
+	        countryName: '',
+	        countryCode: ''
+	    }
 	}
-	handleQuantity=(type)=>{
-  	if(type === "minus"){
-  		this.state.quantity > 1 && this.setState({quantity: this.state.quantity-1})
-  	}else{
-  		this.state.quantity < 9 && this.setState({quantity: this.state.quantity+1})
-  	}
-  }
 
-  getCart = async() =>{
-		let data = await publicRequest.get('shop/cart')
-	  .then(({data})=>data)
-	  this.setState({cart: data})
-	}
+	getGeoInfo = () => {
+	    axios.get('https://ipapi.co/json/').then((response) => {
+	        let data = response.data;
+	        this.setState({
+	            countryName: data.country_name,
+	            countryCode: data.country_calling_code
+	        });
+
+	    }).catch((error) => {
+	        console.log(error);
+	    });
+	};
+
 	componentDidMount(){
-		this.getCart()
-	 };
+	    this.getGeoInfo();
+	}
 	render() {
 		return (
-			<div className="container">
-					<table className="table-product">
+			<div className="cart">
+				<div className="details">
+					<div className="cardHeader">
+					<h2>Products in your cart</h2>
+					<span className="btn">Clear all</span>
+					</div>
+					<table>
 						<thead>
 							<tr>
-								<td width="100">Product</td>
-								<td width="250">Details</td>
-								<td width="75">Price</td>
-								<td width="150">Quantity</td>
-								<td width="75">Action</td>
-								<td width="150">Total</td>
+								<td>Product</td>
+								<td>Name</td>
+								<td>Price</td>
+								<td>Action</td>
+								<td>Total</td>
 							</tr>
 						</thead>
 						<tbody>
 							{this.props.cart.products.map((product)=>(
 								<tr>
-									<td height="120">
-										<img src={product.pic1} alt="product"/>
+									<td>
+										<img src={product.pic1} alt="product" />
 									</td>
 									<td>
-										<p>{product.desc}</p>
+										{product.name}<br/>
+										<span>Quantity: {product.quantity}</span>
 									</td>
 									<td>&euro;&nbsp;{product.price}</td>
 									<td>
-										<div className="input-numb">
-											<div id="btn" onClick={()=>this.handleQuantity("minus")}><Remove htmlColor="#ff5959"/></div>
-											<div className="numb"><input type="text" className="input-text" pattern="[0-9]*" value={product.quantity}/></div>
-											<div id="btn" onClick={()=>this.handleQuantity("add")}> <Add htmlColor="#9dceff"/></div>
-										</div>
+										<span className="edit">&#9998;</span>
+										<span className="delete">&#x2716;</span>
 									</td>
-									<td>remove</td>
 									<td>&euro;&nbsp;{product.price * product.quantity}</td>
 								</tr>
-
 							))}
 							
 						</tbody>
-						<tfoot>
-							<tr>
-								<td colspan="5" align="right">Subtotal</td>
-								<td>&euro;&nbsp;{this.props.cart.total ? this.props.cart.total : 0}</td>
-							</tr>
-						</tfoot>
 					</table>
-					<div className="amount">
-						<table className="table-amount" width="250">
-							<thead>
-								<tr>
-									<td colspan="2" align="left">Order summary</td>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Total H.T</td>
-									<td align="right">&euro;&nbsp;{this.props.cart.total ? this.props.cart.total : 0}</td>
-								</tr>	
-								<tr>
-									<td>T.V.A 1.5%</td>
-									<td align="right">&euro;&nbsp;{this.props.cart.total ? (this.props.cart.total*1.5/100) : 0}</td>
-								</tr>	
-								<tr>
-									<td>Shipping</td>
-									<td align="right">&euro;&nbsp;{this.props.cart.total ? (this.props.cart.total*5/100) : 0}</td>
-								</tr>	
-							</tbody>
-							<tfoot>
-								<tr>
-									<td>Total</td>
-									<td align="right">&euro;&nbsp;{this.props.cart.total ? (this.props.cart.total+(this.props.cart.total*1.5/100)+(this.props.cart.total*5/100)) : 0}</td>
-								</tr>
-							</tfoot>
-						</table>
-						<span>Infos:<br/>Delivery time depends on your location.</span>
-						<span>Payment method:</span>
-						<button>Order Now</button>
+				</div>
+				<div className="summary">
+					<div className="cardHeader">
+						<h2>Summary orders</h2>
 					</div>
+					<table>
+						<tr>
+							<td>SubTotal</td>
+							<td>&euro;&nbsp;{this.props.cart.total ? this.props.cart.total : 0}</td>
+						</tr>
+						<tr>
+							<td>T.V.A 1.5%</td>
+							<td>&euro;&nbsp;{this.props.cart.total ? ((this.props.cart.total*1.5/100).toFixed(2)) : 0}</td>
+						</tr>
+						<tr>
+							<td>Shipping</td>
+							<td>&euro;&nbsp;{this.props.cart.total ? ((this.props.cart.total*5/100).toFixed(2)) : 0}</td>
+						</tr>
+						<tr>
+							<td>Net payable</td>
+							<td>&euro;&nbsp;{this.props.cart.total ? ((this.props.cart.total+(this.props.cart.total*1.5/100)+(this.props.cart.total*5/100)).toFixed(2)) : 0}</td>
+						</tr>
+					</table>
+					<br />
+					<p>Country:&nbsp;{this.state.countryName}</p>
+					<p>NB: The duration of the delivery will depend on your location</p>
+					<p>Payment method:</p>
+					{this.state.countryName == 'Madagascar' && <p>&nbsp;&nbsp;Mobile money</p>}
+					<p>&nbsp;&nbsp;<img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" alt="PayPal" />,<img src="https://www.freepnglogos.com/uploads/visa-card-logo-9.png" alt="visa"/></p><visa/>
+					<button>Order now</button>
+				</div>
 			</div>
 		)
 	}

@@ -1,32 +1,49 @@
 
-
-.container{
-	width: 95vw;
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(20px,1fr));
-	grid-gap: 20px;
-	justify-content: center;
+.product{
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    grid-gap: 30px;
+    margin-top: 10px;
 }
 
-.container .card{
+.product .card{
 	width: 220px;
-	background-color: dimgrey;
+	background-color: var(--grey);
+	box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
 }
 
-.container .card .imgBox{
+.product .card .imgBox{
 	position: relative;
 	width: 100%;
 	height: 210px;
 	overflow: hidden;
 }
 
-.container .card .imgBox .action{
+.product .card .imgBox img{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: 0.5s ease-in-out;
+	transform-origin: right;
+}
+
+.product .card:hover .imgBox img{
+	transform: scale(1.5);
+}
+
+.product .card .imgBox .action{
 	position: absolute;
 	top: 10px;
 	right: 10px;
 }
 
-.container .card .imgBox .action li{
+.product .card .imgBox .action li{
 	position: relative;
 	list-style: none;
 	width: 40px;
@@ -42,19 +59,19 @@
 	transition: transform 0.5s;
 }
 
-.container .card .imgBox .action li:nth-child(2){
+.product .card .imgBox .action li:nth-child(2){
 	transition-delay: 0.15s;
 }
 
-.container .card .imgBox .action li:nth-child(3){
+.product .card .imgBox .action li:nth-child(3){
 	transition-delay: 0.3s;
 }
 
-.container .card:hover .imgBox .action li{
+.product .card:hover .imgBox .action li{
 	transform: translateX(0px);
 }
 
-.container .card .imgBox .action li span::before{
+.product .card .imgBox .action li span::before{
 	content: '';
 	position: absolute;
 	top: 50%;
@@ -64,13 +81,12 @@
 	background: #219083;
 	transform: translateY(-50%) rotate(45deg);
 }
-
-.container .card .imgBox .action li:hover{
+.product .card .imgBox .action li:hover{
 	background-color: #219083;
 	color: lightgrey;
 }
 
-.container .card .imgBox .action li span{
+.product .card .imgBox .action li span{
 	position: absolute;
 	right: 50px;
 	top: 50%;
@@ -87,57 +103,66 @@
 	transition: 0.5s;
 }
 
-.container .card .imgBox .action li:hover span{
+.product .card .imgBox .action li:hover span{
 	transform: translateY(-50%) translateX(0px);
 	opacity: 1;
 }
 
-.container .card .imgBox img{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	transition: 0.5s ease-in-out;
-	transform-origin: right;
-}
-
-.container .card:hover .imgBox img{
-	transform: scale(1.5);
-}
-
-.container .card .content{
+.product .card .content{
 	padding: 10px;
 }
 
-.container .card .content .productName h3{
+.product .card .content .productName h3{
 	font-size: 18px;
 	font-weight: 500;
-	color: #333;
+	color: var(--white);
 	margin: 5px 0;
 	text-align: center;
 }
 
-.container .card .content .price{
+.product .card .content .price{
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-.container .card .content .price h2{
+.product .card .content .price h2{
 	font-size: 20px;
-	color: #e96371;
+	color: var(--white);
 }
 
-.container .card .content .price .rating{
+.product .card .content .price .rating{
 	font-size: 20px;
 	color: #ffd513;
 	align-items: center;
 	display: flex;
 }
 
-.container .card .content .price .rating .grey{
+.product .card .content .price .rating .grey{
 	font-size: 20px;
 	color: #ccc;
+}
+
+@media(max-width: 768px) {
+   .product{
+        grid-template-columns: repeat(3,1fr);
+        max-width: 100%;
+        grid-gap: 10px;
+   } 
+}
+
+@media(max-width: 600px) {
+   .product{
+        grid-template-columns: repeat(2,1fr);
+        max-width: 100%;
+        grid-gap: 10px;
+   } 
+}
+
+@media(max-width: 480px) {
+   .product{
+        grid-template-columns: repeat(1,1fr);
+        max-width: 100%;
+        align-items: center;
+   } 
 }

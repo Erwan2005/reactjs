@@ -72,8 +72,6 @@ export class SigninJs extends React.Component {
           password: "",
         })
       };
-      this.dispatch = this.props.dispatchs
-      this.user = this.props.user
   };
 
   inputs = [
@@ -102,7 +100,7 @@ export class SigninJs extends React.Component {
   };
   login = () =>{
    
-    login(this.dispatch, { username: this.state.values.username, password: this.state.values.password });
+    login(this.props.dispatchs, { username: this.state.values.username, password: this.state.values.password });
   }
   render() {
     const { classes } = this.props;
@@ -112,7 +110,7 @@ export class SigninJs extends React.Component {
         <div className={classes.left}>This is left</div>
         <div className={classes.right}>
             <h1 style={{color: 'lightgray'}}>Login</h1>
-            {this.user.error && (<Typography className={classes.error}>Username or password is wrong !!!</Typography>)}
+            {this.props.user.error && (<Typography className={classes.error}>Username or password is wrong !!!</Typography>)}
             {this.inputs.map((input) => (
               <FormInput
                 key={input.id}
@@ -123,9 +121,9 @@ export class SigninJs extends React.Component {
             ))}
             <button className={classes.shareButton}
               onClick={this.login}
-              disabled={this.user.isFetching}
+              disabled={this.props.user.isFetching}
                 onClick={this.login}>
-                  {this.user.isFetching ? (
+                  {this.props.user.isFetching ? (
                     <CircularProgress color="white" size="20px" />
                   ) : (
                     "Log In"
@@ -164,7 +162,4 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   dispatchs: dispatch,
 });
-
-
-
 export default connect(mapStateToProps,mapDispatchToProps)(withRouter(withStyles(useStyles)(SigninJs)))

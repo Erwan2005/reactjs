@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { store, persistor } from "./context/store";
 import { PersistGate } from 'redux-persist/integration/react'
 import "typeface-roboto"; 
+import './index.css'
 
 function Router() {
    

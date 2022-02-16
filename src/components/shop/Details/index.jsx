@@ -12,7 +12,8 @@ export class index extends React.Component {
 		this.id = this.props.match.params.id_prod;
 		this.state={
 			quantity: 1,
-			product: []
+			product: [],
+			user: [],
 		}
 
 	}
@@ -25,7 +26,7 @@ export class index extends React.Component {
   	}
   }
 
-  	insertCart = async() =>{
+  insertCart = async() =>{
 		let user = this.props.user.id;
 		let id_prod = this.id
 		let quantity = this.state.quantity
@@ -40,41 +41,69 @@ export class index extends React.Component {
 		);
 	}
 
-  getProduct = async() =>{
-		let data = await publicRequest.get(`shop/product/${this.id}`)
-	    .then(({data})=>data)
-	    this.setState({product: data})
+	getUser = async() =>{
+		let data = await publicRequest.get('userapp/users/')
+		.then(({data})=>data)
+		this.setState({user:data})
 	}
 
+  getProduct = async() =>{
+		let data = await publicRequest.get(`shop/product/${this.id}`)
+	  .then(({data})=>data)
+	  this.setState({product: data})
+	}
 	componentDidMount(){
 		this.getProduct()
+		this.getUser()
 	};
 
 	render() {
 		return (
-			<div className="det-container">
-				<div class="product">
-				        <div class="product-img">
-				            <img src={this.state.product.pic1} alt="product" />
-				        </div>
-				        <div class="product-listing">
-				            <div class="content">
-				                <h3 class="name">{this.state.product.name}</h3>
-				                <p class="info">{this.state.product.desc}</p>
-				                <p class="price">&euro;{this.state.product.price}</p>
-				                <div class="btn-and-rating-box">
-				                    <div class="rating">
-				                        <img src="https://github.com/kunaal438/product-page/blob/master/img/star.png?raw=true" alt="" />
-				                        <img src="https://github.com/kunaal438/product-page/blob/master/img/star.png?raw=true" alt="" />
-				                        <img src="https://github.com/kunaal438/product-page/blob/master/img/star.png?raw=true" alt="" />
-				                        <img src="https://github.com/kunaal438/product-page/blob/master/img/star.png?raw=true" alt="" />
-				                        <img src="https://github.com/kunaal438/product-page/blob/master/img/star%20stroke.png?raw=true" alt="" />
-				                    </div>
-				                    <button class="btn">buy now</button>
-				                </div>
-				            </div>
-				        </div>
-				    </div>
+			<div className="det-prod">
+				<div className="card-left">
+					<img src={this.state.product.pic1} alt="product" />
+					<div className="pic-bottom">
+						<img src={this.state.product.pic1} alt="product" />
+						<img src={this.state.product.pic2 ? this.state.product.pic2: ""} alt=" " />
+						<img src={this.state.product.pic3 ? this.state.product.pic3: ""} alt=" " />
+						<img src={this.state.product.pic4 ? this.state.product.pic4: ""} alt=" " />
+					</div>
+				</div>
+				<div className="card-right">
+					<div className="cardHeader">
+						<small className="categories">Home/woman/hair</small>
+							{this.state.user && this.state.user.map(profile =>{
+								if(this.state.product.seller === profile.id){
+									return(
+										<div className="rights">
+											<small>{profile.username}</small>
+											<img src={profile.avatar} alt="" />
+										</div>
+									)
+								}else return null;
+							})}
+					</div>
+					<h3>{this.state.product.name}</h3>
+					<small>{this.state.product.desc}</small>
+					<div className="rating">
+						&#9733;
+						&#9733;
+						&#9733;&nbsp;
+						<div className="grey">
+							&#9733;
+							&#9733;
+						</div>
+					</div>
+					<div className="quantity">
+						<span className="minus" onClick={()=> this.handleQuantity("minus")}>&minus;</span>
+						<input type="text" value={this.state.quantity}/>
+						<span className="plus" onClick={()=> this.handleQuantity("plus")}>&#43;</span>
+					</div>
+					<div className="btn-action">
+						<button onClick={()=>this.addCart(this.state.quantity)}>Add to cart</button>
+						<button>Add to wishlist</button>
+					</div>
+				</div>
 			</div>
 		)
 	}

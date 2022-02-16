@@ -1,137 +1,167 @@
-.container{
-    margin: 10px;
-    padding: 5px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.container .table-product{
-    border-collapse: collapse;
-    max-width: 50em;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    box-shadow: 0px 5px 20px 3px rgba(0, 0, 0, 0.15);
-    overflow-x: auto;
-}
-
-.container .table-product thead tr{
-    border-bottom: 1px dashed #219083;
-}
-
-.container .table-product tfoot tr{
-    border-top: 1px dashed #219083;
-}
-
-.container .table-product thead tr td,
-.container .amount .table-amount thead tr td
-{
-    font-size: 16px;
-    letter-spacing: 1px;
-    color: grey;
-    padding: 8px;
-}
-
-.container .table-product tfoot tr td,
-.container .amount .table-amount tfoot tr td{
-    font-size: 18px;
-    letter-spacing: 1px;
-    color: #219083;
-    padding: 8px;
-}
-
-.container .table-product tbody tr td,
-.container .amount .table-amount tbody tr td{
-    color: grey;
-    padding: 8px;
-}
-
-.container .table-product tbody tr td img{
+.cart{
+    position: relative;
     width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 30px;
+    margin-top: 10px;
+}
+
+.cart .details{
+    position: relative;
+    width: 100%;
+    display: grid;
+    background: var(--background);
+    padding: 20px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+}
+
+.cardHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.cardHeader h2{
+    font-weight: 600;
+    color: var(--green);
+}
+
+.btn{
+    padding: 5px 10px;
+    background: #ff5959;
+    color: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.cart .details table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.cart table thead{
+    font-weight: 600;
+    height: 20px;
+    max-height: 25px;
+    padding: 15px;
+
+}
+
+.cart .details table tr{
+    color: var(--text-primary);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.cart .details table tbody tr:hover{
+    background: var(--green);
+    color: var(--white);
+}
+
+.cart .details table tbody tr{
+    height: 80px;
+    max-height: 80px;
+}
+.cart .details table tr:last-child{
+    border-bottom: none;
+}
+
+.cart .details table tbody tr td{
+    padding: 10px;
+}
+
+.cart .details table tr td:last-child{
+    text-align: end;
+}
+.cart .details table tr td:nth-child(2),
+.cart .details table tr td:nth-child(3),
+.cart .details table tr td:nth-child(4)
+{
+    text-align: center;
+}
+
+.cart .details table tbody tr td .edit{
+    cursor: pointer;
+    padding: 3px 5px;
+    background: #7fd0fe;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.cart .details table tbody tr td .delete{
+    cursor: pointer;
+    padding: 3px 5px;
+    background: #ff5959;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.cart .details table tbody tr td img{
+    width: 100px;
     height: 100%;
     object-fit: cover;
 }
 
-.container .table-product thead tr td:nth-last-child(1),
-.container .table-product tbody tr td:nth-last-child(1),
-.container .table-product tfoot tr td:nth-last-child(1){
-    text-align: right;
-}
-
-.container .table-product .input-numb{
-    width: 100px;
-    height: 27px;
-    display: flex;
-    flex-direction: row;
-    border: 1px solid #219083;
-    border-radius: 5px;
-    align-items: center;
-}
-
-.container .table-product .input-numb #btn{
-    height: 100%;
-    width: 30%;
-}
-.container .table-product .input-numb .numb{
-    height: 100%;
-    width: 40%;
-    background-color: rgba(255, 255, 255, 0.1);
-    align-items: center;
-}
-
-.container .table-product .input-numb .input-text{
-    height: 100%;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    border-radius: 0px;
-    border: none;
-    background-color: rgba(255, 255, 255, 0);
-    text-align: center;
-    pointer-events: none;
-}
-
-.container .amount{
-    max-width: 250px;
+.summary{
+    position: relative;
     max-height: 300px;
-    background-color: rgba(255 , 255, 255, 0.1);
-    margin-left: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    color: grey;
-    box-shadow: 0px 5px 20px 3px rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    padding: 20px;
+    background: var(--background);
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    color: var(--text-primary);
+}
+.summary table{
+    width: 100%;
+    height: 100%;
+    margin-bottom: 10px;
+}
+.summary table tr td:last-child{
+    text-align: end;
+}
+.summary table tr:last-child{
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-weight: 600;
 }
 
-.container .amount .table-amount{
-    border-collapse: collapse;
-    max-width: 20em;
+.summary p{
+    font-size: 13px;
+}
+.summary button{
+    border:  1px solid var(--green);
+    min-height: 30px;
+    background: transparent;
+    border-radius: 20px;
+    color: var(--text-primary);
+    font-size: 15px;
+    margin-top: 10px;
 }
 
-.container .amount .table-amount thead tr{
-    border-bottom: 1px solid #219083;
-}
-
-.container .amount .table-amount tfoot tr{
-    border-top: 1px solid #219083;
-}
-
-.container .amount button{
-    height: 2.5rem;
-    border: 1px solid #219083;
-    padding: 8px;
-    background-color: rgba(255 , 255, 255, 0);
-    margin-top: 5px;
-    border-radius: 6rem;
-    font-size: 1rem;
-    color: grey;
-}
-
-.container .amount button:hover{
-    background-color: #219083;
-    color: lightgrey;
+.summary button:hover{
+    background: var(--green);
+    color: var(--white);
     cursor: pointer;
+}
+.summary img{
+    max-width: 60px;
+    max-height: 13px;
+    object-fit: cover;
+}
+@media(max-width: 768px) {
+   .cart{
+        grid-template-columns: repeat(1,1fr);
+        max-width: 100%;
+   } 
+   .details{
+        overflow-x: auto;
+   }
+   .cardHeader h2{
+        font-size: 20px;
+   }
 }

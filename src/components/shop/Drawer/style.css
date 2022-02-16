@@ -1,63 +1,220 @@
-.conte{
-	height: 100vh;
-	position: sticky;
-}
-.sidebar{
+.container{
+	position: relative;
 	height: 100%;
+}
+.navigation{
+	position: fixed;
 	width: 250px;
-	background-color: #252525;
-	overflow:hidden;
-	transition:width 0.6s linear;
+	height: 100%;
+	background: var(--green);
+	border-left: 10px solid var(--green);
+	transition: 0.5s;
+	overflow: hidden;
 }
 
-.sidebarList{
-	height: auto;
-	padding: 0;
-	margin: 0;
-	width: 100%;
+.navigation ul{
+	position: absolute;
 	top: 0;
-}
-.sidebarList .row{
+	left: 0;
 	width: 100%;
-	height: 50px;
-	list-style-type: none;
+}
+
+.navigation ul li{
+	position: relative;
+	width: 100%;
+	list-style: none;
+}
+
+.navigation ul li:hover{
+	background: var(--background);
+	border-top-left-radius: 30px;
+	border-bottom-left-radius: 30px;
+}
+
+.navigation ul li:nth-child(1){
+	margin-bottom: 40px;
+}
+
+.navigation ul li .ahref{
+	position: relative;
+	display: block;
+	width: 100%;
 	display: flex;
-	flex-direction: row;
-	color: #c8c8c8;
+	color: var(--white);
+}
+
+.navigation ul li:hover .ahref{
+	color: var(--green);
+}
+
+.navigation.active{
+	width: 60px;
+	border-left: 0px;
+}
+
+.navigation ul li .ahref .icon{
+	position: relative;
+	display: block;
+	min-width: 60px;
+	height: 60px;
+	line-height: 70px;
+	text-align: center;
+}
+
+.navigation ul li .ahref .title{
+	position: relative;
+	display: block;
+	padding: 0 10px;
+	height: 60px;
+	line-height: 60px;
+	text-align: start;
+	white-space: nowrap;
+}
+
+.navigation ul li:hover .ahref::before{
+	content: '';
+	position: absolute;
+	right: 0;
+	top: -50px;
+	width: 50px;
+	height: 50px;
+	background: transparent;
+	border-radius: 50%;
+	box-shadow: 35px 35px 0 10px var(--background);
+	pointer-events: none;
+}
+
+.navigation ul li:hover .ahref::after{
+	content: '';
+	position: absolute;
+	right: 0;
+	bottom: -50px;
+	width: 50px;
+	height: 50px;
+	background: transparent;
+	border-radius: 50%;
+	box-shadow: 35px -35px 0 10px var(--background);
+	pointer-events: none;
+}
+
+.main{
+	position: absolute;
+	width: calc(100vw - 250px);
+	left: 250px;
+	min-height: 100vh;
+	background: var(--background);
+	transition: 0.5s;
+}
+
+.main.active{
+	width: calc(100vw - 60px);
+	left: 60px;
+}
+
+.topbar{
+	width: 100%;
+	height: 60px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 10px;
+}
+
+.toggle{
+	position: relative;
+	top: 0;
+	width: 60px;
+	height: 60px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 2.5rem;
+	cursor: pointer;
+}
+
+.search{
+	position: relative;
+	width: 400px;
+	margin: 0 10px;
+}
+
+.search label{
+	position: relative;
+	width: 100%;
+}
+
+.search label input{
+	width: 100%;
+	height: 40px;
+	border-radius: 40px;
+	padding: 5px 20px;
+	padding-left: 35px;
+	font-size: 18px;
+	outline: none;
+	background: transparent;
+	border: 1px solid var(--green);
+	color: var(--text-primary);
+}
+
+.search label span{
+	position: absolute;
+	top: -5px;
+	left: 10px;
+	font-size: 1.2em;
+	color: var(--text-primary);
+}
+
+.right{
+	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
-.sidebarList .row:hover{
+.user{
+	position: relative;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	overflow: hidden;
 	cursor: pointer;
-	background-color: #323232;
-	border-left: 2px solid #59995b;
-
+	margin-left: 25px;
 }
 
-.sidebarList #active{
-	background-color: #323232;
-	border-left: 2px solid #59995b;
+.user img{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
-.row #icon{
-	flex: 30%;
-	display: grid;
-	place-items: center;
+.custom-basket{
+	font-size: 30px;
+	color: var(--text-primary);
+	cursor: pointer;
 }
 
-.row #title{
-	flex: 70%;
+.theme{
+	color: var(--text-primary);
+	cursor: pointer;
+	margin-right: 15px;
 }
 
-@media (max-width: 480px) {
-	#txt{
-		visibility: hidden;
+@media(max-width: 991px) {
+	.navigation{
+		left: -250px;
 	}
-  .sidebar {
-    width:50px;
-  }
-  .row #title{
-  	display: none;
-  }
+	.navigation.active{
+		left: 0;
+		width: 250px;
+	}
+	.main{
+		width: 100%;
+		left: 0;
+	}
+	.main.active{
+		left: 250px;
+	}
+	
 }

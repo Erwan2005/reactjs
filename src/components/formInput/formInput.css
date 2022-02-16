@@ -11,8 +11,9 @@ input{
     border-radius: 5px;
     border: 1px solid #555;
     font-size: 18px;
-    color: lightgrey;
-    background-color: #494949;
+    color: var(--text-primary);
+    background: transparent;
+    width: 100%;
 }
 
 

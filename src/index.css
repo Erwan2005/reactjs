@@ -28,6 +28,8 @@ code {
   --white: #f4f4f4;
   --red: #ff5959;
   --grey: grey;
+  --bgbtn: rgba(0,0,0,0.08);
+  --bghover: rgba(0,0,0,0.12);
 }
 
 [data-theme='dark'] {
@@ -35,4 +37,6 @@ code {
   --text-primary: #f4f4f4;
   --text-secondary: grey;
   --accent: darkred;
+  --bgbtn: rgba(255,255,255,0.08);
+  --bghover: rgba(255,255,255,0.12);
 }

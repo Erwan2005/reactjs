@@ -1,11 +1,11 @@
 
 import "react-toastify/dist/ReactToastify.css"
-import Home from './components/Home';
 import {Route, BrowserRouter,Switch,Redirect } from 'react-router-dom';
 //import SingIn from './components/SigninJs';
 import Login from './components/Login'
-import CreataccountCard from './components/CreatUser';
+import Create from './components/Create';
 import Messenger from './components/Messenger';
+import Home from './components/Home';
 import Shop from './components/shop/Home';
 
 import { useContext } from "react";
@@ -25,7 +25,7 @@ export default function App() {
         <Route path="/home">{!user ? <Redirect to="/" /> : <Home />}</Route>
         <Route exact path={`/messenger/:id`} component={Messenger} />
         <Route path={`/shop/:id`} component={Shop} />
-        <Route path="/CreatUser" component={CreataccountCard} />
+        <Route path="/CreatUser" component={Create} />
       </Switch>
     </BrowserRouter>
   );

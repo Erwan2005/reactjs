@@ -25,14 +25,14 @@ label{
 text{
     font-size: 12px;
     padding: 3px;
-    color: red;
+    color: var(--red);
     display: none;
 }
 input:focus{
     outline: none;
 }
 input:invalid[focused="true"]{
-    border: 1px solid red;
+    border: 1px solid var(--red);
 }
 
 input:invalid[focused="true"] ~ text{

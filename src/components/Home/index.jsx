@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Link } from 'react-router-dom';
 import { publicRequest,userRequest } from '../../requestMethods';
+import	Post from '../Post'
 import './style.css'
 
 export class index extends React.Component {
@@ -74,7 +75,7 @@ export class index extends React.Component {
 							</div>
 						</li>
 						<li>
-							<Link exact to={`/shop/${this.props.user.id}`}>
+							<Link exact to={`/shop/${this.props.user.id}`} className="link">
 								<div className="ahref">
 									<span className="icon"><LocalMall /></span>
 									<span className="title"> Shop</span>
@@ -115,9 +116,6 @@ export class index extends React.Component {
 						</div>
 						<div className="main-right">
 							<div className="topbarStyle">
-								<Brightness4/>
-							</div>
-							<div className="topbarStyle">
 								<Person/>
 							</div>
 							<div className="topbarStyle">
@@ -132,8 +130,48 @@ export class index extends React.Component {
 							</div>
 						</div>
 					</div>
-				</div>
+					<div className="central">
+						<div className="posts">
+							<Post />
+						</div>
+						<div className="right-bar">
+							<div className="right-top">
 
+								<div className="friend">
+									<div className="avatar">
+										<img src="https://cdn.pixabay.com/photo/2022/02/14/08/53/woman-7012726_960_720.jpg" alt="" />
+										<span></span>
+									</div>
+								</div>
+								<div className="friendText">
+										<span>Erwan</span>
+										<small>Online</small>
+									</div>
+							</div>
+							<div className="history">
+								<h4>History</h4>
+								<div className="right-top">
+									<div className="friend">
+										<div className="avatar">
+											<img src="https://cdn.pixabay.com/photo/2022/02/14/08/53/woman-7012726_960_720.jpg" alt="" />
+										</div>
+									</div>
+									<div className="friendText">
+											<span>Erwan</span>
+											<small>Online time ago</small>
+										</div>
+								</div>
+							</div>
+							<div className="other-link">
+								<Link className="link" to="#"><small>Sport</small></Link>
+								<Link className="link" to="#"><small>News</small></Link>
+								<Link className="link" to="#"><small>Movies</small></Link>
+								<Link className="link" to="#"><small>Techno</small></Link>
+								<Link className="link" to="#"><small>© WanTech corp&nbsp;{new Date().getFullYear()}</small></Link>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		)
 	}

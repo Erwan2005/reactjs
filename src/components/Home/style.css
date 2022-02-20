@@ -25,6 +25,10 @@
 	position: relative;
 	width: 100%;
 	list-style: none;
+	
+}
+.link{
+	text-decoration: none;
 }
 
 .navigations ul li:hover{
@@ -107,7 +111,6 @@
 	min-height: 100vh;
 	background: var(--background);
 	transition: 0.5s;
-	overflow: hidden;
 }
 
 .mains.active{
@@ -228,6 +231,104 @@
 	object-fit: cover;
 }
 
+.central{
+	position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 10px;
+    margin-top: 10px;
+    scrollbar-width: none;
+}
+
+.posts{
+	position: relative;
+    width: 100%;
+    max-height: calc(100vh - 110px);
+    background: var(--background);
+    padding: 5px;
+    color: var(--text-primary);
+}
+
+.right-bar{
+	position: relative;
+    min-width: 100%;
+    min-height: calc(100vh - 110px);
+    background: var(--background);
+    padding: 10px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.right-bar .right-top{
+	width: 100%;
+	max-height: 350px;
+	display: flex;
+	position: relative;
+	padding: 10px 15px;
+	align-items: center;
+	border-bottom: 1px solid var(--bgbtn);
+	justify-content: flex-start;
+}
+.right-bar .right-top .avatar{
+	position: relative;
+	width: 45px;
+	height: 45px;
+	overflow: hidden;
+	padding-right: 15px;
+}
+
+.right-bar .right-top .avatar img{
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.right-bar .right-top .avatar span{
+	width: 12px;
+	height: 12px;
+	bottom: 5px;
+	right: 4px;
+	border-radius: 50%;
+	position: absolute;
+	background: var(--green);
+	border: 2px solid var(--background);
+}
+
+.right-bar .right-top .friendText{
+	display: flex;
+	flex-direction: column;
+}
+.right-bar .right-top .friendText small{
+	margin-bottom: 8px;
+	font-size: 10px;
+}
+
+.right-bar .other-link{
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	color: var(--text-primary);
+}
+
+.right-bar .other-link small{
+	text-decoration: none;
+	color: var(--text-primary);
+	padding: 0px 5px;
+	border-right: 1px solid var(--bgbtn);
+}
+
+.right-bar .history{
+	border-top: 1px solid var(--bgbtn);
+	width: 100%;
+	padding: 10px 0;
+}
+
 @media(max-width: 991px) {
 	.navigations{
 		left: -250px;
@@ -242,6 +343,12 @@
 	}
 	.mains.active{
 		left: 250px;
+	}
+	.central{
+		grid-template-columns: repeat(1,1fr)
+	}
+	.right-bar{
+		display: none;
 	}
 	
 }

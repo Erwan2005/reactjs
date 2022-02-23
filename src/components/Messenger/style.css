@@ -1,0 +1,201 @@
+.messenger{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+}
+
+.messenger .top{
+	width: 100%;
+	max-height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 5px 0;
+}
+
+.messenger .top .profile{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.messenger .top .profile img{
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.messenger .top .profile > div{
+	display: flex;
+	flex-direction: column;
+	margin-left: 10px;
+	text-transform: capitalize;
+}
+
+.messenger .top .right-action{
+	display: flex;
+	align-items: center;
+	margin-right: 5px;
+	font-size: 15px;
+}
+
+.messenger .top .right-action .icon{
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+.messenger .top .right-action .icon:last-child{
+	margin-right: 0px;
+	margin-left: 10px;
+}
+.messenger .middle{
+	width: 100%;
+	flex-grow: 1;
+	border: 1px solid var(--bgbtn);
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+	scrollbar-width: none;
+    --ms-overflow-style: none;
+}
+
+.messenger .middle::-webkit-scrollbar{
+	display: none;
+}
+
+
+.messenger .middle .friend{
+	justify-content: flex-start;
+	display: flex;
+	margin: 5px 10px;
+}
+
+.messenger .middle .owner{
+	justify-content: flex-end;
+	display: flex;
+	margin: 5px 10px;
+}
+
+.messenger .middle .owner .owner-message{
+	position: relative;
+	max-height: 300px;
+	margin-right: 10px;
+	background: var(--grey);
+	border-radius: 10px;
+	
+}
+
+.messenger .middle .owner .owner-message::before{
+	content: '';
+	position: absolute;
+	top: 7%;
+	right: -4px;
+	width: 8px;
+	height: 8px;
+	background: var(--grey);
+	transform: translateY(-50%) rotate(45deg);
+	z-index: 0;
+}
+
+.messenger .middle .owner .owner-message h5{
+	padding: 2px 5px;
+	width: 100%;
+	text-align: end;
+	color: var(--text-primary);
+}
+
+.messenger .middle .owner .owner-message small{
+	font-size: 10px;
+	padding: 8px;
+	width: 100%;
+	text-align: end;
+	color: var(--text-primary);
+}
+
+.messenger .middle .owner img{
+	width: 100%;
+	height: 150px;
+	object-fit: cover;
+}
+
+.messenger .middle .friend .avatar{
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.messenger .middle .friend .friend-message{
+	max-height: 300px;
+	margin-left: 10px;
+	background: var(--green);
+	border-radius: 10px;
+	position: relative;
+}
+
+.messenger .middle .friend .friend-message::after{
+	content: '';
+	position: absolute;
+	top: 7%;
+	left: -4px;
+	width: 8px;
+	height: 8px;
+	background: var(--green);
+	transform: translateY(-50%) rotate(45deg);
+}
+
+.messenger .middle .friend .friend-message h5{
+	padding: 2px 5px;
+	color: var(--white);
+}
+
+.messenger .middle .friend .friend-message img{
+	width: 100%;
+	height: 150px;
+	object-fit: cover;
+	border-radius: 0;
+}
+
+.messenger .middle .friend .friend-message small{
+	font-size: 10px;
+	padding-left: 8px;
+	color: var(--white);
+}
+
+.messenger .bottom{
+	width: 100%;
+	max-height: 100px;
+	display: flex;
+	align-items: center;
+	position: relative;
+}
+
+.messenger .bottom .bot-icons{
+	display: flex;
+	align-items: center;
+	padding-top: 10px;
+}
+
+.messenger .bottom textarea{
+	resize: block;
+	max-height: 100%;
+	flex-grow: 1;
+	margin: 0 10px;
+	text-align: bottom;
+	color: var(--text-primary);
+	border: 1px solid var(--bgbtn);
+	border-radius: 10px;
+	padding: 5px 10px;
+	background: transparent;
+	overflow-y: auto;
+	margin-top: 10px;
+	font-size: 18px;
+}
+
+.messenger .bottom textarea:focus{
+	outline: none;
+}

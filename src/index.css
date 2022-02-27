@@ -30,7 +30,7 @@ code {
   --green: #219083;
   --white: #f4f4f4;
   --red: #ff5959;
-  --grey: #4d4d4d;
+  --grey: #c2c2c2;
   --bgbtn: rgba(0,0,0,0.05);
   --bghover: rgba(0,0,0,0.12);
 }
@@ -42,6 +42,8 @@ code {
   --accent: darkred;
   --bgbtn: rgba(255,255,255,0.05);
   --bghover: rgba(255,255,255,0.12);
+  --grey: #4d4d4d;
+  --white: #f4f4f4;
 }
 
 ::-webkit-scrollbar{

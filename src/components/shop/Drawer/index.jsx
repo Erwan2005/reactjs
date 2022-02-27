@@ -43,19 +43,20 @@ export class index extends React.Component {
     let data = await publicRequest.get(`userapp/users/${this.props.user.id}/`)
     .then(({data}) => data)
     this.setState({profile: data})
+    if(this.state.profile.theme == []){
+	  	if (this.defaultDark){
+	  		this.setState({theme: 'dark'})
+	  	}
+	  }else{
+	  	this.setState({theme: this.state.profile.theme[0]})
+	  }
   };
-  preferedTheme = () =>{
-  	if (this.defaultDark){
-  		this.setState({theme: 'dark'})
-  	}
-  }
 
   switchTheme = () =>{
   	const newTheme = this.state.theme === 'light' ? 'dark' : 'light';
   	this.setState({theme: newTheme})
   }
   componentDidMount(){
-  	this.preferedTheme()
     this.getCurrentUser()
   };
 	render() {

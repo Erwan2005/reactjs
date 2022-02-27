@@ -1,7 +1,7 @@
 import React from 'react'
 import { Home,People,List,Image,PlayCircleOutline,Settings,LocalMall,Forum,
         WbSunny,Menu,Search,Brightness4,Notifications,Mail,Person,ExitToApp,ArrowRight,
-        ArrowLeft,Lock } from '@material-ui/icons';
+        ArrowLeft,Lock,Brightness2 } from '@material-ui/icons';
 import { connect } from "react-redux";
 import { Route,Switch,withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -13,7 +13,7 @@ import './style.css'
 export class index extends React.Component {
 	constructor(props){
 		super(props);
-		this.defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+		
 		this.state={
 			theme: '',
 			profile:[],
@@ -22,6 +22,7 @@ export class index extends React.Component {
 	    user: [],
 	    friend:{},
 	    open: false,
+	    checked: false,
 		};
 
 		this.handler = this.handler.bind(this);
@@ -57,15 +58,49 @@ export class index extends React.Component {
 		menuSettings.style.display = "none";
 	}
 
-	preferedTheme = () =>{
-	  	if (this.defaultDark){
-	  		this.setState({theme: 'dark'})
-	  	}
-  	}
+  changeTheme = async () =>{
+  		if(this.state.profile.theme == null){
+				if(this.state.checked){
+					let data = await publicRequest.post('userapp/theme/',{id:this.props.user.id,theme:'light'})
+					.then(({data}) => data)
+		  		this.setState({theme: data.theme, checked: false})
+		  	}else{
+		  		let data = await publicRequest.post('userapp/theme/',{id:this.props.user.id,theme:'dark'})
+					.then(({data}) => data)
+		  		this.setState({theme: data.theme, checked: true})
+		  	}
+  		}else{
+  			if(this.state.profile.theme[0] == "dark"){
+					let data = await publicRequest.patch(`userapp/theme/${this.props.user.id}/`,{theme:'light'})
+					.then(({data}) => data)
+			  	this.setState({theme: data.theme, checked: false})
+			  	this.getCurrentUser()
+			  	
+			  }else {
+			  	let data = await publicRequest.patch(`userapp/theme/${this.props.user.id}/`,{theme:'dark'})
+					.then(({data}) => data)
+			  	this.setState({theme: data.theme, checked: true})
+			  	this.getCurrentUser()
+			  }
+  		}
+	  	
+  }
+
   getCurrentUser = async() =>{
     let data = await publicRequest.get(`userapp/users/${this.props.user.id}/`)
     .then(({data}) => data)
     this.setState({profile: data})
+    if(this.state.profile.theme[0] == ''){
+		  	if (this.defaultDark){
+		  		this.setState({theme: 'dark', checked: true})
+		  	}
+		  }else{
+		  	if(this.state.profile.theme[0] == "dark"){
+			  	this.setState({theme: this.state.profile.theme[0], checked: true})	
+			  }else {
+			  	this.setState({theme: this.state.profile.theme[0], checked: false})
+			  }
+		  }
   };
   getUser = async() =>{
     let data = await publicRequest.get('userapp/users/')
@@ -89,7 +124,7 @@ export class index extends React.Component {
   }
 
   componentDidMount(){
-	  	this.preferedTheme()
+	  	
 	  	this.getCurrentUser()
 	  	this.getUser()
     	this.getFriend()
@@ -226,11 +261,15 @@ export class index extends React.Component {
 											</div>
 											<span>Password</span>
 										</li>
-										<li onClick={this.logout}>
-											<div className="topbarStyle">
-												<ExitToApp />
+										<li>
+											<div>
+												<input type="checkbox" className="checkbox" id="checkbox" defaultChecked={this.state.checked} onChange={this.changeTheme}/>
+												<label htmlFor="checkbox" className="label" >
+													<span>&#9788;</span>
+													<span>&#9790;</span>
+													<div className="ball"></div>
+												</label>
 											</div>
-											<span>Logout</span>
 										</li>
 									</ul>
 							</div>)}

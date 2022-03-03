@@ -4,6 +4,7 @@ import {Route, BrowserRouter,Switch,Redirect } from 'react-router-dom';
 //import SingIn from './components/SigninJs';
 import Login from './components/Login'
 import Create from './components/Create';
+import Settings from './components/Settings';
 import Messenger from './components/Messenger';
 import Home from './components/Home';
 import Shop from './components/shop/Home';
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/home">{!user ? <Redirect to="/" /> : <Home />}</Route>
         <Route exact path={`/messenger/:id`} component={Messenger} />
         <Route path={`/shop/:id`} component={Shop} />
+        <Route path={'/settings'} component={Settings} />
         <Route path="/CreatUser" component={Create} />
       </Switch>
     </BrowserRouter>

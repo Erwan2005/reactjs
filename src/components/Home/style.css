@@ -378,7 +378,6 @@
 	position: relative;
 	padding: 10px 15px;
 	align-items: center;
-	border-bottom: 1px solid var(--bgbtn);
 	justify-content: flex-start;
 }
 .right-bar .right-top .avatar{

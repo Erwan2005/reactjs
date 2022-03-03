@@ -187,10 +187,12 @@ export class index extends React.Component {
 							</div>
 						</li>
 						<li>
-							<div className="ahref">
-								<span className="icon"><Settings /></span>
-								<span className="title"> Settings</span>
-							</div>
+							<Link to={'/settings'} className="link">
+								<div className="ahref">
+									<span className="icon"><Settings /></span>
+									<span className="title"> Settings</span>
+								</div>
+							</Link>
 						</li>
 					</ul>
 				</div>

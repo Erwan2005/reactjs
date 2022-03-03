@@ -1,0 +1,226 @@
+.friends{
+	width: 100%;
+	
+	display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 10px;
+    margin-top: 10px;
+
+}
+
+.friends .left{
+	position: relative;
+	width: 100%;
+	box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    color: var(--text-primary);
+    border-radius: 15px;
+    padding: 5px;
+}
+.friends .left .top{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.friends .left .top span{
+	margin-right: 10px;
+}
+
+.friends .left .top .search{
+	width: 300px;
+	position: relative;
+}
+.friends .left table{
+	width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    border-top: 1px solid var(--bgbtn);
+    flex-grow: 1;
+}
+
+.friends .left table tr td{
+	padding: 10px;
+
+}
+
+.friends .left table tr td span:hover{
+	color: var(--warning);
+	cursor: pointer;
+}
+
+.friends .left table tr td span:last-child:hover{
+	color: var(--red);
+	cursor: pointer;
+}
+
+.friends .left table tr td:nth-child(1){
+	display: flex;
+	align-items: center;
+}
+
+.friends .left table tr td:last-child{
+	text-align: end;
+}
+
+.friends .left table tr td img{
+	width: 40px;
+	height: 40px;
+	object-fit: cover;
+	border-radius: 50%;
+	margin-right: 5px;
+}
+
+.friends .left .top .search label input{
+	width: 100%;
+	height: 40px;
+	border-radius: 40px;
+	padding: 5px 20px;
+	padding-left: 32px;
+	font-size: 16px;
+	outline: none;
+	background: transparent;
+	border: 1px solid var(--green);
+	color: var(--text-primary);
+}
+
+.friends .left .top .search label span{
+	position: absolute;
+	top: -6px;
+	left: 5px;
+	font-size: 1.2em;
+	color: var(--text-primary);
+}
+
+.friends .left .pagination{
+	min-width: 0;
+	max-width: 125px;
+	height: 30px;
+	border: 1px solid var(--bgbtn);
+	display: flex;
+	align-items: center;
+	border-radius: 15px;
+	position: relative;
+	overflow: hidden;
+	margin-top: 20px;
+}
+
+.friends .left .pagination .btnPage{
+	width: 25px;
+	height: 100%;
+	border: none;
+	background: transparent;
+
+}
+
+.friends .left .pagination .btnPage:hover{
+	background: var(--bgbtn);
+	cursor: pointer;
+}
+
+.friends .right{
+	position: relative;
+	width: 100%;
+	max-height: calc(100vh - 100px);
+    color: var(--text-primary);
+    display: grid;
+    grid-template-columns: repeat(1,1fr);
+    grid-gap: 10px;
+}
+
+.friends .right .top{
+	position: relative;
+	width: 100%;
+	max-height: 100%;
+	box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+	color: var(--text-primary);
+	border-radius: 15px;
+	padding: 10px 5px;
+	overflow-y: auto;
+	scrollbar-width: none;
+    --ms-overflow-style: none;
+}
+
+.friends .right .top::-webkit-scrollbar{
+	display: none;
+}
+
+.friends .right .bottom{
+	position: relative;
+	width: 100%;
+	max-height: 100%;
+	display: grid;
+    grid-template-columns: repeat(1,1fr);
+    grid-gap: 10px;
+	overflow-y: auto;
+	scrollbar-width: none;
+    --ms-overflow-style: none;
+}
+
+.friends .right .bottom::-webkit-scrollbar{
+	display: none;
+}
+
+.friends .right .bottom .request{
+	background: var(--bgbtn);
+	border-radius: 20px;
+	padding: 10px;
+}
+
+.friends .right .bottom .request .request-profile{
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.friends .right .bottom .request .request-profile img{
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.friends .right .bottom .request .request-profile .profile-text{
+	display: flex;
+	flex-direction: column;
+	flex-shrink: 10;
+	margin-left: 10px;
+}
+
+.friends .right .bottom .request .request-action{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 5px;
+}
+
+.friends .right .bottom .request .request-action button{
+	border: none;
+	height: 30px;
+	color: var(--text-primary);
+	font-size: 16px;
+	font-weight: 500;
+}
+
+.friends .right .bottom .request .request-action button:nth-child(1){
+	background: transparent;
+	border: 1px solid var(--green);
+	border-radius: 20px;
+}
+
+.friends .right .bottom .request .request-action button:hover:nth-child(1){
+	background: var(--green);
+	color: var(--white);
+	cursor: pointer;
+}
+
+.friends .right .bottom .request .request-action button:nth-child(2){
+	background: transparent;
+	border: 1px solid var(--red);
+	border-radius: 20px;
+}
+
+.friends .right .bottom .request .request-action button:hover:nth-child(2){
+	background: var(--red);
+	color: var(--white);
+	cursor: pointer;
+}

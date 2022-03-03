@@ -65,10 +65,12 @@ export class index extends React.Component {
 				<div className="navigation">
 					<ul>
 						<li>
-							<div className="ahref">
-								<span className="icon"><Home /></span>
-								<span className="title"> WanWork</span>
-							</div>
+							<Link to={'/Home'} className="link">
+								<div className="ahref">
+									<span className="icon"><Home /></span>
+									<span className="title"> WanWork</span>
+								</div>
+							</Link>
 						</li>
 						<li>
 							<div className="ahref">

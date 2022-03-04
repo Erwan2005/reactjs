@@ -25,7 +25,7 @@ export default function App() {
         </Route>
         <Route path="/home">{!user ? <Redirect to="/" /> : <Home />}</Route>
         <Route exact path={`/messenger/:id`} component={Messenger} />
-        <Route path={`/shop/:id`} component={Shop} />
+        <Route path={'/shop'} component={Shop} />
         <Route path={'/settings'} component={Settings} />
         <Route path="/CreatUser" component={Create} />
       </Switch>

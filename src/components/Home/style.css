@@ -11,7 +11,7 @@
 	background: var(--green);
 	border-left: 10px solid var(--green);
 	transition: 0.5s;
-	overflow: hidden;
+	overflow: auto;
 }
 
 .navigations ul{

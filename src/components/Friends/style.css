@@ -1,6 +1,5 @@
 .friends{
 	width: 100%;
-	
 	display: grid;
     grid-template-columns: 2fr 1fr;
     grid-gap: 10px;
@@ -29,7 +28,7 @@
 }
 
 .friends .left .top .search{
-	width: 300px;
+	max-width: 300px;
 	position: relative;
 }
 .friends .left table{
@@ -38,6 +37,7 @@
     margin-top: 10px;
     border-top: 1px solid var(--bgbtn);
     flex-grow: 1;
+    overflow: auto;
 }
 
 .friends .left table tr td{
@@ -142,6 +142,38 @@
     --ms-overflow-style: none;
 }
 
+.friends .right .top .profile-container{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 0;
+	border-bottom: 1px solid var(--bgbtn);
+}
+
+.friends .right .top .profile-container:last-child{
+	border-bottom: none;
+}
+
+.friends .right .top .profile-container .profile-left{
+	display: flex;
+	align-items: center;
+	color: var(--text-primary);
+	overflow: hidden;
+}
+
+.friends .right .top .profile-container .profile-left img{
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+
+}
+
+.friends .right .top .profile-container span:nth-child(2):hover{
+	cursor: pointer;
+	color: var(--red);
+}
+
 .friends .right .top::-webkit-scrollbar{
 	display: none;
 }
@@ -153,6 +185,10 @@
 	display: grid;
     grid-template-columns: repeat(1,1fr);
     grid-gap: 10px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    color: var(--text-primary);
+    border-radius: 15px;
+    padding: 5px;
 	overflow-y: auto;
 	scrollbar-width: none;
     --ms-overflow-style: none;
@@ -163,9 +199,12 @@
 }
 
 .friends .right .bottom .request{
-	background: var(--bgbtn);
-	border-radius: 20px;
-	padding: 10px;
+	padding: 10px 0;
+	border-bottom: 1px solid var(--bgbtn);
+}
+
+.friends .right .bottom .request:last-child{
+	border-bottom: none;
 }
 
 .friends .right .bottom .request .request-profile{
@@ -180,7 +219,7 @@
 	object-fit: cover;
 }
 
-.friends .right .bottom .request .request-profile .profile-text{
+.profile-text{
 	display: flex;
 	flex-direction: column;
 	flex-shrink: 10;
@@ -223,4 +262,16 @@
 	background: var(--red);
 	color: var(--white);
 	cursor: pointer;
+}
+
+@media(max-width: 720px) {
+	.friends{
+	    grid-template-columns: repeat(1,1fr);
+	    grid-gap: 10px;
+	}
+
+	.friends .left .top .search{
+		max-width: 150px;
+		position: relative;
+	}
 }

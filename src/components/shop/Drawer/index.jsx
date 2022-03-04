@@ -8,7 +8,7 @@ import { Notifications,
 		 Category,
 		 Settings,Home,Menu,
 		 ShoppingCart,ArrowDropDown,
-		 FlashOn,Search,Brightness4 } from "@material-ui/icons"
+		 FlashOn,Search,Person,Mail,Shop } from "@material-ui/icons"
 		 import { Link } from 'react-router-dom';
 import Products from '../Products'
 import Cart from '../Cart'
@@ -73,10 +73,12 @@ export class index extends React.Component {
 							</Link>
 						</li>
 						<li>
-							<div className="ahref">
-								<span className="icon"><Notifications /></span>
-								<span className="title"> Notification</span>
-							</div>
+							<Link to={this.props.match.url} className="link">
+								<div className="ahref">
+									<span className="icon"><Shop /></span>
+									<span className="title"> Shop</span>
+								</div>
+							</Link>
 						</li>
 						<li>
 							<div className="ahref">
@@ -111,17 +113,23 @@ export class index extends React.Component {
 							</label>
 						</div>
 						<div className="right">
-							<Brightness4 className="theme" onClick={this.switchTheme}/>
-							<Link exact to={`${this.props.match.url}/cart`}>
-								<Badge badgeContent={this.props.quantity} color="secondary">
-			            <ShoppingCart className="custom-basket" />
-			          </Badge>
-		          </Link>
-		          <Link to="/Home">
-								<div className="user">
-									<img src={this.state.profile.avatar} alt="profile"/>
-								</div>
-							</Link>
+							<div className="topbarStyle">
+								<Person/>
+							</div>
+							<div className="topbarStyle">
+								<Notifications/>
+							</div>
+
+							<div className="topbarStyle">
+								<Mail/>
+							</div>
+							<Link exact to={`${this.props.match.url}/cart`} className="link">
+								<div className="topbarStyle">
+									<Badge badgeContent={this.props.quantity} color="secondary">
+				            <ShoppingCart />
+				          </Badge>
+				          </div>
+			        </Link>
 						</div>
 					</div>
 					<Switch>

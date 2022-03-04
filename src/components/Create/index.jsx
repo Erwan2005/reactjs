@@ -99,7 +99,7 @@ export class index extends React.Component {
 		return (
 			<div className="create" data-theme={this.state.theme}>
 				<div className="left">
-					left
+					<span>Create today <br/>and <br/>access forever !!!</span>
 				</div>
 				<div className="rights">
 					{this.inputs.map((input) => (

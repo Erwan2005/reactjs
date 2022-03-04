@@ -68,21 +68,17 @@ export class index extends React.Component {
 							</Link>
 						</li>
 						<li>
-							<div className="ahref">
-								<span className="icon"><People /></span>
-								<span className="title"> Friends</span>
-							</div>
+							<Link to={this.props.match.url} className="link">
+								<div className="ahref">
+									<span className="icon"><People /></span>
+									<span className="title"> Friends</span>
+								</div>
+							</Link>
 						</li>
 						<li>
 							<div className="ahref">
 								<span className="icon"><Person /></span>
-								<span className="title"> Followers</span>
-							</div>
-						</li>
-						<li>
-							<div className="ahref">
-								<span className="icon"><Person /></span>
-								<span className="title"> Following</span>
+								<span className="title"> Follows</span>
 							</div>
 						</li>
 						<li>
@@ -117,17 +113,14 @@ export class index extends React.Component {
 							<div className="topbarStyle">
 								<Mail/>
 							</div>
-							<div className="topbarStyle">
-								<img src={this.state.profile.avatar} alt="avatar" />
-							</div>
 						</div>
 					</div>
 					<div className="centrals">
 						<Switch>
-				            <Route exact path={this.props.match.url}>
-				               	<Friends />
-				            </Route>
-				        </Switch>
+				      <Route exact path={this.props.match.url}>
+				        <Friends />
+				      </Route>
+				    </Switch>
 					</div>
 				</div>
 			</div>

@@ -62,23 +62,16 @@ export class index extends React.Component {
 				</div>
 				<div className="right">
 					<div className="top">
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
-						<h3>Bonjour</h3>
+						<div className="profile-container">
+							<div className="profile-left">
+								<img src="https://cdn.pixabay.com/photo/2022/02/14/08/53/woman-7012726_960_720.jpg" alt="avatar" />
+							 	<div className="profile-text">
+							 		<span>Erwan</span>
+							 		<small>110k Friends</small>
+							 	</div>
+							</div>
+							<span>Unblock</span>
+						</div>
 					</div>
 					<div className="bottom">
 						<div className="request">
@@ -95,48 +88,6 @@ export class index extends React.Component {
 						 </div>
 						</div>
 
-						<div className="request">
-						 <div className="request-profile">
-						 	<img src="https://cdn.pixabay.com/photo/2022/02/14/08/53/woman-7012726_960_720.jpg" alt="avatar" />
-						 	<div className="profile-text">
-						 		<span>Erwan</span>
-						 		<small>110k Friends</small>
-						 	</div>
-						 </div>
-						 <div className="request-action">
-						 	<button>Accept</button>
-						 	<button>Decline</button>
-						 </div>
-						</div>
-
-						<div className="request">
-						 <div className="request-profile">
-						 	<img src="https://cdn.pixabay.com/photo/2022/02/14/08/53/woman-7012726_960_720.jpg" alt="avatar" />
-						 	<div className="profile-text">
-						 		<span>Erwan</span>
-						 		<small>110k Friends</small>
-						 	</div>
-						 </div>
-						 <div className="request-action">
-						 	<button>Accept</button>
-						 	<button>Decline</button>
-						 </div>
-						</div>
-
-						<div className="request">
-						 <div className="request-profile">
-						 	<img src="https://cdn.pixabay.com/photo/2022/02/14/08/53/woman-7012726_960_720.jpg" alt="avatar" />
-						 	<div className="profile-text">
-						 		<span>Erwan</span>
-						 		<small>110k Friends</small>
-						 	</div>
-						 </div>
-						 <div className="request-action">
-						 	<button>Accept</button>
-						 	<button>Decline</button>
-						 </div>
-						</div>
-						
 					</div>
 				</div>
 			</div>

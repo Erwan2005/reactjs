@@ -61,7 +61,7 @@ export class index extends React.Component {
 		return (
 			<div className="login" data-theme={this.state.theme}>
 				<div className="left">
-					<span>Login</span>
+					<span>Chat, buy and share all <br />with your family and friend</span>
 				</div>
 				<div className="rights">
 					{this.props.user.error && (<Typography className="error">Username or password is wrong !!!</Typography>)}

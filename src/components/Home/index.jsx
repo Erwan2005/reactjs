@@ -165,7 +165,7 @@ export class index extends React.Component {
 							</div>
 						</li>
 						<li>
-							<Link exact to={`/shop/${this.props.user.id}`} className="link">
+							<Link exact to={'/shop'} className="link">
 								<div className="ahref">
 									<span className="icon"><LocalMall /></span>
 									<span className="title"> Shop</span>

@@ -3,11 +3,12 @@ import { Home,People,List,Image,PlayCircleOutline,Settings,LocalMall,Forum,
         WbSunny,Menu,Search,Brightness4,Notifications,Mail,Person,ExitToApp,ArrowRight,
         ArrowLeft,Lock,Brightness2 } from '@material-ui/icons';
 import { connect } from "react-redux";
-import { Route,Switch,withRouter } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Route,Switch,withRouter,Link } from 'react-router-dom';
 import { publicRequest,userRequest } from '../../requestMethods';
 import	Post from '../Post'
+import Profile from '../Profile'
 import Messenger from '../Messenger'
+import _ from 'lodash';
 import './style.css'
 
 export class index extends React.Component {
@@ -21,6 +22,9 @@ export class index extends React.Component {
 	    profiles: [],
 	    user: [],
 	    friend:{},
+	    conversation: false,
+	    messages: [],
+	    private_message:[],
 	    open: false,
 	    checked: false,
 		};
@@ -29,8 +33,21 @@ export class index extends React.Component {
 	}
 
 	handler(friend) {
-    this.setState({friend:friend})
+		this.setState({friend:friend,private_message:[],conversation:true})
+		this.getMessage(friend.id)
   }
+
+  getMessage = async(id) =>{
+  	let data = await publicRequest.get('userapp/message/')
+  	.then(({data}) => data)
+    this.setState({messages: _.sortBy(data.results, "id")})
+    //await this.state.messages.filter(item=> (item.sender === parseInt(id, 10) && item.receiver=== parseInt(this.id, 10)) || (item.receiver === parseInt(id, 10) && item.sender=== parseInt(this.id, 10))).map(checked=>(this.setState({private_message:checked})))
+    await this.state.messages && this.state.messages.map((item) =>{
+    	if ((item.sender === parseInt(id, 10) && item.receiver=== parseInt(this.props.user.id, 10)) || (item.receiver === parseInt(id, 10) && item.sender=== parseInt(this.props.user.id, 10))){
+    		this.setState({private_message:this.state.private_message.concat(item)})
+    	}
+    })
+  };
 
 	styleElement = () =>{
 		let toggle = document.querySelector('.toggles')
@@ -135,10 +152,12 @@ export class index extends React.Component {
 				<div className="navigations">
 					<ul>
 						<li>
-							<div className="ahref">
-								<span className="icon"><Home /></span>
-								<span className="title"> WanWork</span>
-							</div>
+							<Link to={this.props.match.url} className="link">
+								<div className="ahref">
+									<span className="icon"><Home /></span>
+									<span className="title"> WanWork</span>
+								</div>
+							</Link>
 						</li>
 						<li>
 							<div className="ahref">
@@ -283,7 +302,10 @@ export class index extends React.Component {
 	                <Post />
 	              </Route>
 	              <Route exact path={`${this.props.match.url}/messenger`}>
-	              	<Messenger friend = {this.state.friend}/>
+	              	<Messenger friend = {this.state.friend} conversation = {this.state.conversation} private_message = {this.state.private_message}/>
+	              </Route>
+	              <Route path={`${this.props.match.url}/profile/:id`}>
+	              	<Profile />
 	              </Route>
 	          </Switch>
 						</div>
@@ -296,7 +318,7 @@ export class index extends React.Component {
 										<span></span>
 									</div>
 								</div>
-								<div className="friendText">
+								<div className="friendText" onClick={() => this.handler(1)}>
 										<span>Erwan</span>
 										<small>Online</small>
 									</div>

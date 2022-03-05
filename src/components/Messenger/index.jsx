@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import ScrollToBottom from 'react-scroll-to-bottom';
+import { CircularProgress } from '@material-ui/core';
 import { Search,Image,EmojiEmotions,AttachFile,ThumbUp,Telegram,Videocam,ArrowDownward,Call,MoreVert } from '@material-ui/icons';
 import { publicRequest,userRequest } from '../../requestMethods';
 import _ from 'lodash';
@@ -17,15 +18,10 @@ export class index extends React.Component {
 	    	messages: [],
 	    	chosenEmoji: null,
 	    	open: false,
-	    	friends: [],
-	    	profile: [],
-	    	user: [],
-	    	private_message: [],
-	    	receiver: '',
-	    	conversation: false,
 	    	last_message: [],
 	    	doc_file: '',
 	    	image: '',
+	    	sending: false,
 	    };
 	};
 
@@ -58,8 +54,8 @@ export class index extends React.Component {
       }
       reader.readAsDataURL(e.target.files[0])
       const file = e.target.files[0];
-      if (file.size > 10e6) {
-		      window.alert("Please upload a file smaller than 10 MB");
+      if (file.size > 3e6) {
+		      window.alert("Please upload a file smaller than 3 MB");
 		      return false;
 		    }else {
 		      const base64 = await this.convertBase64(file);
@@ -81,19 +77,22 @@ export class index extends React.Component {
       });
   };
 
-  getMessage = async ()=>{
-  	let data = await publicRequest.get('userapp/message/')
-  	.then(({data}) => data)
-  	this.setState({messages:_.sortBy(data.results, "id")})
-  	console.log(this.state.messages)
+  sendMessage = async() =>{
+  	try{
+  		this.setState({seding: true})
+	  	let data = await publicRequest.post('userapp/message/',{sender:this.props.user.id,receiver:this.props.friend.id,content:this.state.message,img:this.state.image})
+	  	.then(({data}) => data)
+
+	  	this.setState({message:'',sending:false})
+  	}catch(error){
+    		throw new Error(error);
+    }
   }
-  componentDidMount(){
-    this.getMessage()
-  };
+
 	render() {
 		return (
 			<div className="messenger">
-				{this.props.friend ? (<>
+				{this.props.conversation ? (<>
 				<div className="top">
 					<div className="profile">
 						<img src={this.props.friend.avatar} alt="avatar" />
@@ -109,38 +108,21 @@ export class index extends React.Component {
 					</div>
 				</div>
 				<ScrollToBottom className="middle">
-					<div className="friend">
-						<img src="https://cdn.pixabay.com/photo/2019/03/27/15/24/animal-4085255_960_720.jpg" alt="avatar" className="avatar"/>
-						<div className="friend-message">
-							<h5>Bonjour</h5>
-							<img src="https://cdn.pixabay.com/photo/2019/03/27/15/24/animal-4085255_960_720.jpg" alt="avatar" />
-							<small>1min ago</small>
-						</div>
-					</div>
-					<div className="owner">
-						<div className="owner-message">
-							<h5>Bonjour</h5>
-							<img src="https://cdn.pixabay.com/photo/2019/03/27/15/24/animal-4085255_960_720.jpg" alt="avatar" />
-							<small>1min ago</small>
-						</div>
-					</div>
-
-					<div className="friend">
-						<img src="https://cdn.pixabay.com/photo/2019/03/27/15/24/animal-4085255_960_720.jpg" alt="avatar" className="avatar"/>
-						<div className="friend-message">
-							<h5>Bonjour</h5>
-							<img src="https://cdn.pixabay.com/photo/2019/03/27/15/24/animal-4085255_960_720.jpg" alt="avatar" />
-							<small>1min ago</small>
-						</div>
-					</div>
-					<div className="owner">
-						<div className="owner-message">
-							<h5>Bonjour</h5>
-							<img src="https://cdn.pixabay.com/photo/2019/03/27/15/24/animal-4085255_960_720.jpg" alt="avatar" />
-							<small>1min ago</small>
-						</div>
-					</div>
-
+					{this.props.private_message && this.props.private_message.map(privateMessage=>{
+						return(
+							<div key={privateMessage.id}>
+								<div className={(privateMessage.sender === parseInt(this.props.user.id, 10)) ? "owner" : "friend"}>
+									{(privateMessage.sender === parseInt(this.props.user.id, 10)) ? null :<img src={this.props.friend.avatar} alt="avatar" className="avatar"/>}
+									<div className={(privateMessage.sender === parseInt(this.props.user.id, 10)) ? "owner-message" : "friend-message"}>
+										<h4>{privateMessage.content}</h4>
+										{privateMessage.img ? <img src={privateMessage.img} alt="image" /> : null}
+										{privateMessage.files ? <a href={privateMessage.files} className="link" download><ArrowDownward style={{cursor: 'pointer',marginRight: '3px'}} /> Files</a> : null}
+										<small>&#10003;</small>
+									</div>
+								</div>
+							</div>
+						)
+					})}
 				</ScrollToBottom>
 				<div className="bottom">
 					<div className="bot-icons">
@@ -166,12 +148,21 @@ export class index extends React.Component {
 							<EmojiEmotions />
 						</div>
 					</div>
-					<textarea placeholder="Enter your message ..."></textarea>
-					<div className="topbarStyle">
-							<ThumbUp />
-						</div>
+					<>
+						<textarea placeholder="Enter your message ..."
+						value = {this.state.message}
+						onChange = {e => this.setState({message:e.target.value})}></textarea>
+						{this.state.message ==='' ?(
+							<div className="topbarStyle">
+								 <ThumbUp />
+							</div>) : (
+							<div className="topbarStyle" onClick = {this.sendMessage}>
+								{this.state.sending ? <CircularProgress /> : <Telegram />}
+							</div>
+						)}
+					</>
 				</div></>) :
-					<div>No conversion selected</div>
+					<div className="no-conversation">No conversion selected</div>
 				}
 			</div>
 		)

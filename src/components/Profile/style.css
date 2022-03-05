@@ -1,0 +1,116 @@
+.profiles{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+}
+
+.profiles .image-to{
+	position: relative;
+	width: 100%;
+	height: 250px;
+}
+
+.profiles .image-to img{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 10px;
+}
+
+.profiles .image-to img:last-child{
+	position: absolute;
+	bottom: -60px;
+	left: 50px;
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 5px solid var(--background);
+}
+
+.profiles .image-to .action{
+	position: absolute;
+	bottom: -40px;
+	right: 10px;
+	color: var(--text-primary);
+	font-weight: 500;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: center;
+	text-transform: capitalize;
+}
+
+.profiles .image-to .action div{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.profiles .image-to .action button{
+	height: 30px;
+	padding: 5px 10px;
+	background: transparent;
+	border: 1px solid var(--green);
+	border-radius: 20px;
+	color: var(--text-primary);
+	font-size: 15px;
+	font-weight: 500;
+	text-align: center;
+	transition: .5s;
+}
+
+.profiles .image-to .action button:hover{
+	background: var(--green);
+	color: var(--white);
+	cursor: pointer;
+}
+
+.profiles .details{
+	margin-top: 60px;
+	flex-grow: 1;
+	overflow-y: auto;
+	border: 1px solid var(--bgbtn);
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+.profiles .details ul{
+	display: flex;
+	flex-wrap: wrap;
+	background: var(--bgbtn);
+	padding: 5px 10px;
+	font-size: 16px;
+	font-weight: 500;
+}
+
+.profiles .details ul li{
+	list-style: none;
+	border-right: 1px solid var(--bgbtn);
+	padding: 5px;
+	transition: .5s;
+}
+
+.profiles .details ul li:last-child{
+	border-right: none;
+}
+
+.profiles .details ul li:hover{
+	border-radius: 2px;
+	background: var(--bgbtn);
+}
+
+.profile .details .info{
+	width: 100%;
+	max-height: 100%;
+	flex-grow: 1;
+	overflow-y: auto;
+}
+
+.profiles .details .link{
+	text-decoration: none;
+	color: var(--text-primary);
+}

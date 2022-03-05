@@ -226,7 +226,9 @@ export class index extends React.Component {
 		                           <MoreVert/>
 		                        }
 		                        title={
-		                          <h3>{pub.proprietary[0].username}</h3>
+		                        	<Link className="link" to={`${this.props.match.url}/profile/${pub.proprietary[0].id}`}>
+		                          	<h3>{pub.proprietary[0].username}</h3>
+		                          </Link>
 		                        }
 		                        subheader={<small>{format(pub.date)}</small>}
 		                    />

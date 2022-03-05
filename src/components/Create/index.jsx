@@ -17,6 +17,7 @@ export class index extends React.Component {
           confirmPassword: "",
         }),
         theme: '',
+        
       };
 
     this.inputs = [

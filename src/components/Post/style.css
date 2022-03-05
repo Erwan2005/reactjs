@@ -190,7 +190,12 @@
 .postCont .card .cardHeader{
 	background: var(--background);
 	overflow: hidden;
+	text-transform: capitalize;
 
+}
+.postCont .card .cardHeader .link{
+	text-decoration: none;
+	color: var(--text-primary);
 }
 
 .postCont .card .cardHeader img{

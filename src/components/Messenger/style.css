@@ -92,8 +92,8 @@
 .messenger .middle .owner .owner-message::before{
 	content: '';
 	position: absolute;
-	top: 7%;
-	right: -4px;
+	top: 13px;
+	right: -3.5px;
 	width: 8px;
 	height: 8px;
 	background: var(--grey);
@@ -101,8 +101,8 @@
 	z-index: 0;
 }
 
-.messenger .middle .owner .owner-message h5{
-	padding: 2px 5px;
+.messenger .middle .owner .owner-message h4{
+	padding: 2px 7px;
 	width: 100%;
 	text-align: end;
 	color: var(--text-primary);
@@ -140,16 +140,16 @@
 .messenger .middle .friend .friend-message::after{
 	content: '';
 	position: absolute;
-	top: 7%;
-	left: -4px;
+	top: 13px;
+	left: -3.5px;
 	width: 8px;
 	height: 8px;
 	background: var(--green);
 	transform: translateY(-50%) rotate(45deg);
 }
 
-.messenger .middle .friend .friend-message h5{
-	padding: 2px 5px;
+.messenger .middle .friend .friend-message h4{
+	padding: 2px 7px;
 	color: var(--white);
 }
 
@@ -198,4 +198,28 @@
 
 .messenger .bottom textarea:focus{
 	outline: none;
+}
+
+.messenger .no-conversation{
+	font-size: 19px;
+	color: var(--text-primary);
+	font-weight: 500;
+}
+
+@media(max-width: 480px) {
+	.messenger{
+		height: calc(100vh - 150px);
+	}
+	.messenger .middle{
+		flex-grow: 1;
+	}
+	.messenger .bottom{
+		display: grid;
+		grid-template-columns: repeat(1,1fr);
+	    grid-gap: 10px;
+	}
+
+	.messenger .bottom textarea{
+		max-height: 50px;
+	}
 }

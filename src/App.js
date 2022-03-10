@@ -8,27 +8,29 @@ import Settings from './components/Settings';
 import Messenger from './components/Messenger';
 import Home from './components/Home';
 import Shop from './components/shop/Home';
-
+import { QueryClientProvider, QueryClient } from "react-query";
+import { ReactQueryDevTools } from 'react-query/devtools'
 import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
 export default function App() {
   const user = useSelector((state) => state.user.currentUser);
-
+  const client = new QueryClient();
   return (
    <BrowserRouter>
-      <ToastContainer />
-      <Switch>
-        <Route exact path="/">
-          { user ? <Redirect to="/home" /> : <Login />}
-        </Route>
-        <Route path="/home">{!user ? <Redirect to="/" /> : <Home />}</Route>
-        <Route exact path={`/messenger/:id`} component={Messenger} />
-        <Route path={'/shop'} component={Shop} />
-        <Route path={'/settings'} component={Settings} />
-        <Route path="/CreatUser" component={Create} />
-      </Switch>
+      <QueryClientProvider client={client}>
+        <Switch>
+          <Route exact path="/">
+            { user ? <Redirect to="/home" /> : <Login />}
+          </Route>
+          <Route path="/home">{!user ? <Redirect to="/" /> : <Home />}</Route>
+          <Route exact path={`/messenger/:id`} component={Messenger} />
+          <Route path={'/shop'} component={Shop} />
+          <Route path={'/settings'} component={Settings} />
+          <Route path="/CreatUser" component={Create} />
+        </Switch>
+      </QueryClientProvider>
     </BrowserRouter>
   );
 }

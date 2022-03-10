@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import NumericLabel from 'react-pretty-numbers';
 import {format} from 'timeago.js';
 import _ from 'lodash';
+import Resizer from "react-image-file-resizer";
 import './style.css'
 export class index extends React.Component {
 	constructor(props){
@@ -49,24 +50,26 @@ export class index extends React.Component {
       }
       reader.readAsDataURL(e.target.files[0])
       const file = e.target.files[0];
-      const base64 = await this.convertBase64(file);
-      this.setState({image:base64})
+      const resizer = await this.resizeFile(file)
+      console.log(resizer)
+      this.setState({image:resizer})
     };
 
-  	convertBase64 = (file) => {
-      return new Promise((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(file);
-
-        fileReader.onload = () => {
-          resolve(fileReader.result);
-        };
-
-        fileReader.onerror = (error) => {
-          reject(error);
-        };
-      });
-    };
+  resizeFile = (file) =>
+	  new Promise((resolve) => {
+	    Resizer.imageFileResizer(
+	      file,
+	      900,
+	      350,
+	      "JPEG",
+	      100,
+	      0,
+	      (uri) => {
+	        resolve(uri);
+	      },
+	      "base64"
+	    );
+	  });
 
     getPub = async() =>{
     	try{

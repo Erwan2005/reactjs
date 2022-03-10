@@ -8,8 +8,14 @@ import { publicRequest,userRequest } from '../../requestMethods';
 import	Post from '../Post'
 import Profile from '../Profile'
 import Messenger from '../Messenger'
+import { useQuery } from "react-query";
 import _ from 'lodash';
 import './style.css'
+
+function Query(props) {
+  return (props.children(useQuery(props.keyName, props.fn, props.options)));
+}
+
 
 export class index extends React.Component {
 	constructor(props){
@@ -103,6 +109,12 @@ export class index extends React.Component {
 	  	
   }
 
+  getCurrent = async() =>{
+		let data;
+		await publicRequest.get(`userapp/users/${this.props.user.id}`).then((res) => (data = res.data))
+		return data;
+	}
+
   getCurrentUser = async() =>{
     let data = await publicRequest.get(`userapp/users/${this.props.user.id}/`)
     .then(({data}) => data)
@@ -119,6 +131,13 @@ export class index extends React.Component {
 			  }
 		  }
   };
+
+  getProfile = async() =>{
+		let data = await publicRequest.get(`userapp/users/${this.props.match.params.id}`)
+		.then(({data}) => data)
+		this.setState({profile: data})
+	}
+
   getUser = async() =>{
     let data = await publicRequest.get('userapp/users/')
     .then(({data}) => data)
@@ -229,7 +248,21 @@ export class index extends React.Component {
 						</div>
 						<div className="main-right">
 							<div className="topbarStyle">
-								<Person/>
+								<Query
+									keyName="users"
+									fn={() => this.getCurrent()}
+								>
+									{({ data, isLoading, error }) => {
+	          				if (error) return <h1>Error</h1>;
+	          				const events = data ?? []
+	          				return(
+	          					<div className="badge">
+												<Person/>
+												<span>{events.friendRequests}</span>
+											</div>
+	          				)
+	          			}}
+								</Query>
 							</div>
 							<div className="topbarStyle">
 								<Notifications/>

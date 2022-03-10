@@ -3,7 +3,13 @@ import { connect } from "react-redux";
 import { Route,Switch,withRouter,Link } from 'react-router-dom';
 import { publicRequest,userRequest } from '../../requestMethods';
 import Info from '../Info'
+import { useQuery } from "react-query";
 import './style.css'
+
+function Query(props) {
+  return props.children(useQuery(props.keyName, props.fn, props.options));
+}
+
 export class index extends React.Component {
 	constructor(props){
 		super(props);
@@ -19,6 +25,11 @@ export class index extends React.Component {
 		this.setState({profile: data})
 	}
 
+	getFriends = async() =>{
+		let data;
+		await publicRequest.get(`userapp/users/${this.props.match.params.id}`).then((res) => (data = res.data))
+		return data
+	}
 	getFriend = async() =>{
 		let data = await publicRequest.get('userapp/friend/')
 		.then(({data}) => data)
@@ -31,47 +42,61 @@ export class index extends React.Component {
 	    else return true
 	};
 
-	componentDidMount(){
-	  	this.getProfile()
-	  	this.getFriend()
-	  	
-	 };
+	sendRequest = async() =>{
+   await publicRequest.post('http://127.0.0.1:8000/userapp/friendrequest/',
+    ({sender:this.props.user.id,receiver:this.props.match.params.id})).then(res =>{
+      console.log(res)
+    })
+  };
+
 	render() {
 		return (
-			<div className="profiles">
-				<div className="image-to">
-					<div className="action">
-						<span>@{this.state.profile.username}</span>
-						<div>
-							<small>11k Friends</small>
-							<small>11k Followers</small>
-						</div>
-						{this.props.match.params.id == this.props.user.id ? null : (
-							this.checkFriend(this.props.user.id,this.props.match.params.id) ? <button>Message</button> : <button>Add friend</button>
-						)}
-						
-						<button>Follow</button>
-					</div>
-					<img src={this.state.profile.img_covert} alt="mur" />
-					<img src={this.state.profile.avatar} alt="avatar" />
-				</div>
-				<div className="details">
-					<ul>
-						<li><Link to={this.props.match.url} className="link">Info</Link></li>
-						<li>Photo</li>
-						<li>Videos</li>
-						<li>Friends</li>
-						<li>Followers</li>
-					</ul>
-					<div className="info">
-						<Switch>
-			              <Route exact path={this.props.match.url}>
-			                <Info />
-			              </Route>
-			            </Switch>
-					</div>
-				</div>
-			</div>
+			<>
+				<Query
+					keyName="users"
+					fn={() => this.getFriends()}
+				>
+					{({ data, isLoading, error }) => {
+	          if (error) return <h1>Error</h1>;
+	          return(
+	          	<div className="profiles">
+								<div className="image-to">
+									<div className="action">
+										<span>@{data.username}</span>
+										<div>
+											<small>11k Friends</small>
+											<small>11k Followers</small>
+										</div>
+										{this.props.match.params.id == this.props.user.id ? null : (
+											this.checkFriend(this.props.user.id,this.props.match.params.id) ? <button>Message</button> : <button onClick={this.sendRequest}>Add friend</button>
+										)}
+										
+										<button>Follow</button>
+									</div>
+									<img src={data.img_covert} alt="mur" />
+									<img src={data.avatar} alt="avatar" />
+								</div>
+								<div className="details">
+									<ul>
+										<li><Link to={this.props.match.url} className="link">Info</Link></li>
+										<li>Photo</li>
+										<li>Videos</li>
+										<li>Friends</li>
+										<li>Followers</li>
+									</ul>
+									<div className="info">
+										<Switch>
+							              <Route exact path={this.props.match.url}>
+							                <Info />
+							              </Route>
+							            </Switch>
+									</div>
+								</div>
+							</div>
+	          )
+	        }}
+				</Query>
+			</>
 		)
 	}
 }

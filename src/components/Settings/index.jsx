@@ -7,8 +7,13 @@ import { Route,Switch,withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { publicRequest,userRequest } from '../../requestMethods';
 import Friends from '../Friends';
-
+import { useQuery } from "react-query";
 import './style.css'
+
+function Query(props) {
+  return (props.children(useQuery(props.keyName, props.fn, props.options)));
+}
+
 export class index extends React.Component {
 	constructor(props){
 		super(props);
@@ -23,6 +28,12 @@ export class index extends React.Component {
 	    open: false,
 	    checked: false,
 		};
+	}
+
+	getCurrent = async() =>{
+		let data;
+		await publicRequest.get(`userapp/users/${this.props.user.id}`).then((res) => (data = res.data))
+		return data;
 	}
 
 	getCurrentUser = async() =>{
@@ -104,8 +115,22 @@ export class index extends React.Component {
 						</div>
 						<div className="main-right">
 							<div className="topbarStyle">
-								<Person/>
-							</div>
+								<Query
+										keyName="users"
+										fn={() => this.getCurrent()}
+									>
+										{({ data, isLoading, error }) => {
+		          				if (error) return <h1>Error</h1>;
+		          				const events = data ?? []
+		          				return(
+		          					<div className="badge">
+													<Person/>
+													<span>{events.friendRequests}</span>
+												</div>
+		          				)
+		          			}}
+									</Query>
+								</div>
 							<div className="topbarStyle">
 								<Notifications/>
 							</div>

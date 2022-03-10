@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import Apps from './App';
-//import { AuthContextProvider } from "./context/AuthContext";
+
 import { Provider } from "react-redux";
 import { store, persistor } from "./context/store";
 import { PersistGate } from 'redux-persist/integration/react'
@@ -22,9 +22,10 @@ function Router() {
 }
 
 
+
 ReactDOM.render(
   <React.StrictMode>
-    <Router />
+      <Router />
   </React.StrictMode>,
   document.getElementById('root')
 );

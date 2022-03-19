@@ -1,0 +1,363 @@
+.cont-principal{
+	height: 100%;
+	position: relative;
+}
+
+.cont-principal .topbars .wrapper{
+	position: absolute;
+	top: 65px;
+	right: 15px;
+	display: flex;
+	width: 250px;
+	overflow: hidden;
+	border-radius: 5px;
+	background: var(--grey);
+	z-index: 1;
+	color: var(--text-primary);
+	transition: all 0.3s ease;
+
+}
+
+.topbars{
+	width: 100%;
+	height: 60px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 10px;
+	position: relative;
+	border-bottom: 1px solid var(--bgbtn);
+}
+.toggles{
+	position: relative;
+	top: 0;
+	width: 60px;
+	height: 60px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 2.5rem;
+	cursor: pointer;
+}
+
+.searchs{
+	position: relative;
+	width: 400px;
+	margin: 0 10px;
+}
+
+.searchs label{
+	position: relative;
+	width: 100%;
+}
+
+.searchs label input{
+	width: 100%;
+	height: 40px;
+	border-radius: 40px;
+	padding: 5px 20px;
+	padding-left: 35px;
+	font-size: 18px;
+	outline: none;
+	background: transparent;
+	border: 1px solid var(--green);
+	color: var(--text-primary);
+}
+
+.searchs label span{
+	position: absolute;
+	top: -5px;
+	left: 10px;
+	font-size: 1.2em;
+	color: var(--text-primary);
+}
+
+.main-right{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.users{
+	position: relative;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	overflow: hidden;
+	cursor: pointer;
+	margin-left: 25px;
+}
+
+.users img{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.themes{
+	color: var(--text-primary);
+	cursor: pointer;
+	margin-right: 15px;
+}
+
+.topbarStyle{
+	position: relative;
+	width: 40px;
+	height: 40px;
+	border-radius: 50px;
+	background: var(--bgbtn);
+	display: flex;
+  	align-items: center;
+  	justify-content: center;
+  	color: var(--text-primary);
+  	padding: 5px;
+  	margin: 3px;
+  	overflow: hidden;
+}
+
+.topbarStyle:hover{
+	background: var(--bghover);
+	cursor: pointer;
+}
+
+.topbarStyle img{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.central{
+	position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 10px;
+    margin-top: 10px;
+    scrollbar-width: none;
+}
+
+
+.cont-principal .topbars .wrapper{
+	position: absolute;
+	top: 65px;
+	right: 15px;
+	display: flex;
+	width: 250px;
+	overflow: hidden;
+	border-radius: 5px;
+	background: var(--grey);
+	z-index: 1;
+	color: var(--text-primary);
+	transition: all 0.3s ease;
+
+}
+
+.cont-principal .topbars .wrapper .menu-settings{
+	display: none;
+}
+
+.cont-principal .topbars .wrapper ul{
+	list-style: none;
+	width: 100%;
+	padding: 10px;
+	transition: all 0.3s ease;
+}
+.cont-principal .topbars .wrapper ul li{
+	line-height: 50px;
+	display: flex;
+	border-radius: 5px;
+	align-items: center;
+	font-size: 18px;
+	text-transform: capitalize;
+	transition: 0.5s;
+}
+
+.cont-principal .topbars .wrapper ul li .with-submenu{
+	display: flex;
+	width: 100%;
+}
+
+.cont-principal .topbars .wrapper ul li .label{
+	background: var(--bgbtn);
+	display: flex;
+	height: 26px;
+	width: 60px;
+	border-radius: 50px;
+	overflow: hidden;
+	align-items: center;
+	justify-content: space-between;
+	padding: 5px;
+	position: relative;
+	margin: 10px;
+}
+
+
+.cont-principal .topbars .wrapper ul li .checkbox:checked + .label .ball{
+	transform: translateX(32px);
+}
+
+.cont-principal .topbars .wrapper ul li .label .ball{
+	position: absolute;
+	top: 2px;
+	left: 3px;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background: var(--text-primary);
+	cursor: pointer;
+	transition: transform 0.2s linear;
+}
+
+.cont-principal .topbars .wrapper ul li .checkbox{
+	opacity: 0;
+	position: absolute;
+}
+
+.cont-principal .topbars .wrapper ul li .label span{
+	margin: 0;
+	padding: 0;
+	color: var(--text-primary);
+	font-size: 20px;
+	font-weight: 500;
+}
+
+.cont-principal .topbars .wrapper ul li .right-menu{
+	float: right;
+}
+
+.cont-principal .topbars .wrapper ul li:nth-child(1){
+	border-bottom: 1px solid var(--bgbtn);
+}
+
+.cont-principal .topbars .wrapper ul li span{
+	margin-left: 10px;
+}
+
+.cont-principal .topbars .wrapper ul li:nth-child(1):hover{
+	background: transparent;
+	cursor: default;
+}
+.cont-principal .topbars .wrapper ul li:hover{
+	background: var(--bgbtn);
+	cursor: pointer;
+}
+
+
+.posts{
+	position: relative;
+    width: 100%;
+    max-height: calc(100vh - 110px);
+    background: var(--background);
+    padding: 5px;
+    color: var(--text-primary);
+}
+
+.right-bar{
+	position: relative;
+    min-width: 100%;
+    max-height: calc(100vh - 110px);
+    background: var(--background);
+    display: grid;
+    grid-template-columns: repeat(1,1fr);
+    grid-gap: 10px;
+}
+
+.right-bar .right-top{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	max-height: 100%;
+	box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+	color: var(--text-primary);
+	border-radius: 15px;
+	padding: 10px 5px;
+	overflow-y: auto;
+	scrollbar-width: none;
+    --ms-overflow-style: none;
+}
+
+.right-bar .right-top::-webkit-scrollbar{
+	display: none;
+}
+
+.right-bar .right-top .avatar{
+	position: relative;
+	width: 45px;
+	height: 45px;
+	overflow: hidden;
+	padding-right: 15px;
+}
+
+.right-bar .right-top .avatar img{
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.right-bar .right-top .avatar span{
+	width: 12px;
+	height: 12px;
+	bottom: 5px;
+	right: 4px;
+	border-radius: 50%;
+	position: absolute;
+	background: var(--green);
+	border: 2px solid var(--background);
+}
+
+
+.right-bar .right-top .friendText{
+	display: flex;
+	flex-direction: column;
+	text-transform: capitalize;
+	cursor: pointer;
+}
+
+.right-bar .right-top .friendText small{
+	margin-bottom: 8px;
+	font-size: 10px;
+
+}
+
+.right-bar .other-link{
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	color: var(--text-primary);
+}
+
+.right-bar .other-link small{
+	text-decoration: none;
+	color: var(--text-primary);
+	padding: 0px 5px;
+	border-right: 1px solid var(--bgbtn);
+}
+
+.right-bar .right-bottom{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	max-height: 100%;
+	display: grid;
+    grid-template-columns: repeat(1,1fr);
+    grid-gap: 10px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    color: var(--text-primary);
+    border-radius: 15px;
+    padding: 5px;
+	overflow-y: auto;
+	scrollbar-width: none;
+    --ms-overflow-style: none;
+}
+
+.right-bar .right-bottom::-webkit-scrollbar{
+	display: none;
+}

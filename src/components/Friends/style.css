@@ -31,46 +31,7 @@
 	max-width: 300px;
 	position: relative;
 }
-.friends .left table{
-	width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    border-top: 1px solid var(--bgbtn);
-    flex-grow: 1;
-    overflow: auto;
-}
 
-.friends .left table tr td{
-	padding: 10px;
-
-}
-
-.friends .left table tr td span:hover{
-	color: var(--warning);
-	cursor: pointer;
-}
-
-.friends .left table tr td span:last-child:hover{
-	color: var(--red);
-	cursor: pointer;
-}
-
-.friends .left table tr td:nth-child(1){
-	display: flex;
-	align-items: center;
-}
-
-.friends .left table tr td:last-child{
-	text-align: end;
-}
-
-.friends .left table tr td img{
-	width: 40px;
-	height: 40px;
-	object-fit: cover;
-	border-radius: 50%;
-	margin-right: 5px;
-}
 
 .friends .left .top .search label input{
 	width: 100%;
@@ -226,6 +187,10 @@
 	margin-left: 10px;
 }
 
+.profile-text small{
+	display: flex;
+	gap: 5px;
+}
 .friends .right .bottom .request .request-action{
 	display: grid;
 	grid-template-columns: 1fr 1fr;

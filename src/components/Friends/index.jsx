@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import { publicRequest,userRequest } from '../../requestMethods';
 import NumericLabel from 'react-pretty-numbers';
 import { useQuery } from "react-query";
+import Table from '../Table'
+import axios from "axios";
 import './style.css'
 
 function Query(props) {
@@ -41,6 +43,13 @@ export class index extends React.Component {
 
 		console.log(this.state.friends)
 	}
+
+	addFriend = async(friend,id) =>{
+    await publicRequest.post('userapp/friend/',{user:this.props.user.id,friend:friend}).then(resp => (console.log(resp)));
+    await publicRequest.post('userapp/friend/',{user:friend,friend:this.props.user.id}).then(resp => (console.log(resp)));
+    await publicRequest.delete(`userapp/friendrequest/${id}`).then(resp => (console.log(resp)));
+  }
+
 	componentDidMount(){
 	  	this.getFriends()
 	};
@@ -57,25 +66,7 @@ export class index extends React.Component {
 								</div>
 								<span>Total: 2k</span>
 							</div>
-							<table>
-								<tr>
-									<td>
-										<img src="https://cdn.pixabay.com/photo/2022/02/14/08/53/woman-7012726_960_720.jpg" alt="avatar" />
-										Erwan
-									</td>
-									<td>Since </td>
-									<td>
-										<span>Block</span> | <span>Delete</span>
-									</td>
-								</tr>	
-							</table>
-							<div className="pagination">
-								<button className="btnPage"><span>{'<'}</span></button>
-								<button className="btnPage">1</button>
-								<button className="btnPage">2</button>
-								<button className="btnPage">3</button>
-								<button className="btnPage"><span>{'>'}</span></button>
-							</div>
+							<Table />
 						</div>
 						<div className="right">
 							<div className="top">
@@ -113,7 +104,7 @@ export class index extends React.Component {
 															 	</div>
 															 </div>
 															 <div className="request-action">
-															 	<button>Accept</button>
+															 	<button onClick={() => this.addFriend(sender.id,request.id)}>Accept</button>
 															 	<button onClick={()=>this.dltRequest(request.id)}>Decline</button>
 															 </div>
 															</div>

@@ -5,7 +5,7 @@ import { Home,People,List,Image,PlayCircleOutline,Settings,LocalMall,Forum,
 import { connect } from "react-redux";
 import { Route,Switch,withRouter,Link } from 'react-router-dom';
 import { publicRequest,userRequest } from '../../requestMethods';
-import	Post from '../Post'
+import	Principal from '../Principal'
 import Profile from '../Profile'
 import Messenger from '../Messenger'
 import { useQuery } from "react-query";
@@ -20,7 +20,7 @@ function Query(props) {
 export class index extends React.Component {
 	constructor(props){
 		super(props);
-		
+		this.defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 		this.state={
 			theme: '',
 			profile:[],
@@ -33,15 +33,19 @@ export class index extends React.Component {
 	    private_message:[],
 	    open: false,
 	    checked: false,
+	    theme: '',
 		};
 
-		this.handler = this.handler.bind(this);
+
 	}
 
-	handler(friend) {
-		this.setState({friend:friend,private_message:[],conversation:true})
-		this.getMessage(friend.id)
-  }
+
+
+  preferedTheme = () =>{
+	  	if (this.defaultDark){
+	  		this.setState({theme: 'dark'})
+	  	}
+  	}
 
   getMessage = async(id) =>{
   	let data = await publicRequest.get('userapp/message/')
@@ -64,79 +68,15 @@ export class index extends React.Component {
 		main.classList.toggle('active')
 	}
 
-	subMenu = () =>{
-		let  menuBar = document.querySelector('.menu-bar')
-		let  menuSettings = document.querySelector('.menu-settings')
-		menuBar.style.marginLeft = "-250px";
-		setTimeout(() =>{
-			menuSettings.style.display = "block";
-		}, 100)
-	}
-
-	submenuReturn = () =>{
-		let  menuBar = document.querySelector('.menu-bar')
-		let  menuSettings = document.querySelector('.menu-settings')
-
-		menuBar.style.marginLeft = "0";
-		menuSettings.style.display = "none";
-	}
-
-  changeTheme = async () =>{
-  		if(this.state.profile.theme == null){
-				if(this.state.checked){
-					let data = await publicRequest.post('userapp/theme/',{id:this.props.user.id,theme:'light'})
-					.then(({data}) => data)
-		  		this.setState({theme: data.theme, checked: false})
-		  	}else{
-		  		let data = await publicRequest.post('userapp/theme/',{id:this.props.user.id,theme:'dark'})
-					.then(({data}) => data)
-		  		this.setState({theme: data.theme, checked: true})
-		  	}
-  		}else{
-  			if(this.state.profile.theme[0] == "dark"){
-					let data = await publicRequest.patch(`userapp/theme/${this.props.user.id}/`,{theme:'light'})
-					.then(({data}) => data)
-			  	this.setState({theme: data.theme, checked: false})
-			  	this.getCurrentUser()
-			  	
-			  }else {
-			  	let data = await publicRequest.patch(`userapp/theme/${this.props.user.id}/`,{theme:'dark'})
-					.then(({data}) => data)
-			  	this.setState({theme: data.theme, checked: true})
-			  	this.getCurrentUser()
-			  }
-  		}
-	  	
-  }
-
   getCurrent = async() =>{
 		let data;
 		await publicRequest.get(`userapp/users/${this.props.user.id}`).then((res) => (data = res.data))
 		return data;
 	}
 
-  getCurrentUser = async() =>{
-    let data = await publicRequest.get(`userapp/users/${this.props.user.id}/`)
-    .then(({data}) => data)
-    this.setState({profile: data})
-    if(this.state.profile.theme[0] == ''){
-		  	if (this.defaultDark){
-		  		this.setState({theme: 'dark', checked: true})
-		  	}
-		  }else{
-		  	if(this.state.profile.theme[0] == "dark"){
-			  	this.setState({theme: this.state.profile.theme[0], checked: true})	
-			  }else {
-			  	this.setState({theme: this.state.profile.theme[0], checked: false})
-			  }
-		  }
-  };
 
-  getProfile = async() =>{
-		let data = await publicRequest.get(`userapp/users/${this.props.match.params.id}`)
-		.then(({data}) => data)
-		this.setState({profile: data})
-	}
+
+  
 
   getUser = async() =>{
     let data = await publicRequest.get('userapp/users/')
@@ -160,8 +100,7 @@ export class index extends React.Component {
   }
 
   componentDidMount(){
-	  	
-	  	this.getCurrentUser()
+	  	this.preferedTheme()
 	  	this.getUser()
     	this.getFriend()
 	 };
@@ -211,7 +150,7 @@ export class index extends React.Component {
 							</Link>
 						</li>
 						<li>
-							<Link exact to={`${this.props.match.url}/messenger`} className="link">
+							<Link exact to={'/messenger'} className="link">
 								<div className="ahref">
 									<span className="icon"><Forum /></span>
 									<span className="title"> Messenger</span>
@@ -236,162 +175,14 @@ export class index extends React.Component {
 				</div>
 
 				<div className="mains">
-					<div className="topbars">
-						<div className="toggles" onClick={this.styleElement}>
-							<Menu className="themes"/>
-						</div>
-						<div className="searchs">
-							<label>
-								<input type="text" placeholder="Search ..."/>
-								<span><Search /></span>
-							</label>
-						</div>
-						<div className="main-right">
-							<div className="topbarStyle">
-								<Query
-									keyName="users"
-									fn={() => this.getCurrent()}
-								>
-									{({ data, isLoading, error }) => {
-	          				if (error) return <h1>Error</h1>;
-	          				const events = data ?? []
-	          				return(
-	          					<div className="badge">
-												<Person/>
-												<span>{events.friendRequests}</span>
-											</div>
-	          				)
-	          			}}
-								</Query>
-							</div>
-							<div className="topbarStyle">
-								<Notifications/>
-							</div>
-
-							<div className="topbarStyle">
-								<Mail/>
-							</div>
-							<div className="topbarStyle" onClick={this.openBox}>
-								<img src={this.state.profile.avatar} alt="avatar" />
-							</div>
-						</div>
-						{this.state.open && (
-							<div className="wrapper">
-									<ul className="menu-bar">
-										<li>
-											<div className="topbarStyle">
-												<img src={this.state.profile.avatar} alt="avatar" />
-											</div>
-											<span>{this.state.profile.username}</span>
-										</li>
-										<li>
-											<div className="with-submenu" onClick={this.subMenu}>
-												<div className="topbarStyle">
-													<Settings />
-												</div>
-												<span>Settings</span>
-											</div>
-											<ArrowRight className="right-menu"/>
-										</li>
-										<li onClick={this.logout}>
-											<div className="topbarStyle">
-												<ExitToApp />
-											</div>
-											<span>Logout</span>
-										</li>
-									</ul>
-
-									<ul className="menu-settings">
-										<li onClick={this.submenuReturn}><ArrowLeft /><span>Settings</span></li>
-										<li>
-											<div className="topbarStyle">
-												<Person/>
-											</div>
-											<span>Personal info</span>
-										</li>
-										<li>
-											<div className="topbarStyle">
-												<Lock />
-											</div>
-											<span>Password</span>
-										</li>
-										<li>
-											<div>
-												<input type="checkbox" className="checkbox" id="checkbox" defaultChecked={this.state.checked} onChange={this.changeTheme}/>
-												<label htmlFor="checkbox" className="label" >
-													<span>&#9788;</span>
-													<span>&#9790;</span>
-													<div className="ball"></div>
-												</label>
-											</div>
-										</li>
-									</ul>
-							</div>)}
-					</div>
-					<div className="central">
-						<div className="posts">
-							<Switch>
-	              <Route exact path={this.props.match.url}>
-	                <Post />
-	              </Route>
-	              <Route exact path={`${this.props.match.url}/messenger`}>
-	              	<Messenger friend = {this.state.friend} conversation = {this.state.conversation} private_message = {this.state.private_message}/>
-	              </Route>
-	              <Route path={`${this.props.match.url}/profile/:id`}>
-	              	<Profile />
-	              </Route>
-	          </Switch>
-						</div>
-						<div className="right-bar">
-							<div className="right-top">
-
-								<div className="friend">
-									<div className="avatar">
-										<img src="https://cdn.pixabay.com/photo/2022/02/14/08/53/woman-7012726_960_720.jpg" alt="" />
-										<span></span>
-									</div>
-								</div>
-								<div className="friendText" onClick={() => this.handler(1)}>
-										<span>Erwan</span>
-										<small>Online</small>
-									</div>
-							</div>
-							<div className="history">
-								<h4>History</h4>
-								
-									{this.state.friends && this.state.friends.map(friend => {
-										if (friend.user === parseInt(this.props.user.id, 10)){
-											return(
-												<div className="right-top" key={friend.id}>
-														{this.state.profiles.filter(item=> item.id === parseInt(friend.friend,10)).map(checked=>{
-															return(
-																<>
-																	<div className="friend" >
-																		<div className="avatar">
-																			<img src={checked.avatar} alt="avatar" />
-																		</div>
-																	</div>
-																	<div className="friendText" onClick={() => this.handler(checked)}>
-																			<span>{checked.username}</span>
-																			<small>Online time ago</small>
-																	</div>
-																</>
-															)
-														})}
-												</div>		
-											)
-										}else return null
-									})}
-							</div>
-							<div className="other-link">
-								<Link className="link" to="#"><small>Sport</small></Link>
-								<Link className="link" to="#"><small>News</small></Link>
-								<Link className="link" to="#"><small>Movies</small></Link>
-								<Link className="link" to="#"><small>Techno</small></Link>
-								<Link className="link" to="#"><small>© WanTech corp&nbsp;{new Date().getFullYear()}</small></Link>
-							</div>
-						</div>
-					</div>
+					<Switch>
+	          <Route exact path='/'>
+	              <Principal styleElement={this.styleElement}/>
+	         	</Route>
+	         	<Route exact path='/messenger'>
+	              <Messenger styleElement={this.styleElement}/>
+	         	</Route>
+	        </Switch>
 				</div>
 			</div>
 		)

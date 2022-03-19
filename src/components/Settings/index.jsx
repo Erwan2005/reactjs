@@ -71,7 +71,7 @@ export class index extends React.Component {
 				<div className="navigations">
 					<ul>
 						<li>
-							<Link to={'/Home'} className="link">
+							<Link to={'/'} className="link">
 								<div className="ahref">
 									<span className="icon"><Home /></span>
 									<span className="title"> WanWork</span>
@@ -125,7 +125,7 @@ export class index extends React.Component {
 		          				return(
 		          					<div className="badge">
 													<Person/>
-													<span>{events.friendRequests}</span>
+													{events.friendRequests ? <span>{events.friendRequests}</span> : null}
 												</div>
 		          				)
 		          			}}

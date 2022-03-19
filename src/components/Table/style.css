@@ -1,0 +1,27 @@
+.table{
+	background: var(--background);
+	border: none;
+	box-shadow: none;
+	color: var(--text-primary);
+}
+.table table tr:last-child{
+	border-bottom: none;
+}
+
+.table div{
+	display: flex;
+	gap: 5px;
+	align-items: center;
+}
+
+.table img{
+
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.table span:hover{
+	cursor: pointer;
+}

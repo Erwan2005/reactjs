@@ -1,6 +1,6 @@
 import React from 'react'
-import { withRouter } from "react-router";
-import { FavoriteBorder,Favorite,AddShoppingCart,Remove,Add } from "@material-ui/icons";
+import { withRouter,Link } from "react-router-dom";
+import { FavoriteBorder,Favorite,AddShoppingCart,Remove,Add,ArrowLeft } from "@material-ui/icons";
 import { publicRequest,userRequest } from '../../../requestMethods';
 import { connect } from "react-redux";
 import { addProduct } from "../../../context/cartRedux";
@@ -70,7 +70,11 @@ export class index extends React.Component {
 					</div>
 				</div>
 				<div className="card-right">
+					<Link exact to='/shop' className="link">
+						<span className="return">&#8592;</span>
+					</Link>
 					<div className="cardHeader">
+
 						<small className="categories">Home/woman/hair</small>
 							{this.state.user && this.state.user.map(profile =>{
 								if(this.state.product.seller === profile.id){

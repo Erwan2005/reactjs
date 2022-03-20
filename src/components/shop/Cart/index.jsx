@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { publicRequest,userRequest } from '../../../requestMethods';
 import axios from 'axios'
 import visa from './visa.png'
@@ -34,7 +35,9 @@ export class index extends React.Component {
 			<div className="cart">
 				<div className="details">
 					<div className="cardHeader">
-					<h2>Products in your cart</h2>
+					<Link exact to='/shop' className="link">
+						<h2>&#8592;</h2>
+					</Link>
 					<span className="btn">Clear all</span>
 					</div>
 					<table>

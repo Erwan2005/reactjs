@@ -51,7 +51,6 @@ export class index extends React.Component {
       reader.readAsDataURL(e.target.files[0])
       const file = e.target.files[0];
       const resizer = await this.resizeFile(file)
-      console.log(resizer)
       this.setState({image:resizer})
     };
 

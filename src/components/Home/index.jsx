@@ -8,6 +8,7 @@ import { publicRequest,userRequest } from '../../requestMethods';
 import	Principal from '../Principal'
 import Profile from '../Profile'
 import Messenger from '../Messenger'
+import Shop from '../shop/Drawer';
 import { useQuery } from "react-query";
 import _ from 'lodash';
 import './style.css'
@@ -142,7 +143,7 @@ export class index extends React.Component {
 							</div>
 						</li>
 						<li>
-							<Link exact to={'/shop'} className="link">
+							<Link to={'/shop'} className="link">
 								<div className="ahref">
 									<span className="icon"><LocalMall /></span>
 									<span className="title"> Shop</span>
@@ -181,6 +182,9 @@ export class index extends React.Component {
 	         	</Route>
 	         	<Route exact path='/messenger'>
 	              <Messenger styleElement={this.styleElement}/>
+	         	</Route>
+	         	<Route path='/shop'>
+	              <Shop styleElement={this.styleElement}/>
 	         	</Route>
 	        </Switch>
 				</div>

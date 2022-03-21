@@ -8,6 +8,7 @@ import { publicRequest,userRequest } from '../../requestMethods';
 import	Principal from '../Principal'
 import Profile from '../Profile'
 import Messenger from '../Messenger'
+import Setting from '../Settings'
 import Shop from '../shop/Drawer';
 import { useQuery } from "react-query";
 import _ from 'lodash';
@@ -165,7 +166,7 @@ export class index extends React.Component {
 							</div>
 						</li>
 						<li>
-							<Link to={'/settings'} className="link">
+							<Link to={'/setting'} className="link">
 								<div className="ahref">
 									<span className="icon"><Settings /></span>
 									<span className="title"> Settings</span>
@@ -185,6 +186,12 @@ export class index extends React.Component {
 	         	</Route>
 	         	<Route path='/shop'>
 	              <Shop styleElement={this.styleElement}/>
+	         	</Route>
+	         	<Route path='/profile/:id'>
+	              <Profile styleElement={this.styleElement}/>
+	         	</Route>
+	         	<Route path='/setting'>
+	              <Setting styleElement={this.styleElement}/>
 	         	</Route>
 	        </Switch>
 				</div>

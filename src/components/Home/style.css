@@ -12,6 +12,7 @@
 	border-left: 10px solid var(--green);
 	transition: 0.5s;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .navigations ul{

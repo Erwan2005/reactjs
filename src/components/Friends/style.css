@@ -48,7 +48,7 @@
 
 .friends .left .top .search label span{
 	position: absolute;
-	top: -6px;
+	top: 18px;
 	left: 5px;
 	font-size: 1.2em;
 	color: var(--text-primary);
@@ -145,7 +145,7 @@
 	max-height: 100%;
 	display: grid;
     grid-template-columns: repeat(1,1fr);
-    grid-gap: 10px;
+    gap: 10px;
     box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
     color: var(--text-primary);
     border-radius: 15px;

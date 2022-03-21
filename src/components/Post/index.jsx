@@ -228,7 +228,7 @@ export class index extends React.Component {
 		                           <MoreVert/>
 		                        }
 		                        title={
-		                        	<Link className="link" to={`${this.props.match.url}/profile/${pub.proprietary[0].id}`}>
+		                        	<Link className="link" to={`/profile/${pub.proprietary[0].id}`}>
 		                          	<h3>{pub.proprietary[0].username}</h3>
 		                          </Link>
 		                        }

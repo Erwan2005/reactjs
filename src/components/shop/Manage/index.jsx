@@ -51,6 +51,8 @@ export class index extends React.Component {
   				,price:this.state.price,qtystock:this.state.qty,pic1:this.state.images[0],pic2:this.state.images[1] && this.state.images[1]
   				,pic3:this.state.images[2] && this.state.images[2],pic4:this.state.images[3] && this.state.images[3],pic5:this.state.images[4] && this.state.images[4]})
   			.then(({data}) => data)
+  			this.setState({products:this.state.products.concat(data),images:[],name:'',price:'',qty:'',desc:'',img:false})
+
   		}
   	}
 
@@ -69,6 +71,13 @@ export class index extends React.Component {
 	 delProd = async(id)=>{
 	 	let data = await publicRequest.delete(`shop/product/${id}`)
 	  	.then(({data}) => data)
+	  	const new_data = this.state.products.filter(product => {
+	      if(product.id === id) {
+	        return false
+	      }
+	      return true;
+	    })
+	    this.setState({products:new_data})
 	 }
 	componentDidMount(){
 	  	this.getProduct()

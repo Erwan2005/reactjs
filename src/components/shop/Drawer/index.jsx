@@ -48,7 +48,7 @@ export class index extends React.Component {
 							<div className="topbarStyle">
 								<ShoppingCart/>
 							</div>
-							<span>{this.props.quantity}+</span>
+							{this.props.quantity ? <span>{this.props.quantity}</span> : null}
 						</Link>
 						<div className="topbarStyle" onClick={this.openBox}>
 							<img src={this.state.profile.avatar} alt="avatar" />

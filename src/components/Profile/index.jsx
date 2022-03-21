@@ -73,6 +73,7 @@ export class index extends React.Component {
 										
 										<button>Follow</button>
 									</div>
+									<Link to='/' className="link"><div className="return"><span>&#8592;</span></div></Link>
 									<img src={data.img_covert} alt="mur" />
 									<img src={data.avatar} alt="avatar" />
 								</div>

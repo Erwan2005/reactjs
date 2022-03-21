@@ -28,15 +28,18 @@ export class index extends React.Component {
   	inputs = [
 	    {
 	      id: 1,
-	      name: "username",
-	      type: "text",
-	      placeholder: "Username",
+	      name: "email",
+        type: "email",
+        placeholder: "Email...",
+        errorMessage: "Invalid email",
+        label: "Email",
+        required: true,
 	    },
 	    {
 	      id: 2,
 	      name: "password",
 	      type: "password",
-	      placeholder: "Password",
+	      placeholder: "Password...",
 	    },
 	  ];
 
@@ -51,7 +54,7 @@ export class index extends React.Component {
 	  };
 	  login = () =>{
 	   
-	    login(this.props.dispatchs, { username: this.state.values.username, password: this.state.values.password });
+	    login(this.props.dispatchs, { username: this.state.values.email, password: this.state.values.password });
 	  }
 
   	componentDidMount(){

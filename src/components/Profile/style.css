@@ -4,6 +4,7 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
+	padding: 20px;
 }
 
 .profiles .image-to{
@@ -41,6 +42,25 @@
 	gap: 10px;
 	align-items: center;
 	text-transform: capitalize;
+}
+
+.profiles .image-to .return{
+	position: absolute;
+	top: 5px;
+	left: 10px;
+	color: var(--red);
+	font-weight: 500;
+	font-size: 30px;
+	padding: 5px;
+	max-height: 20px;
+	display: flex;
+	align-items: center;
+}
+
+.profiles .image-to .return:hover{
+	background: var(--bgbtn);
+	border-radius: 3px;
+	cursor: pointer;
 }
 
 .profiles .image-to .action div{
@@ -92,6 +112,7 @@
 	border-right: 1px solid var(--bgbtn);
 	padding: 5px;
 	transition: .5s;
+	color: var(--text-primary);
 }
 
 .profiles .details ul li:last-child{
@@ -108,6 +129,7 @@
 	max-height: 100%;
 	flex-grow: 1;
 	overflow-y: auto;
+	color: var(--text-primary);
 }
 
 .profiles .details .link{

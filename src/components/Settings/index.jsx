@@ -53,67 +53,18 @@ export class index extends React.Component {
 		  }
   	};
 
-  	styleElement = () =>{
-		let toggle = document.querySelector('.toggles')
-		let navigation = document.querySelector('.navigations')
-		let main = document.querySelector('.mains')
-
-		navigation.classList.toggle('active')
-		main.classList.toggle('active')
-	}
-
   	componentDidMount(){
 	  	this.getCurrentUser()
 	 };
 	render() {
 		return (
 			<div className="settings">
-				<div className="navigations">
-					<ul>
-						<li>
-							<Link to={'/'} className="link">
-								<div className="ahref">
-									<span className="icon"><Home /></span>
-									<span className="title"> WanWork</span>
-								</div>
-							</Link>
-						</li>
-						<li>
-							<Link to={this.props.match.url} className="link">
-								<div className="ahref">
-									<span className="icon"><People /></span>
-									<span className="title"> Friends</span>
-								</div>
-							</Link>
-						</li>
-						<li>
-							<div className="ahref">
-								<span className="icon"><Person /></span>
-								<span className="title"> Follows</span>
-							</div>
-						</li>
-						<li>
-							<div className="ahref" onClick={this.teste}>
-								<span className="icon"><Info /></span>
-								<span className="title"> Personnal info</span>
-							</div>
-						</li>
-						<li>
-							<Link exact to={`/shop/${this.props.user.id}`} className="link">
-								<div className="ahref">
-									<span className="icon"><Security /></span>
-									<span className="title"> Security & privacy</span>
-								</div>
-							</Link>
-						</li>
-					</ul>
-				</div>
-				<div className="mains">
 					<div className="topbars">
-						<div className="toggles" onClick={this.styleElement}>
+						<div className="toggles" onClick={this.props.styleElement}>
 							<Menu className="themes"/>
 						</div>
 						<div className="main-right">
+							<div className="badge">
 							<div className="topbarStyle">
 								<Query
 										keyName="users"
@@ -123,13 +74,14 @@ export class index extends React.Component {
 		          				if (error) return <h1>Error</h1>;
 		          				const events = data ?? []
 		          				return(
-		          					<div className="badge">
-													<Person/>
-													{events.friendRequests ? <span>{events.friendRequests}</span> : null}
-												</div>
+		          						<>
+														<Person/>
+														{events.friendRequests ? <span>{events.friendRequests}</span> : null}
+													</>
 		          				)
 		          			}}
 									</Query>
+								</div>
 								</div>
 							<div className="topbarStyle">
 								<Notifications/>
@@ -146,7 +98,6 @@ export class index extends React.Component {
 				        <Friends />
 				      </Route>
 				    </Switch>
-					</div>
 				</div>
 			</div>
 		)

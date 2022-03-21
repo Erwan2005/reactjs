@@ -118,22 +118,26 @@ export class index extends React.Component {
 						</label>
 					</div>
 					<div className="main-right">
-						<div className="topbarStyle">
-							<Query
-								keyName="users"
-								fn={() => this.getCurrent()}
-							>
-								{({ data, isLoading, error }) => {
-	          					if (error) return <h1>Error</h1>;
-			          				const events = data ?? []
-			          				return(
-			          					<div className="badge">
-											<Person/>
-											{events.friendRequests ? <span>{events.friendRequests}</span> : null}
-										</div>
-			          				)
-			          			}}
-							</Query>
+						<div className="badge">
+							<div className="topbarStyle">
+								<Query
+									keyName="users"
+									fn={() => this.getCurrent()}
+								>
+									{({ data, isLoading, error }) => {
+		          					if (error) return <h1>Error</h1>;
+				          				const events = data ?? []
+				          				return(
+				          					<>
+															<Person/>
+															
+																{events.friendRequests ? <span>{events.friendRequests}</span> : null}
+															
+														</>
+				          				)
+				          			}}
+								</Query>
+							</div>
 						</div>
 						<div className="topbarStyle">
 							<Notifications/>

@@ -148,7 +148,7 @@ export class index extends React.Component {
 										<TableRow key={product.id}>
 								          	<TableCell className="tableCell">
 								          		<div className="cellWraper">
-								          			<img src={product.pic1} alt="" />
+								          			<img className="product-img" src={product.pic1} alt="" />
 								          		</div>
 								          	</TableCell>
 								          	<TableCell className="tableCell">{product.name}</TableCell>

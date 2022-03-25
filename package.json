@@ -13,6 +13,8 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.23.0",
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "date-fns": "^2.23.0",
     "emoji-picker-react": "^3.4.8",
     "material-ui-image": "^3.3.2",

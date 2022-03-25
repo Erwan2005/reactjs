@@ -4,6 +4,7 @@ import { login } from "../../context/apiCall";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Link,Typography,CircularProgress } from '@material-ui/core';
+import bcrypt from 'bcryptjs' 
 import './style.css'
 
 export class index extends React.Component {
@@ -53,7 +54,6 @@ export class index extends React.Component {
 	    this.props.history.push("/CreatUser");
 	  };
 	  login = () =>{
-	   
 	    login(this.props.dispatchs, { username: this.state.values.email, password: this.state.values.password });
 	  }
 

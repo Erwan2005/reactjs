@@ -1,12 +1,12 @@
 import React from 'react'
 import { Table,TableBody,TableCell,TableContainer
-		,TableHead, TableRow,Paper,TableFooter,TablePagination } from '@material-ui/core';
+		,TableHead, TableRow,TableFooter,TablePagination } from '@material-ui/core';
 
 import './style.css'
 export class index extends React.Component {
 	render() {
 		return (
-			<TableContainer component={Paper} className="table">
+			<TableContainer className="table">
 		      <Table sx={{ minWidth: 650 }} aria-label="simple table">
 		        <TableHead>
 		          <TableRow>

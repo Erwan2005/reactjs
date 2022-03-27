@@ -9,7 +9,6 @@
 	width: 250px;
 	height: 100%;
 	background: var(--green);
-	border-left: 10px solid var(--green);
 	transition: 0.5s;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -61,12 +60,34 @@
 	margin-bottom: 40px;
 }
 
+.navigations ul li:nth-child(1):hover{
+
+	color: var(--white);
+	background: var(--green);
+	cursor: pointer;
+}
+
+.navigations ul li:nth-child(1):hover .ahref{
+
+	color: var(--white);
+}
+
 .navigations ul li .ahref{
 	position: relative;
 	display: block;
 	width: 100%;
 	display: flex;
 	color: var(--white);
+}
+
+.navigations ul li:nth-child(1):hover .ahref::before{
+	content: '';
+	box-shadow: none;
+}
+
+.navigations ul li:nth-child(1):hover .ahref::after{
+	content: '';
+	box-shadow: none;
 }
 
 .navigations ul li:hover .ahref{

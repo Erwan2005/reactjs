@@ -35,7 +35,7 @@ export class index extends React.Component {
 	    private_message:[],
 	    open: false,
 	    checked: false,
-	    theme: '',
+	    theme: ''
 		};
 
 
@@ -44,9 +44,7 @@ export class index extends React.Component {
 
 
   preferedTheme = () =>{
-	  	if (this.defaultDark){
-	  		this.setState({theme: 'dark'})
-	  	}
+	  	
   	}
 
   getMessage = async(id) =>{
@@ -65,14 +63,21 @@ export class index extends React.Component {
 		let toggle = document.querySelector('.toggles')
 		let navigation = document.querySelector('.navigations')
 		let main = document.querySelector('.mains')
-
 		navigation.classList.toggle('active')
 		main.classList.toggle('active')
+	}
+
+	menuActive = () =>{
+		var list = document.querySelectorAll(".active");
+		
 	}
 
   getCurrent = async() =>{
 		let data;
 		await publicRequest.get(`userapp/users/${this.props.user.id}`).then((res) => (data = res.data))
+		if (this.defaultDark){
+	  		this.setState({theme: 'dark'})
+	  }
 		return data;
 	}
 
@@ -102,9 +107,9 @@ export class index extends React.Component {
   }
 
   componentDidMount(){
-	  	this.preferedTheme()
 	  	this.getUser()
     	this.getFriend()
+    	this.getCurrent()
 	 };
 	render() {
 		return (
@@ -119,19 +124,19 @@ export class index extends React.Component {
 								</div>
 							</Link>
 						</li>
-						<li>
+						<li onClick={this.menuActive}> 
 							<div className="ahref">
 								<span className="icon"><People /></span>
 								<span className="title"> Friends</span>
 							</div>
 						</li>
-						<li>
+						<li onClick={this.menuActive}>
 							<div className="ahref">
 								<span className="icon"><List /></span>
 								<span className="title"> Lists</span>
 							</div>
 						</li>
-						<li>
+						<li onClick={this.menuActive}>
 							<div className="ahref">
 								<span className="icon"><Image /></span>
 								<span className="title"> Image Gallery</span>

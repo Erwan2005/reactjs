@@ -43,7 +43,7 @@ export class index extends React.Component {
 	};
 
 	sendRequest = async() =>{
-   await publicRequest.post('http://127.0.0.1:8000/userapp/friendrequest/',
+   await publicRequest.post('userapp/friendrequest/',
     ({sender:this.props.user.id,receiver:this.props.match.params.id})).then(res =>{
       console.log(res)
     })
@@ -87,10 +87,10 @@ export class index extends React.Component {
 									</ul>
 									<div className="info">
 										<Switch>
-							              <Route exact path={this.props.match.url}>
-							                <Info />
-							              </Route>
-							            </Switch>
+							        <Route exact path={this.props.match.url}>
+							          <Info />
+							        </Route>
+							      </Switch>
 									</div>
 								</div>
 							</div>

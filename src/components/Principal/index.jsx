@@ -140,7 +140,7 @@ export class index extends React.Component {
 							</div>
 						</div>
 						<div className="topbarStyle">
-							<Notifications/>
+							<Notifications className="icons" />
 						</div>
 
 						<div className="topbarStyle">
@@ -179,16 +179,18 @@ export class index extends React.Component {
 								<ul className="menu-settings">
 									<li onClick={this.submenuReturn}><ArrowLeft /><span>Settings</span></li>
 									<li>
-										<div className="topbarStyle">
-											<Person/>
-										</div>
-										<span>Personal info</span>
+											<div className="topbarStyle">
+												<Person/>
+											</div>
+											<span>Personal info</span>
 									</li>
 									<li>
-										<div className="topbarStyle">
-											<Lock />
-										</div>
-										<span>Password</span>
+										<Link exact to='/setting/password' className="link">
+											<div className="topbarStyle">
+												<Lock />
+											</div>
+											<span>Password</span>
+										</Link>
 									</li>
 									<li>
 										<div>

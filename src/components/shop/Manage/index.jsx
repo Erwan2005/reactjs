@@ -5,8 +5,10 @@ import { Search } from "@material-ui/icons"
 import { Table,TableBody,TableCell,TableContainer,TableHead,TableRow } from '@material-ui/core';
 import Resizer from "react-image-file-resizer";
 import { publicRequest,userRequest, BASE_URL } from '../../../requestMethods';
+import { toast } from 'react-toastify';
+
 import _ from 'lodash';
-import './style.css'
+import './style.css' 
 export class index extends React.Component {
 	constructor(props){
 	    super(props);
@@ -51,6 +53,7 @@ export class index extends React.Component {
   				,price:this.state.price,qtystock:this.state.qty,pic1:this.state.images[0],pic2:this.state.images[1] && this.state.images[1]
   				,pic3:this.state.images[2] && this.state.images[2],pic4:this.state.images[3] && this.state.images[3],pic5:this.state.images[4] && this.state.images[4]})
   			.then(({data}) => data)
+  			toast.success("Product added succefully !")
   			this.setState({products:this.state.products.concat(data),images:[],name:'',price:'',qty:'',desc:'',img:false})
 
   		}
@@ -81,7 +84,9 @@ export class index extends React.Component {
 	 }
 	componentDidMount(){
 	  	this.getProduct()
+	  	
 	};
+	
 	render() {
 		return (
 			<div className="manage">

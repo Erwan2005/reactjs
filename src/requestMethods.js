@@ -13,8 +13,17 @@ export const publicRequest = axios.create({
   baseURL: BASE_URL,
 });
 
+export const parseRequest = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    "content-type": "multipart/form-data"
+  }
+});
+
 export const userRequest = axios.create({
   baseURL: BASE_URL,
-  headers: { Authorization: `Token ${TOKEN}` },
+  headers: { 
+    Authorization: `Token ${TOKEN}`, 
+  },
 });
 

@@ -3,7 +3,8 @@ import { Card,CardHeader,CardActionArea,
         CardMedia,CardContent,
         CardActions,Collapse,CircularProgress } from '@material-ui/core';
 import { MoreVert,FavoriteBorder,Share,Telegram,PermMedia,Room,EmojiEmotions,Favorite,InsertComment } from '@material-ui/icons';
-import { publicRequest,userRequest, BASE_URL } from '../../requestMethods';
+import { publicRequest,userRequest, BASE_URL,parseRequest } from '../../requestMethods';
+import { toast } from 'react-toastify';
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Link } from 'react-router-dom';
@@ -26,6 +27,7 @@ export class index extends React.Component {
 	            users: [],
 	            current: [],
 	            image: '',
+	            video: null,
 	            liked: false,
 	            like: [],
 	            error: '',
@@ -33,6 +35,7 @@ export class index extends React.Component {
 	            more_exist: true,
 	            end: false,
 	            loading: false,
+	            open:false,
 	        };
 	};
 
@@ -40,19 +43,33 @@ export class index extends React.Component {
 	    this.setState({ [`expanded_${id}`]:  _.isUndefined(this.state[`expanded_${id}`])?true:!this.state[`expanded_${id}`] });
 	};
 
-	imageHandler = async (e) => {
+	handleOpen= (id) => {
+	    this.setState({open: !this.state.open});
+	    console.log(id)
+	};
 
+
+	imageHandler = async (e) => {
+			this.setState({image:'',video:''})
       const reader = new FileReader();
       reader.onload = () =>{
         if(reader.readyState === 2){
-          this.setState({image:reader.result})
+          console.log('File ready')
         }
       }
       reader.readAsDataURL(e.target.files[0])
       const file = e.target.files[0];
-      const resizer = await this.resizeFile(file)
-      this.setState({image:resizer})
+      if(file.size > 20e6){
+      	toast.error("Please upload a file smaller than 20 MB");
+		    return false;
+      }else{
+		    if(file.type.split('/')[0] ==='image'){
+		      const resizer = await this.resizeFile(file)
+		      this.setState({image:resizer})
+	      }if(file.type.split('/')[0] ==='video'){
+	      	this.setState({video:file})}}
     };
+
 
   resizeFile = (file) =>
 	  new Promise((resolve) => {
@@ -122,12 +139,24 @@ export class index extends React.Component {
 
 	  btnShare = async()=>{
 	    let author = parseInt(this.props.user.id, 10)
-	    var contents = {user:author,message: this.state.share,image:this.state.image}
-	    await userRequest.post('userapp/publication/',contents)
-		.then(res=>{
-	      console.log(res)
-	    })
-	    this.setState({share:'',image:''})
+	    var contents = {user:author,message: this.state.share,image:this.state.image && this.state.image}
+	    let data = await userRequest.post('userapp/publication/',contents)
+			.then(({data}) => data)
+			if(this.state.video !==null){
+				const formData = new FormData();
+				formData.append("post",data.id)
+				formData.append(
+	        "video",
+	        this.state.video,
+	        this.state.video.name
+	      );
+				await parseRequest.post('userapp/video/',formData)
+				.then((res) => {
+        console.log(res);
+      })
+			}
+			toast.success('Post is sharing !')
+	    this.setState({share:'',image:'',video:''})
 	  };
 
 	  checkLiked = (userId,postId) =>{
@@ -216,7 +245,7 @@ export class index extends React.Component {
 				        <button onClick={this.btnShare}>Share</button>
 					</div>
 				</div>
-				{this.state.publication && this.state.publication.map((pub) =>{
+				{this.state.publication && this.state.publication.map((pub, index) =>{
 					return(
 						<Card className="card">
 							<CardHeader 
@@ -225,7 +254,15 @@ export class index extends React.Component {
 		                          <img src={BASE_URL+'media/'+pub.proprietary[0].avatar} alt="avatar"/>
 		                        }
 		                        action={
-		                           <MoreVert/>
+		                        		<div className="menu">
+		                        			{pub.proprietary[0].id === this.props.user.id ? <MoreVert onClick={()=>this.handleOpen(pub.id)}/> : null}
+		                        			{this.state.open && 
+		                        				<div className="pop-menu">
+			                        				<span>&#9998;</span>
+			                        				<span>&#x2716;</span>
+			                        			</div>}
+		                        		</div>
+		                           
 		                        }
 		                        title={
 		                        	<Link className="link" to={`/profile/${pub.proprietary[0].id}`}>
@@ -234,7 +271,11 @@ export class index extends React.Component {
 		                        }
 		                        subheader={<small>{format(pub.date)}</small>}
 		                    />
-		                    <img src={pub.image} alt="" />
+		                    {pub.image && <img src={pub.image} alt="" />}
+		                    {pub.movie[0] && (
+		                    	<div><video src={BASE_URL+'media/'+pub.movie[0].video} controls /></div>)}
+
+
 							<CardContent>
 								<h3>{pub.title}</h3>
 								<h5>{pub.message}</h5>

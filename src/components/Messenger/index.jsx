@@ -2,6 +2,7 @@ import React from 'react'
 import { Search,Image,EmojiEmotions,AttachFile,
 				ThumbUp,Telegram,Videocam,Call,MoreVert, 
 				Menu, Notifications} from '@material-ui/icons';
+import { toast } from 'react-toastify';
 import { connect } from "react-redux";
 import ScrollToBottom from 'react-scroll-to-bottom';
 import { CircularProgress } from '@material-ui/core';
@@ -54,7 +55,7 @@ export class index extends React.Component {
       reader.readAsDataURL(e.target.files[0])
       const file = e.target.files[0];
       if (file.size > 3e6) {
-		      window.alert("Please upload a file smaller than 3 MB");
+		      toast.error("Please upload a file smaller than 3 MB");
 		      return false;
 		    }else{
 		      const base64 = await this.convertBase64(file);

@@ -21,6 +21,7 @@ export default function App() {
             { user ? <Home /> : <User />}
           </Route>
         </Switch>
+        <ToastContainer />
       </QueryClientProvider>
     </BrowserRouter>
   );

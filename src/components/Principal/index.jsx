@@ -33,7 +33,7 @@ export class index extends React.Component {
 	}
 	getCurrent = async() =>{
 		let data;
-		await publicRequest.get(`userapp/users/${this.props.user.id}`).then((res) => (data = res.data))
+		await userRequest.get(`userapp/users/${this.props.user.id}`).then((res) => (data = res.data))
 		return data;
 	}
 
@@ -55,7 +55,7 @@ export class index extends React.Component {
 	}
 
 	  getCurrentUser = async() =>{
-	    let data = await publicRequest.get(`userapp/users/${this.props.user.id}/`)
+	    let data = await userRequest.get(`userapp/users/${this.props.user.id}/`)
 	    .then(({data}) => data)
 	    this.setState({profile: data})
 	    if(this.state.profile.theme[0] == ''){
@@ -72,19 +72,19 @@ export class index extends React.Component {
 	  };
 
 	  getProfile = async() =>{
-			let data = await publicRequest.get(`userapp/users/${this.props.match.params.id}`)
+			let data = await userRequest.get(`userapp/users/${this.props.match.params.id}`)
 			.then(({data}) => data)
 			this.setState({profile: data})
 		}
 
 	  getUser = async() =>{
-	    let data = await publicRequest.get('userapp/users/')
+	    let data = await userRequest.get('userapp/users/')
 	    .then(({data}) => data)
 	    this.setState({profiles: data})
 	  };
 
 	  getFriend = async() =>{
-	    let data = await publicRequest.get('userapp/friend/')
+	    let data = await userRequest.get('userapp/friend/')
 	    .then(({data}) => data)
 	    this.setState({friends: data})
 	  };

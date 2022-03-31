@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import ScrollToBottom from 'react-scroll-to-bottom';
 import { CircularProgress } from '@material-ui/core';
 import { Route,Switch,withRouter,Link } from 'react-router-dom';
-import { publicRequest,userRequest } from '../../requestMethods';
+import { publicRequest,userRequest,parseRequest } from '../../requestMethods';
 import _ from 'lodash';
 import './style.css'
 export class index extends React.Component {
@@ -20,9 +20,10 @@ export class index extends React.Component {
 	    messages: [],
 	    chosenEmoji: null,
 	    open: false,
-	    last_message: [],
-	    doc_file: '',
-	    image: '',
+	    last_message: {},
+	    doc_file: null,
+	    image: null,
+	    video: null,
 	    sending: false,
 	    friend:[],
 	    profile: [],
@@ -32,35 +33,17 @@ export class index extends React.Component {
 	}
 
 	getProfile = async() =>{
-		let data = await publicRequest.get('userapp/users/')
+		let data = await userRequest.get('userapp/users/')
 		.then(({data}) => data)
 		this.setState({profile: data})	
 	}
 
 	getCurrent = async() =>{
-		let data = await publicRequest.get(`userapp/users/${this.props.user.id}`)
+		let data = await userRequest.get(`userapp/users/${this.props.user.id}`)
 		.then(({data}) => data)
 		this.setState({currentUser: data})	
 		//console.log(this.state.currentUser.friends)
 	}
-
-	imageHandler = async (e) => {
-
-      const reader = new FileReader();
-      reader.onload = () =>{
-        if(reader.readyState === 2){
-          this.setState({image:reader.result})
-        }
-      }
-      reader.readAsDataURL(e.target.files[0])
-      const file = e.target.files[0];
-      if (file.size > 3e6) {
-		      toast.error("Please upload a file smaller than 3 MB");
-		      return false;
-		    }else{
-		      const base64 = await this.convertBase64(file);
-		      this.setState({image:base64})}
-    };
 
   docHandler = async (e) => {
 
@@ -73,63 +56,75 @@ export class index extends React.Component {
       }
       reader.readAsDataURL(e.target.files[0])
       const file = e.target.files[0];
-      if (file.size > 3e6) {
-		      window.alert("Please upload a file smaller than 3 MB");
+      if (file.size > 20e6) {
+		      toast.error("Please upload a file smaller than 20 MB");
 		      return false;
 		    }else {
-		      const base64 = await this.convertBase64(file);
-		      this.setState({doc_file:base64})}
-  };
-
-  convertBase64 = (file) => {
-      return new Promise((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(file);
-
-        fileReader.onload = () => {
-          resolve(fileReader.result);
-        };
-
-        fileReader.onerror = (error) => {
-          reject(error);
-        };
-      });
+		      if(file.type.split('/')[0] ==='image'){
+		      	this.setState({image:file})
+		      }else if(file.type.split('/')[0] ==='video'){
+		      	this.setState({video: file})
+		      }else{
+		      	this.setState({doc_file:file})
+		      }
+		    }
   };
 
   sendMessage = async() =>{
-  	try{
-  		this.setState({seding: true})
-  		if(this.state.image == '' && this.state.doc_file == ''){
-		  	let data = await publicRequest.post('userapp/message/',{sender:this.props.user.id,receiver:this.state.friend[0],content:this.state.message})
-		  	.then(({data}) => data)
-		  	this.setState({message:'',sending:false})
-		  	this.state.private_message.concat(data)
-		  }else if (this.state.image !== '' && this.state.doc_file == ''){
-		  	let data = await publicRequest.post('userapp/message/',{sender:this.props.user.id,receiver:this.state.friend[0],content:this.state.message,img:this.state.image})
-		  	.then(({data}) => data)
-		  	this.setState({message:'',sending:false, image:''})
-		  	this.state.private_message.concat(data)
-		  }else if (this.state.doc_file !== '' && this.state.image == ''){
-		  	let data = await publicRequest.post('userapp/message/',{sender:this.props.user.id,receiver:this.state.friend[0],content:this.state.message,files:this.state.doc_file})
-		  	.then(({data}) => data)
-		  	this.setState({message:'',sending:false, doc_file:''})
-		  	this.state.private_message.concat(data)
-		  }else{
-		  	let data = await publicRequest.post('userapp/message/',{sender:this.props.user.id,receiver:this.state.friend[0],content:this.state.message,img:this.state.image,files:this.state.doc_file})
-		  	.then(({data}) => data)
-		  	this.setState({message:'',sending:false, image:'', doc_file:''})
-		  	this.state.private_message.concat(data)
-		  }
-
-  	}catch(error){
-    		throw new Error(error);
-    }
+  	if(this.state.video !==null){
+				let formData = new FormData();
+				formData.append("sender",this.props.user.id);
+				formData.append("receiver",this.state.friend[0]);
+				formData.append("content",this.state.message);
+				formData.append(
+	        "video",
+	        this.state.video,
+	        this.state.video.name
+	      );
+				let data = await parseRequest.post('userapp/message/',formData)
+				.then(({data}) => data)
+	      this.setState({message:'',sending:false, image:'', doc_file:'',private_message: this.state.private_message.concat(data)})
+		}else if(this.state.image !==null){
+				let formData = new FormData();
+				formData.append("sender",this.props.user.id);
+				formData.append("receiver",this.state.friend[0]);
+				formData.append("content",this.state.message);
+				formData.append(
+	        "img",
+	        this.state.image,
+	        this.state.image.name
+	      );
+				let data = await parseRequest.post('userapp/message/',formData)
+				.then(({data}) => data)
+	      this.setState({message:'',sending:false, image:'', doc_file:'',private_message: this.state.private_message.concat(data)})
+		}else if(this.state.doc_file !==null){
+				let formData = new FormData();
+				formData.append("sender",this.props.user.id);
+				formData.append("receiver",this.state.friend[0]);
+				formData.append("content",this.state.message);
+				formData.append(
+	        "files",
+	        this.state.doc_file,
+	        this.state.doc_file.name
+	      );
+				let data = await parseRequest.post('userapp/message/',formData)
+				.then(({data}) => data)
+	      this.setState({message:'',sending:false, image:'', doc_file:'',private_message: this.state.private_message.concat(data)})
+		}else{
+			let formData = new FormData();
+				formData.append("sender",this.props.user.id);
+				formData.append("receiver",this.state.friend[0]);
+				formData.append("content",this.state.message);
+				let data = await parseRequest.post('userapp/message/',formData)
+				.then(({data}) => data)
+				this.setState({message:'',sending:false, image:'', doc_file:'',private_message: this.state.private_message.concat(data)})
+		}
   }
 
   getMessage = async(id,username,avatar) =>{
   	this.setState({private_message:[]})
   	this.setState({conversation: true})
-  	let data = await publicRequest.get('userapp/message')
+  	let data = await userRequest.get('userapp/message')
   	.then(({data}) => data)
     this.setState({messages: _.sortBy(data.results, "id")})
     await this.setState({friend: [id,username,avatar]})
@@ -188,6 +183,7 @@ export class index extends React.Component {
 												<div className={(privateMessage.sender === parseInt(this.props.user.id, 10)) ? "owner-message" : "friend-message"}>
 													<h4>{privateMessage.content}</h4>
 													{privateMessage.img ? <img src={privateMessage.img} alt="image" /> : null}
+													{privateMessage.video ? <video src={privateMessage.video} controls /> : null}
 													{privateMessage.files ? <a href={privateMessage.files} download>&#x2913; Files</a> : null}
 													<small>&#10003;</small>
 												</div>
@@ -198,19 +194,9 @@ export class index extends React.Component {
 							</ScrollToBottom>
 							<div className="bottom">
 								<div className="bot-icons">
-									<div className="topbarStyle">
-										<Image onClick={(event) => {
-						                event.preventDefault();
-						                this.refImg.current.click();
-						                }}/>
-									</div>
-									<input type='file' onChange={(e) => {
-							                this.imageHandler(e);
-							              }} ref={this.refImg} style={{display: 'none'}} accept=".png, .jpg, .jpeg"/>
-
 							    <input type='file'  onChange={(e) => {
 							                this.docHandler(e);
-							              }} ref={this.refFl} style={{display: 'none'}} accept=".pdf"/>
+							              }} ref={this.refFl} style={{display: 'none'}}/>
 									<div className="topbarStyle">
 										<AttachFile onClick={(event) => {
 						                event.preventDefault();
@@ -270,7 +256,7 @@ export class index extends React.Component {
 															</div>
 															<div className="friendText" onClick={() => this.getMessage(user.id,user.username,user.avatar)}>
 																<span>{user.username}</span>
-																<small>Last messages</small>
+																<small>{this.state.last_message.content}</small>
 															</div>
 														</div>
 													)

@@ -203,11 +203,6 @@
 }
 
 .postCont .card .cardHeader .menu .pop-menu{
-	position: absolute;
-	top: 25px;
-	right: -5px;
-	background: var(--bgbtn);
-	box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
 	display: flex;
 	gap: 5px;
 	width: 55px;
@@ -218,6 +213,11 @@
 	padding: 5px;
 	font-size: 18px;
 	font-weight: 500;
+	opacity: 0;
+	transition: .5s;
+}
+.postCont .card .cardHeader .menu .pop-menu:hover{
+	opacity: 1;
 }
 
 .postCont .card .cardHeader .menu .pop-menu span:nth-child(1){

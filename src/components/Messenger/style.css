@@ -126,6 +126,7 @@
 
 .messenger .central .left .middle .owner .owner-message{
 	position: relative;
+	max-width: 250px;
 	max-height: 300px;
 	margin-right: 10px;
 	background: var(--grey);
@@ -162,7 +163,13 @@
 
 .messenger .central .left .middle .owner img{
 	width: 100%;
-	height: 150px;
+	height: auto;
+	object-fit: cover;
+}
+
+.messenger .central .left .middle .owner video{
+	width: 100%;
+	height: auto;
 	object-fit: cover;
 }
 
@@ -174,6 +181,7 @@
 }
 
 .messenger .central .left .middle .friend .friend-message{
+	max-width: 250px;
 	max-height: 300px;
 	margin-left: 10px;
 	background: var(--green);
@@ -199,9 +207,15 @@
 
 .messenger .central .left .middle .friend .friend-message img{
 	width: 100%;
-	height: 150px;
+	height: auto;
 	object-fit: cover;
 	border-radius: 0;
+}
+
+.messenger .central .left .middle .friend .friend-message video{
+	width: 100%;
+	height: auto;
+	object-fit: cover;
 }
 
 .messenger .central .left .middle .friend .friend-message small{

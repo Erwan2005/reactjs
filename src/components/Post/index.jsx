@@ -35,7 +35,6 @@ export class index extends React.Component {
 	            more_exist: true,
 	            end: false,
 	            loading: false,
-	            open:false,
 	        };
 	};
 
@@ -43,14 +42,8 @@ export class index extends React.Component {
 	    this.setState({ [`expanded_${id}`]:  _.isUndefined(this.state[`expanded_${id}`])?true:!this.state[`expanded_${id}`] });
 	};
 
-	handleOpen= (id) => {
-	    this.setState({open: !this.state.open});
-	    console.log(id)
-	};
-
-
 	imageHandler = async (e) => {
-			this.setState({image:'',video:''})
+			this.setState({image:'',video:null})
       const reader = new FileReader();
       reader.onload = () =>{
         if(reader.readyState === 2){
@@ -105,23 +98,23 @@ export class index extends React.Component {
 	   
 	  };
 	getLike = async() =>{
-	    let data = await publicRequest.get('userapp/like/')
+	    let data = await userRequest.get('userapp/like/')
 	    .then(({data})=>data)
 	    this.setState({like: data})
 	  };
 
 	getCom = async() =>{
-	  		let data = await publicRequest.get('userapp/comment/')
+	  		let data = await userRequest.get('userapp/comment/')
 	      	.then(({data}) => data)
 	      	this.setState({comments: data})
 	  };
 	getUser = async() =>{
-	    let data = await publicRequest.get('userapp/users/')
+	    let data = await userRequest.get('userapp/users/')
 	    .then(({data}) => data)
 	    this.setState({users: data})
 	  };
-	  getCurrentUser = async() =>{
-	    let data = await publicRequest.get(`userapp/users/${this.props.user.id}/`)
+	getCurrentUser = async() =>{
+	    let data = await userRequest.get(`userapp/users/${this.props.user.id}/`)
 		.then(({data}) => data)
 	    this.setState({current: data})
 	  };
@@ -130,7 +123,7 @@ export class index extends React.Component {
 	    let author = parseInt(this.props.user.id, 10)
 	    let post_connected = parseInt(id_post, 10)
 	    var contents = {content:content,author:author,post_connected:post_connected}
-	    let data = await publicRequest.post('userapp/comment/',contents)
+	    let data = await userRequest.post('userapp/comment/',contents)
 	    .then(({data}) => data)
 	    this.setState({comments: this.state.comments.concat(data)})
 	    this.setState({comment:''})
@@ -156,7 +149,8 @@ export class index extends React.Component {
       })
 			}
 			toast.success('Post is sharing !')
-	    this.setState({share:'',image:'',video:''})
+	    this.setState({share:'',image:'',video:'',publication:this.state.publication.concat(data)})
+
 	  };
 
 	  checkLiked = (userId,postId) =>{
@@ -166,7 +160,7 @@ export class index extends React.Component {
 	  };
 
 	  dlt =async(id)=>{
-	    await publicRequest.delete(`userapp/like/${id}`)
+	    await userRequest.delete(`userapp/like/${id}`)
 	    this.getLike()
 	  };
 
@@ -175,7 +169,7 @@ export class index extends React.Component {
 	  };
 
 	  postLike = async(author,post_connected) =>{
-	    let data = await publicRequest.post('userapp/like/',{author,post_connected})
+	    let data = await userRequest.post('userapp/like/',{author,post_connected})
 	    .then(({data})=>data)
 	    this.setState({like: this.state.like.concat(data)})
 	  };
@@ -255,12 +249,12 @@ export class index extends React.Component {
 		                        }
 		                        action={
 		                        		<div className="menu">
-		                        			{pub.proprietary[0].id === this.props.user.id ? <MoreVert onClick={()=>this.handleOpen(pub.id)}/> : null}
-		                        			{this.state.open && 
-		                        				<div className="pop-menu">
-			                        				<span>&#9998;</span>
+		                        			{pub.proprietary[0].id === this.props.user.id ? (
+																		<div className="pop-menu">
+			                 								<span>&#9998;</span>
 			                        				<span>&#x2716;</span>
-			                        			</div>}
+			                        			</div>
+		                        				) : null}
 		                        		</div>
 		                           
 		                        }

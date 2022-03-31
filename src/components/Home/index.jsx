@@ -48,7 +48,7 @@ export class index extends React.Component {
   	}
 
   getMessage = async(id) =>{
-  	let data = await publicRequest.get('userapp/message/')
+  	let data = await userRequest.get('userapp/message/')
   	.then(({data}) => data)
     this.setState({messages: _.sortBy(data.results, "id")})
     //await this.state.messages.filter(item=> (item.sender === parseInt(id, 10) && item.receiver=== parseInt(this.id, 10)) || (item.receiver === parseInt(id, 10) && item.sender=== parseInt(this.id, 10))).map(checked=>(this.setState({private_message:checked})))
@@ -74,7 +74,7 @@ export class index extends React.Component {
 
   getCurrent = async() =>{
 		let data;
-		await publicRequest.get(`userapp/users/${this.props.user.id}`).then((res) => (data = res.data))
+		await userRequest.get(`userapp/users/${this.props.user.id}`).then((res) => (data = res.data))
 		if (this.defaultDark){
 	  		this.setState({theme: 'dark'})
 	  }
@@ -86,13 +86,13 @@ export class index extends React.Component {
   
 
   getUser = async() =>{
-    let data = await publicRequest.get('userapp/users/')
+    let data = await userRequest.get('userapp/users/')
     .then(({data}) => data)
     this.setState({profiles: data})
   };
 
   getFriend = async() =>{
-    let data = await publicRequest.get('userapp/friend/')
+    let data = await userRequest.get('userapp/friend/')
     .then(({data}) => data)
     this.setState({friends: data})
   };

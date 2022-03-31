@@ -33,12 +33,12 @@ export class index extends React.Component {
 
 	getCurrent = async() =>{
 		let data;
-		await publicRequest.get(`userapp/users/${this.props.user.id}`).then((res) => (data = res.data))
+		await userRequest.get(`userapp/users/${this.props.user.id}`).then((res) => (data = res.data))
 		return data;
 	}
 
 	getCurrentUser = async() =>{
-    let data = await publicRequest.get(`userapp/users/${this.props.user.id}/`)
+    let data = await userRequest.get(`userapp/users/${this.props.user.id}/`)
     .then(({data}) => data)
     this.setState({profile: data})
     if(this.state.profile.theme[0] == ''){

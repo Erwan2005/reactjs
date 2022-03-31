@@ -26,28 +26,28 @@ export class index extends React.Component {
 
 	friends = async() =>{
 		let data
-		await publicRequest.get('userapp/friendrequest/').then(resp => (data=resp.data))
+		await userRequest.get('userapp/friendrequest/').then(resp => (data=resp.data))
 		return data
 	}
 
 	dltRequest = async(id) =>{
-    let data = await publicRequest.delete(`userapp/friendrequest/${id}`)
+    let data = await userRequest.delete(`userapp/friendrequest/${id}`)
     .then(({data}) => data)
   };
 	getFriends = async() =>{
-		await publicRequest.get('userapp/friend/')
+		await userRequest.get('userapp/friend/')
 		.then(resp => {this.setState({friends: resp.data})})
 
-		await publicRequest.get('userapp/users/')
+		await userRequest.get('userapp/users/')
 		.then(resp => {this.setState({profiles: resp.data})})
 
 		console.log(this.state.friends)
 	}
 
 	addFriend = async(friend,id) =>{
-    await publicRequest.post('userapp/friend/',{user:this.props.user.id,friend:friend}).then(resp => (console.log(resp)));
-    await publicRequest.post('userapp/friend/',{user:friend,friend:this.props.user.id}).then(resp => (console.log(resp)));
-    await publicRequest.delete(`userapp/friendrequest/${id}`).then(resp => (console.log(resp)));
+    await userRequest.post('userapp/friend/',{user:this.props.user.id,friend:friend}).then(resp => (console.log(resp)));
+    await userRequest.post('userapp/friend/',{user:friend,friend:this.props.user.id}).then(resp => (console.log(resp)));
+    await userRequest.delete(`userapp/friendrequest/${id}`).then(resp => (console.log(resp)));
   }
 
 	componentDidMount(){

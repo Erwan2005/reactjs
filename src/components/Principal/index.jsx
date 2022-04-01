@@ -6,7 +6,7 @@ import { Home,People,List,Image,PlayCircleOutline,Settings,LocalMall,Forum,
         WbSunny,Menu,Search,Brightness4,Notifications,Mail,Person,ExitToApp,ArrowRight,
         ArrowLeft,Lock,Brightness2 } from '@material-ui/icons';
 import { publicRequest,userRequest } from '../../requestMethods';
-
+import { io } from "socket.io-client";
 import Post from '../Post'
 import './style.css'
 
@@ -16,7 +16,7 @@ function Query(props) {
 export class index extends React.Component {
 	constructor(props){
 		super(props);
-		
+		this.socket = React.createRef();
 		this.state={
 			theme: '',
 			profile:[],
@@ -58,17 +58,6 @@ export class index extends React.Component {
 	    let data = await userRequest.get(`userapp/users/${this.props.user.id}/`)
 	    .then(({data}) => data)
 	    this.setState({profile: data})
-	    if(this.state.profile.theme[0] == ''){
-			  	if (this.defaultDark){
-			  		this.setState({theme: 'dark', checked: true})
-			  	}
-			  }else{
-			  	if(this.state.profile.theme[0] == "dark"){
-				  	this.setState({theme: this.state.profile.theme[0], checked: true})	
-				  }else {
-				  	this.setState({theme: this.state.profile.theme[0], checked: false})
-				  }
-			  }
 	  };
 
 	  getProfile = async() =>{
@@ -99,7 +88,8 @@ export class index extends React.Component {
 	  }
 
 	  componentDidMount(){
-		  	
+		  	this.socket.current = io("ws://wan-socket.herokuapp.com:8900");
+		  	this.socket.current.emit("addUser", this.props.user.id);
 		  	this.getCurrentUser()
 		  	this.getUser()
 	    	this.getFriend()

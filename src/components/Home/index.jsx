@@ -35,17 +35,12 @@ export class index extends React.Component {
 	    private_message:[],
 	    open: false,
 	    checked: false,
-	    theme: ''
+	    theme: '',
+	    onlineUser:[],
 		};
 
 
 	}
-
-
-
-  preferedTheme = () =>{
-	  	
-  	}
 
   getMessage = async(id) =>{
   	let data = await userRequest.get('userapp/message/')

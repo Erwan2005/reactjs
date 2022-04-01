@@ -8,6 +8,7 @@ import ScrollToBottom from 'react-scroll-to-bottom';
 import { CircularProgress } from '@material-ui/core';
 import { Route,Switch,withRouter,Link } from 'react-router-dom';
 import { publicRequest,userRequest,parseRequest } from '../../requestMethods';
+import { io } from "socket.io-client";
 import _ from 'lodash';
 import './style.css'
 export class index extends React.Component {
@@ -15,6 +16,7 @@ export class index extends React.Component {
 		super(props);
 		this.refImg = React.createRef();
 	  this.refFl = React.createRef();
+	  this.socket = React.createRef();
 	  this.state={
 	    message:'',
 	    messages: [],
@@ -27,8 +29,9 @@ export class index extends React.Component {
 	    sending: false,
 	    friend:[],
 	    profile: [],
-	    currentUser: [],
+	    currentUser: {},
 	    conversation: false,
+	    onlineUser:[],
 	  };
 	}
 
@@ -42,7 +45,6 @@ export class index extends React.Component {
 		let data = await userRequest.get(`userapp/users/${this.props.user.id}`)
 		.then(({data}) => data)
 		this.setState({currentUser: data})	
-		//console.log(this.state.currentUser.friends)
 	}
 
   docHandler = async (e) => {
@@ -128,7 +130,7 @@ export class index extends React.Component {
   	.then(({data}) => data)
     this.setState({messages: _.sortBy(data.results, "id")})
     await this.setState({friend: [id,username,avatar]})
-    console.log(this.state.friend)
+    console.log(this.state.onlineUser)
     this.setState({receiver: id})
     //await this.state.messages.filter(item=> (item.sender === parseInt(id, 10) && item.receiver=== parseInt(this.id, 10)) || (item.receiver === parseInt(id, 10) && item.sender=== parseInt(this.id, 10))).map(checked=>(this.setState({private_message:checked})))
     await this.state.messages && this.state.messages.map((item) =>{
@@ -141,6 +143,11 @@ export class index extends React.Component {
 	componentDidMount(){
 	  	this.getProfile()
 	  	this.getCurrent()
+	  	this.socket.current = io("ws://wan-socket.herokuapp.com:8900");
+	  	this.socket.current.emit("addUser", this.props.user.id);
+	    this.socket.current.on("getUsers", (users) => {
+	      this.setState({onlineUser: this.state.currentUser.friends.filter((f)=>users.some((u) => u.userId === f.friend_id))})
+	    });
 	 };
 	render() {
 		return (
@@ -226,18 +233,31 @@ export class index extends React.Component {
 					</div>
 					<div className="right-bar">
 						<div className="right-top">
-							<div className="online">	
-								<div className="friend">
-										<div className="avatar">
-											<img src="https://cdn.pixabay.com/photo/2022/02/14/08/53/woman-7012726_960_720.jpg" alt="" />
-											<span></span>
-										</div>
-								</div>
-								<div className="friendText" onClick={() => this.handler(1)}>
-									<span>Erwan</span>
-									<small>Online</small>
-								</div>
-							</div>
+							{this.state.onlineUser && this.state.onlineUser.map(f=>{
+								return(
+									<>
+										{this.state.profile && this.state.profile.map(p=>{
+											if(f.friend_id === p.id){
+												return(
+													<div className="online">	
+														<div className="friend">
+																<div className="avatar">
+																	<img src={p.avatar} alt="" />
+																	<span></span>
+																</div>
+														</div>
+														<div className="friendText" onClick={() => this.handler(1)}>
+															<span>{p.username}</span>
+															<small>Online</small>
+														</div>
+													</div>
+												)
+											}else return null;
+										})}
+									</>
+								)
+								
+								})}
 						</div>
 						<div className="right-bottom">
 							{this.state.currentUser.friends && this.state.currentUser.friends.map(friend =>{

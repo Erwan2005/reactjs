@@ -1,4 +1,5 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 *{
 	margin: 0;
 	padding: 0;
@@ -32,8 +33,10 @@ code {
   --red: #ff5959;
   --warning: #faa65c;
   --grey: #c2c2c2;
+  --greyscale: #c2c2c2;
   --bgbtn: rgba(0,0,0,0.05);
   --bghover: rgba(0,0,0,0.12);
+  --fontlight: 'Poppins', sans-serif;
 }
 
 [data-theme='dark'] {
@@ -41,9 +44,9 @@ code {
   --text-primary: #f4f4f4;
   --text-secondary: grey;
   --accent: darkred;
+  --grey: #4d4d4d;
   --bgbtn: rgba(255,255,255,0.05);
   --bghover: rgba(255,255,255,0.12);
-  --grey: #4d4d4d;
   --white: #f4f4f4;
 }
 

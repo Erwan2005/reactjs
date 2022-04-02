@@ -143,11 +143,7 @@ export class index extends React.Component {
 	componentDidMount(){
 	  	this.getProfile()
 	  	this.getCurrent()
-	  	this.socket.current = io("ws://wan-socket.herokuapp.com:8900");
-	  	this.socket.current.emit("addUser", this.props.user.id);
-	    this.socket.current.on("getUsers", (users) => {
-	      this.setState({onlineUser: this.state.currentUser.friends.filter((f)=>users.some((u) => u.userId === f.friend_id))})
-	    });
+	  	
 	 };
 	render() {
 		return (
@@ -185,7 +181,7 @@ export class index extends React.Component {
 								{this.state.private_message && this.state.private_message.map(privateMessage=>{
 									return(
 										<div key={privateMessage.id}>
-											<div className={(privateMessage.sender === parseInt(this.props.user.id, 10)) ? "owner" : "friend"}>
+											<div className={(privateMessage.sender === parseInt(this.props.user.id, 10)) ? "owner" : "friend-sm"}>
 												{(privateMessage.sender === parseInt(this.props.user.id, 10)) ? null :<img src={this.state.friend[2]} alt="avatar" className="avatar"/>}
 												<div className={(privateMessage.sender === parseInt(this.props.user.id, 10)) ? "owner-message" : "friend-message"}>
 													<h4>{privateMessage.content}</h4>
@@ -268,7 +264,7 @@ export class index extends React.Component {
 												if(user.id === friend.friend_id){
 													return(
 														<div className="chat" key={friend.id}>	
-															<div className="friend">
+															<div className="friend-sm">
 																	<div className="avatar">
 																		<img src={user.avatar} alt="avatar" />
 																		<span></span>

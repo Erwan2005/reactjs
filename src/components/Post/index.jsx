@@ -35,6 +35,7 @@ export class index extends React.Component {
 	            more_exist: true,
 	            end: false,
 	            loading: false,
+	            sending:false,
 	        };
 	};
 
@@ -131,6 +132,7 @@ export class index extends React.Component {
 	    };
 
 	  btnShare = async()=>{
+	  	this.setState({sending:true})
 	    let author = parseInt(this.props.user.id, 10)
 	    var contents = {user:author,message: this.state.share,image:this.state.image && this.state.image}
 	    let data = await userRequest.post('userapp/publication/',contents)
@@ -149,7 +151,7 @@ export class index extends React.Component {
       })
 			}
 			toast.success('Post is sharing !')
-	    this.setState({share:'',image:'',video:'',publication:this.state.publication.concat(data)})
+	    this.setState({share:'',image:'',video:'',publication:this.state.publication.concat(data),sending:false})
 
 	  };
 
@@ -167,6 +169,19 @@ export class index extends React.Component {
 	  dltLike = (userId,postId)=>{
 	    this.state.like.filter(item=> item.author === userId && item.post_connected === postId).map(cheked=>(this.dlt(cheked.id)))
 	  };
+
+	  postDelete = async(id)=>{
+	  	const new_data = this.state.publication.filter(pub => {
+	      if(pub.id === id) {
+	        return false
+	      }
+	      return true;
+	    })
+	    this.setState({publication:new_data})
+	  	let data = await userRequest.delete(`userapp/publication/${id}/`)
+			.then(({data}) => data)
+	    toast.success('Post deleted')
+	  }
 
 	  postLike = async(author,post_connected) =>{
 	    let data = await userRequest.post('userapp/like/',{author,post_connected})
@@ -236,7 +251,7 @@ export class index extends React.Component {
 				                <span className="shareOptionText">Feellings</span>
 				            </div>
 				        </div>
-				        <button onClick={this.btnShare}>Share</button>
+				        <button onClick={this.btnShare} disabled={this.state.sending}>{ this.state.sending ? <CircularProgress color="white" size="20px"/> : "Share"}</button>
 					</div>
 				</div>
 				{this.state.publication && this.state.publication.map((pub, index) =>{
@@ -252,7 +267,7 @@ export class index extends React.Component {
 		                        			{pub.proprietary[0].id === this.props.user.id ? (
 																		<div className="pop-menu">
 			                 								<span>&#9998;</span>
-			                        				<span>&#x2716;</span>
+			                        				<span onClick={()=> this.postDelete(pub.id)}>&#x2716;</span>
 			                        			</div>
 		                        				) : null}
 		                        		</div>

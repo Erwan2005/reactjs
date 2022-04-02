@@ -34,7 +34,6 @@
 	position: relative;
 	height: 100%;
 	width: 95px;
-	border: 1px solid var(--green);
 	margin-right: 5px;
 	border-radius: 5px;
 	overflow: hidden;
@@ -44,7 +43,6 @@
 	position: relative;
 	height: 100%;
 	width: 95px;
-	border: 1px solid var(--green);
 	margin-right: 5px;
 	border-radius: 5px;
 	overflow: hidden;
@@ -95,7 +93,7 @@
 	height: 125px;
 	background: var(--bgbtn);
 	padding: 5px;
-	border-radius: 5px;
+	border-radius: 10px;
 	margin-bottom: 5px;
 }
 
@@ -182,13 +180,13 @@
 
 .postCont .card{
 	color: var(--text-primary);
-	background: var(--background);
+	background: var(--bgbtn);
 	box-shadow: none;
-	border: 1px solid var(--bgbtn);
+	border-radius: 10px;
 }
 
 .postCont .card .cardHeader{
-	background: var(--background);
+	background: var(--bgbtn);
 	overflow: hidden;
 	text-transform: capitalize;
 

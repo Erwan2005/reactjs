@@ -112,7 +112,7 @@
 }
 
 
-.messenger .central .left .middle .friend{
+.messenger .central .left .middle .friend-sm{
 	justify-content: flex-start;
 	display: flex;
 	margin: 5px 10px;
@@ -126,8 +126,7 @@
 
 .messenger .central .left .middle .owner .owner-message{
 	position: relative;
-	max-width: 250px;
-	max-height: 300px;
+	max-width: 200px;
 	margin-right: 10px;
 	background: var(--grey);
 	border-radius: 10px;
@@ -173,14 +172,14 @@
 	object-fit: cover;
 }
 
-.messenger .central .left .middle .friend .avatar{
+.messenger .central .left .middle .friend-sm .avatar{
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
 	object-fit: cover;
 }
 
-.messenger .central .left .middle .friend .friend-message{
+.messenger .central .left .middle .friend-sm .friend-message{
 	max-width: 250px;
 	max-height: 300px;
 	margin-left: 10px;
@@ -189,7 +188,7 @@
 	position: relative;
 }
 
-.messenger .central .left .middle .friend .friend-message::after{
+.messenger .central .left .middle .friend-sm .friend-message::after{
 	content: '';
 	position: absolute;
 	top: 13px;
@@ -200,25 +199,25 @@
 	transform: translateY(-50%) rotate(45deg);
 }
 
-.messenger .central .left .middle .friend .friend-message h4{
+.messenger .central .left .middle .friend-sm .friend-message h4{
 	padding: 2px 7px;
 	color: var(--white);
 }
 
-.messenger .central .left .middle .friend .friend-message img{
+.messenger .central .left .middle .friend-sm .friend-message img{
 	width: 100%;
 	height: auto;
 	object-fit: cover;
 	border-radius: 0;
 }
 
-.messenger .central .left .middle .friend .friend-message video{
+.messenger .central .left .middle .friend-sm .friend-message video{
 	width: 100%;
 	height: auto;
 	object-fit: cover;
 }
 
-.messenger .central .left .middle .friend .friend-message small{
+.messenger .central .left .middle .friend-sm .friend-message small{
 	font-size: 10px;
 	padding-left: 8px;
 	color: var(--white);
@@ -321,7 +320,7 @@
 
 .messenger .central .right-bar .right-top .online{
 	display: flex;
-	gap: 5px;
+	gap: 10px;
 	align-items: center;
 	max-height: 50px;
 }
@@ -331,7 +330,7 @@
 
 .messenger .central .right-bar .right-bottom .online{
 	display: flex;
-	gap: 5px;
+	gap: 10px;
 	align-items: center;
 	max-height: 50px;
 }
@@ -351,20 +350,20 @@
 	cursor: pointer;
 }
 
-.messenger .central .right-bar .right-bottom .friend{
+.messenger .central .right-bar .right-bottom .friend-sm{
 	width: 50px;
 	height: 50px;
 	position: relative;
 }
 
-.messenger .central .right-bar .right-bottom .friend .avatar img{
+.messenger .central .right-bar .right-bottom .friend-sm .avatar img{
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
 	object-fit: cover;
 }
 
-.messenger .central .right-bar .right-bottom .friend .avatar span{
+.messenger .central .right-bar .right-bottom .friend-sm .avatar span{
 	width: 12px;
 	height: 12px;
 	border-radius: 50%;
@@ -378,10 +377,12 @@
 .messenger .central .right-bar .right-bottom .friendText{
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 }
 
 .messenger .central .right-bar .right-bottom .friendText span{
 	text-transform: capitalize;
+	height: 100%;
 }
 
 @media(max-width: 480px) {
@@ -394,7 +395,7 @@
 	.messenger .bottom{
 		display: grid;
 		grid-template-columns: repeat(1,1fr);
-	    grid-gap: 10px;
+	    gap: 10px;
 	}
 
 	.messenger .bottom textarea{

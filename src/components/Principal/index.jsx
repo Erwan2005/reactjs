@@ -6,6 +6,7 @@ import { Home,People,List,Image,PlayCircleOutline,Settings,LocalMall,Forum,
         WbSunny,Menu,Search,Brightness4,Notifications,Mail,Person,ExitToApp,ArrowRight,
         ArrowLeft,Lock,Brightness2 } from '@material-ui/icons';
 import { publicRequest,userRequest } from '../../requestMethods';
+import BoxMessage from '../Box'
 import { io } from "socket.io-client";
 import Post from '../Post'
 import './style.css'
@@ -29,8 +30,19 @@ export class index extends React.Component {
 	    private_message:[],
 	    open: false,
 	    checked: false,
+	    box:false,
 		};
+		this.handleClose = this.handleClose.bind(this);
 	}
+
+	handleOpen = () =>{
+		this.setState({box:!this.state.box})
+	}
+
+	handleClose=()=>{
+		this.setState({box:!this.state.box})
+	}
+
 	getCurrent = async() =>{
 		let data;
 		await userRequest.get(`userapp/users/${this.props.user.id}`).then((res) => (data = res.data))
@@ -88,8 +100,6 @@ export class index extends React.Component {
 	  }
 
 	  componentDidMount(){
-		  	this.socket.current = io("ws://wan-socket.herokuapp.com:8900");
-		  	this.socket.current.emit("addUser", this.props.user.id);
 		  	this.getCurrentUser()
 		  	this.getUser()
 	    	this.getFriend()
@@ -200,10 +210,46 @@ export class index extends React.Component {
 						<Post />
 					</div>
 					<div className="right-bar">
-						<div className="right-top">top</div>
-						<div className="right-bottom">bottom</div>
+						<div className="right-top">
+							<div className="headers">
+								<span>Friend request</span>
+								<span>See all</span>
+							</div>
+							<div className="corp">
+								<div className="requested">
+									<div className="top">
+										<img src="https://cdn.pixabay.com/photo/2022/02/24/15/17/cat-7032641_960_720.jpg" alt="avatar"/>
+										<div className="text">
+											<span>Erwan</span>
+											<small>11k friends</small>
+										</div>
+									</div>
+									<div className="bottom">
+										<button>Confirm</button>
+										<button>Delete</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="right-bottom">
+							<div className="headers">
+								<span>Online friends</span>
+								<span>See all</span>
+							</div>
+							<div className="corp">
+								<div className="friend" onClick={this.handleOpen}>
+									<div className="avatar">
+										<img src="https://cdn.pixabay.com/photo/2022/02/24/15/17/cat-7032641_960_720.jpg" alt="avatar"/>
+										<span></span>
+									</div>
+									<span>Erwan</span>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
+				{this.state.box &&
+				<BoxMessage handleClose={this.handleClose} />}
 			</div>
 		)
 	}

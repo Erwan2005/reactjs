@@ -17,7 +17,6 @@ export class index extends React.Component {
 		super(props);
 		this.state={
 			friends: [],
-	    current: {},
 	    friend: {},
 	    box:false,
 		};
@@ -32,16 +31,10 @@ export class index extends React.Component {
 		this.setState({box:!this.state.box})
 	}
 
-	getCurrent = async() =>{
-		let data = await userRequest.get(`userapp/users/${this.props.match.params.id}`)
-		.then(({data}) => data)
-		this.setState({profile: data})
-	}
-
 	getFriends = async() =>{
 		
-	let data =	await userRequest.get(`userapp/users/${this.props.match.params.id}`).then(({data}) => data)
-	this.setState({friend: data})
+		let data =	await userRequest.get(`userapp/users/${this.props.match.params.id}`).then(({data}) => data)
+		this.setState({friend: data})
 	}
 	getFriend = async() =>{
 		let data = await userRequest.get('userapp/friend/')
@@ -49,8 +42,8 @@ export class index extends React.Component {
 		this.setState({friends: data})
 	}
 
-	checkFriend = (userId,friendId) =>{
-	    if (this.state.friends.filter(item=> item.user == this.props.user.id && item.friend == this.props.match.params.id).length == 0)
+	checkFriend = (friendId) =>{
+	    if (this.state.friends.filter(item=> item.user === this.props.user.id && item.friend === this.props.match.params.id).length === 0)
 	      return false
 	    else return true
 	};
@@ -63,7 +56,6 @@ export class index extends React.Component {
   };
 
   componentDidMount(){
-		this.getCurrent()
 		this.getFriend()
 		this.getFriends()
 	};
@@ -82,7 +74,9 @@ export class index extends React.Component {
 							<small>11k friends</small>
 						</div>
 						<div className="button">
-							<button>Add friend</button>
+							{this.props.match.params.id === this.props.user.id ? null : (
+								this.checkFriend(parseInt(this.props.match.params.id)) && <button onClick={this.sendRequest}>Add friend</button>
+							)}
 							<button onClick={this.handleOpen}><Email /></button>
 						</div>
 					</div>
@@ -111,7 +105,7 @@ export class index extends React.Component {
 									<span><Person /></span>
 									<div className="txt">
 										<span>Name</span>
-										<small>@Erwan</small>
+										<small>@{this.state.friend.username}</small>
 									</div>
 								</div>
 

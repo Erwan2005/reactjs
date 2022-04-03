@@ -1,0 +1,80 @@
+.friend-suggest{
+	position: relative;
+	width: 100%;
+	height: 250px;
+	background: var(--bgbtn);
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+.friend-suggest .header{
+	width: 100%;
+	height: 40px;
+	padding: 5px 10px;
+}
+
+.friend-suggest .header span{
+	font-family: var(--fontlight);
+	color: var(--text-primary);
+	font-size: 18px;
+}
+
+.friend-suggest .friend-sug{
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	flex-grow: 1;
+	padding: 5px 10px;
+}
+
+.friend-suggest .friend-sug .sug-card{
+	width: 150px;
+	height: 100%;
+	border: 1px solid var(--bgbtn);
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+
+}
+.friend-suggest .friend-sug .sug-card .sug-card-top{
+	width: 100%;
+	height: 55%;
+}
+
+.friend-suggest .friend-sug .sug-card .sug-card-top img{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.friend-suggest .friend-sug .sug-card .sug-card-bottom{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 5px;
+	gap: 2px;
+}
+
+.friend-suggest .friend-sug .sug-card .sug-card-bottom span{
+	font-family: var(--fontlight);
+	color: var(--text-primary);
+	font-size: 15px;
+}
+
+.friend-suggest .friend-sug .sug-card .sug-card-bottom small{
+	font-family: var(--fontlight);
+	color: var(--greyscale);
+	font-size: 12px;
+}
+
+.friend-suggest .friend-sug .sug-card .sug-card-bottom button{
+	width: 70%;
+	height: 30px;
+	background: var(--green);
+	border: none;
+	border-radius: 5px;
+	font-family: var(--fontlight);
+	color: var(--white);
+}

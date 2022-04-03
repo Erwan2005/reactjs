@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Link } from 'react-router-dom';
 import NumericLabel from 'react-pretty-numbers';
+import SuggestFriend from '../FriendSuggest';
 import {format} from 'timeago.js';
 import _ from 'lodash';
 import Resizer from "react-image-file-resizer";
@@ -26,7 +27,7 @@ export class index extends React.Component {
 	            publication: [],
 	            users: [],
 	            current: [],
-	            image: '',
+	            image: null,
 	            video: null,
 	            liked: false,
 	            like: [],
@@ -53,33 +54,15 @@ export class index extends React.Component {
       }
       reader.readAsDataURL(e.target.files[0])
       const file = e.target.files[0];
-      if(file.size > 20e6){
-      	toast.error("Please upload a file smaller than 20 MB");
+      if(file.size > 25e6){
+      	toast.error("Please upload a file smaller than 25 MB");
 		    return false;
       }else{
 		    if(file.type.split('/')[0] ==='image'){
-		      const resizer = await this.resizeFile(file)
-		      this.setState({image:resizer})
+		      this.setState({image:file})
 	      }if(file.type.split('/')[0] ==='video'){
 	      	this.setState({video:file})}}
     };
-
-
-  resizeFile = (file) =>
-	  new Promise((resolve) => {
-	    Resizer.imageFileResizer(
-	      file,
-	      900,
-	      350,
-	      "JPEG",
-	      100,
-	      0,
-	      (uri) => {
-	        resolve(uri);
-	      },
-	      "base64"
-	    );
-	  });
 
     getPub = async() =>{
     	try{
@@ -133,25 +116,27 @@ export class index extends React.Component {
 
 	  btnShare = async()=>{
 	  	this.setState({sending:true})
+	  	const formData = new FormData();
 	    let author = parseInt(this.props.user.id, 10)
-	    var contents = {user:author,message: this.state.share,image:this.state.image && this.state.image}
-	    let data = await userRequest.post('userapp/publication/',contents)
-			.then(({data}) => data)
+	    formData.append("user",author)
+	    formData.append("message",this.state.share)
 			if(this.state.video !==null){
-				const formData = new FormData();
-				formData.append("post",data.id)
 				formData.append(
 	        "video",
 	        this.state.video,
 	        this.state.video.name
 	      );
-				await parseRequest.post('userapp/video/',formData)
-				.then((res) => {
-        console.log(res);
-      })
+			}else if(this.state.image !==null){
+				formData.append(
+	        "image",
+	        this.state.image,
+	        this.state.image.name
+	       );
 			}
+			let data = await parseRequest.post('userapp/publication/',formData)
+			.then(({data}) => data)
 			toast.success('Post is sharing !')
-	    this.setState({share:'',image:'',video:'',publication:this.state.publication.concat(data),sending:false})
+	    this.setState({share:'',image:'',video:'',publication:[data].concat(this.state.publication),sending:false})
 
 	  };
 
@@ -254,6 +239,8 @@ export class index extends React.Component {
 				        <button onClick={this.btnShare} disabled={this.state.sending}>{ this.state.sending ? <CircularProgress color="white" size="20px"/> : "Share"}</button>
 					</div>
 				</div>
+				<SuggestFriend />
+				<SuggestFriend />
 				{this.state.publication && this.state.publication.map((pub, index) =>{
 					return(
 						<Card className="card">
@@ -281,8 +268,8 @@ export class index extends React.Component {
 		                        subheader={<small>{format(pub.date)}</small>}
 		                    />
 		                    {pub.image && <img src={pub.image} alt="" />}
-		                    {pub.movie[0] && (
-		                    	<div><video src={BASE_URL+'media/'+pub.movie[0].video} controls /></div>)}
+		                    {pub.video && (
+		                    	<div><video src={pub.video} controls /></div>)}
 
 
 							<CardContent>

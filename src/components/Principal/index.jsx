@@ -9,6 +9,7 @@ import { publicRequest,userRequest } from '../../requestMethods';
 import BoxMessage from '../Box'
 import { io } from "socket.io-client";
 import Post from '../Post'
+import { toast } from 'react-toastify';
 import './style.css'
 
 function Query(props) {
@@ -21,7 +22,7 @@ export class index extends React.Component {
 		this.state={
 			theme: '',
 			profile:[],
-			friends: [],
+			request: [],
 	    profiles: [],
 	    user: [],
 	    friend:{},
@@ -84,10 +85,10 @@ export class index extends React.Component {
 	    this.setState({profiles: data})
 	  };
 
-	  getFriend = async() =>{
-	    let data = await userRequest.get('userapp/friend/')
+	  getRequest = async() =>{
+	    let data = await userRequest.get('userapp/friendrequest/')
 	    .then(({data}) => data)
-	    this.setState({friends: data})
+	    this.setState({request: data})
 	  };
 
 	  logout = () => {
@@ -99,10 +100,38 @@ export class index extends React.Component {
 	  	this.setState({open: !this.state.open})
 	  }
 
-	  componentDidMount(){
+	dltRequest = async(id) =>{
+		let new_data = this.state.request.filter(req => {
+	      if(req.id === id) {
+	        return false
+	      }
+	      return true;
+	    })
+	  this.setState({request:new_data})
+	    
+    let data = await userRequest.delete(`userapp/friendrequest/${id}`)
+    .then(({data}) => data)
+    toast.warning('Request denied')
+  };
+
+  addFriend = async(friend,id) =>{
+  	let new_data = this.state.request.filter(req => {
+	      if(req.id === id) {
+	        return false
+	      }
+	      return true;
+	    })
+	  this.setState({request:new_data})
+    await userRequest.post('userapp/friend/',{user:this.props.user.id,friend:friend}).then(resp => (console.log(resp)));
+    await userRequest.post('userapp/friend/',{user:friend,friend:this.props.user.id}).then(resp => (console.log(resp)));
+    await userRequest.delete(`userapp/friendrequest/${id}`).then(resp => (console.log(resp)));
+    toast.info('Request accepted')
+  }
+
+	componentDidMount(){
 		  	this.getCurrentUser()
 		  	this.getUser()
-	    	this.getFriend()
+	    	this.getRequest()
 	 };
 	render() {
 		return (
@@ -216,19 +245,32 @@ export class index extends React.Component {
 								<span>See all</span>
 							</div>
 							<div className="corp">
-								<div className="requested">
-									<div className="top">
-										<img src="https://cdn.pixabay.com/photo/2022/02/24/15/17/cat-7032641_960_720.jpg" alt="avatar"/>
-										<div className="text">
-											<span>Erwan</span>
-											<small>11k friends</small>
-										</div>
-									</div>
-									<div className="bottom">
-										<button>Confirm</button>
-										<button>Delete</button>
-									</div>
-								</div>
+								{this.state.request && this.state.request.map(req =>{
+									return(
+										<>
+											{this.state.profiles && this.state.profiles.map(profile=>{
+												if(req.sender === profile.id && req.receiver === this.props.user.id){
+													return(
+														<div className="requested">
+															<div className="top">
+																<img src={profile.avatar} alt="avatar"/>
+																<div className="text">
+																	<span>{profile.username}</span>
+																	<small>11k friends</small>
+																</div>
+															</div>
+															<div className="bottom">
+																<button onClick={() => this.addFriend(profile.id,req.id)}>Confirm</button>
+																<button onClick={()=>this.dltRequest(req.id)}>Delete</button>
+															</div>
+														</div>
+													)
+												}else return null
+											})}
+										</>
+									)
+								})}
+								
 							</div>
 						</div>
 						<div className="right-bottom">

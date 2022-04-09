@@ -14,6 +14,7 @@ export class index extends React.Component {
 			quantity: 1,
 			product: [],
 			user: [],
+			image: '',
 		}
 
 	}
@@ -52,6 +53,10 @@ export class index extends React.Component {
 	  .then(({data})=>data)
 	  this.setState({product: data})
 	}
+
+	handleMouseOver =(src) =>{
+		this.setState({image: src})
+	}
 	componentDidMount(){
 		this.getProduct()
 		this.getUser()
@@ -61,12 +66,12 @@ export class index extends React.Component {
 		return (
 			<div className="det-prod">
 				<div className="card-left">
-					<img src={this.state.product.pic1} alt="product" />
+					<img src={this.state.image ? this.state.image : this.state.product.pic1} alt="product" />
 					<div className="pic-bottom">
-						<img src={this.state.product.pic1} alt="product" />
-						<img src={this.state.product.pic2 ? this.state.product.pic2: ""} alt=" " />
-						<img src={this.state.product.pic3 ? this.state.product.pic3: ""} alt=" " />
-						<img src={this.state.product.pic4 ? this.state.product.pic4: ""} alt=" " />
+						<img src={this.state.product.pic1} alt="product" onMouseOver={()=>this.handleMouseOver(this.state.product.pic1)}/>
+						{this.state.product.pic2 && <img src={this.state.product.pic2} alt=" " onMouseOver={()=>this.handleMouseOver(this.state.product.pic2)}/>}
+						{this.state.product.pic3 && <img src={this.state.product.pic3} alt=" " onMouseOver={()=>this.handleMouseOver(this.state.product.pic3)}/>}
+						{this.state.product.pic4 && <img src={this.state.product.pic4} alt=" " onMouseOver={()=>this.handleMouseOver(this.state.product.pic4)}/>}
 					</div>
 				</div>
 				<div className="card-right">

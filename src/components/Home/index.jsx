@@ -10,6 +10,7 @@ import Profile from '../Profile'
 import Messenger from '../Messenger'
 import Setting from '../Settings'
 import Shop from '../shop/Drawer';
+import { io } from "socket.io-client";
 import { useQuery } from "react-query";
 import _ from 'lodash';
 import './style.css'
@@ -37,6 +38,7 @@ export class index extends React.Component {
 	    checked: false,
 	    theme: '',
 	    onlineUser:[],
+	    socket: null,
 		};
 
 
@@ -102,6 +104,7 @@ export class index extends React.Component {
   }
 
   componentDidMount(){
+  		
 	  	this.getUser()
     	this.getFriend()
     	this.getCurrent()

@@ -18,7 +18,6 @@ function Query(props) {
 export class index extends React.Component {
 	constructor(props){
 		super(props);
-		this.socket = React.createRef();
 		this.state={
 			theme: '',
 			profile:[],
@@ -32,6 +31,7 @@ export class index extends React.Component {
 	    open: false,
 	    checked: false,
 	    box:false,
+	    onlineUser: []
 		};
 		this.handleClose = this.handleClose.bind(this);
 	}
@@ -72,12 +72,6 @@ export class index extends React.Component {
 	    .then(({data}) => data)
 	    this.setState({profile: data})
 	  };
-
-	  getProfile = async() =>{
-			let data = await userRequest.get(`userapp/users/${this.props.match.params.id}`)
-			.then(({data}) => data)
-			this.setState({profile: data})
-		}
 
 	  getUser = async() =>{
 	    let data = await userRequest.get('userapp/users/')
@@ -128,10 +122,19 @@ export class index extends React.Component {
     toast.info('Request accepted')
   }
 
+  online = ()=>{
+  	let socket = io("http://localhost:8900");
+  	socket?.emit("addUser", this.props.user.id);
+  	socket.on("getUsers", (users) => {
+	      this.setState({onlineUser:users})
+	    });
+  }
+
 	componentDidMount(){
 		  	this.getCurrentUser()
 		  	this.getUser()
 	    	this.getRequest()
+	    	this.online()
 	 };
 	render() {
 		return (
@@ -159,9 +162,7 @@ export class index extends React.Component {
 				          				return(
 				          					<>
 															<Person/>
-															
 																{events.friendRequests ? <span>{events.friendRequests}</span> : null}
-															
 														</>
 				          				)
 				          			}}

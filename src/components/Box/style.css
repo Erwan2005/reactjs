@@ -79,6 +79,9 @@
 	overflow: hidden;
 	color: var(--text-primary);
 }
+.box-message .box-footer span:hover{
+	cursor: pointer;
+}
 
 .box-message .box-footer textarea{
 	resize: block;

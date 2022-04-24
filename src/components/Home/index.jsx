@@ -1,7 +1,6 @@
 import React from 'react'
-import { Home,People,List,Image,PlayCircleOutline,Settings,LocalMall,Forum,
-        WbSunny,Menu,Search,Brightness4,Notifications,Mail,Person,ExitToApp,ArrowRight,
-        ArrowLeft,Lock,Brightness2 } from '@material-ui/icons';
+import { Home,People,Image,PlayCircleOutline,Settings,LocalMall,Forum,
+        WbSunny } from '@material-ui/icons';
 import { connect } from "react-redux";
 import { Route,Switch,withRouter,Link } from 'react-router-dom';
 import { publicRequest,userRequest } from '../../requestMethods';
@@ -9,6 +8,7 @@ import	Principal from '../Principal'
 import Profile from '../Profile'
 import Messenger from '../Messenger'
 import Setting from '../Settings'
+import Videos from '../Videos'
 import Shop from '../shop/Drawer';
 import { io } from "socket.io-client";
 import { useQuery } from "react-query";
@@ -130,21 +130,17 @@ export class index extends React.Component {
 						</li>
 						<li onClick={this.menuActive}>
 							<div className="ahref">
-								<span className="icon"><List /></span>
-								<span className="title"> Lists</span>
-							</div>
-						</li>
-						<li onClick={this.menuActive}>
-							<div className="ahref">
 								<span className="icon"><Image /></span>
 								<span className="title"> Image Gallery</span>
 							</div>
 						</li>
 						<li>
-							<div className="ahref" onClick={this.teste}>
-								<span className="icon"><PlayCircleOutline /></span>
-								<span className="title"> Videos</span>
-							</div>
+							<Link to={'/videos'} className="link">
+								<div className="ahref" onClick={this.teste}>
+									<span className="icon"><PlayCircleOutline /></span>
+									<span className="title"> Videos</span>
+								</div>
+							</Link>
 						</li>
 						<li>
 							<Link to={'/shop'} className="link">
@@ -195,6 +191,9 @@ export class index extends React.Component {
 	         	</Route>
 	         	<Route path='/setting'>
 	              <Setting styleElement={this.styleElement}/>
+	         	</Route>
+				<Route path='/videos'>
+	              <Videos styleElement={this.styleElement}/>
 	         	</Route>
 	        </Switch>
 				</div>

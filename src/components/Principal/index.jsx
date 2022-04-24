@@ -209,10 +209,12 @@ export class index extends React.Component {
 								<ul className="menu-settings">
 									<li onClick={this.submenuReturn}><ArrowLeft /><span>Settings</span></li>
 									<li>
+										<Link exact to='/setting/personnal' className="link">
 											<div className="topbarStyle">
 												<Person/>
 											</div>
 											<span>Personal info</span>
+										</Link>
 									</li>
 									<li>
 										<Link exact to='/setting/password' className="link">

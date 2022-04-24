@@ -1,10 +1,43 @@
 import React from 'react'
-import { Videocam,Call,Close,AttachFile,EmojiEmotions,ThumbUp } from '@material-ui/icons';
+import { Videocam,Call,Close,AttachFile,
+	EmojiEmotions,ThumbUp,Telegram } from '@material-ui/icons';
+import { toast } from 'react-toastify';
 import './style.css'
 export class index extends React.Component {
 	constructor(props){
 		super(props);
+		this.refFl = React.createRef();
+		this.state={
+			message: '',
+			doc_file: null,
+			image: null,
+			video: null,
+		}
 	}
+
+	docHandler = async (e) => {
+
+		const reader = new FileReader();
+		reader.onload = () =>{
+		  if(reader.readyState === 2){
+			console.log('file readed')
+		  }
+		}
+		reader.readAsDataURL(e.target.files[0])
+		const file = e.target.files[0];
+		if (file.size > 20e6) {
+				toast.error("Please upload a file smaller than 20 MB");
+				return false;
+			  }else {
+				if(file.type.split('/')[0] ==='image'){
+					this.setState({image:file})
+				}else if(file.type.split('/')[0] ==='video'){
+					this.setState({video: file})
+				}else{
+					this.setState({doc_file:file})
+				}
+			  }
+	};
 
 	close = () =>{
 		this.props.handleClose()
@@ -29,10 +62,24 @@ export class index extends React.Component {
 				<div className="box-middle">
 				</div>
 				<div className="box-footer">
-					<span><AttachFile /></span>
+					<span onClick={(event) => {
+						event.preventDefault();
+						this.refFl.current.click();}}><AttachFile /></span>
 					<span><EmojiEmotions /></span>
-					<textarea placeholder="Enter your message ..." />
-					<span><ThumbUp /></span>
+					<textarea placeholder="Enter your message ..." 
+					value = {this.state.message}
+					onChange = {e => this.setState({message:e.target.value})}/>
+					{this.state.message ==='' ?(
+						<span>
+							<ThumbUp />
+						</span>) : (
+						<span>
+							<Telegram />
+						</span>
+					)}
+					<input type='file'  onChange={(e) => {
+					this.docHandler(e);
+					}} ref={this.refFl} style={{display: 'none'}}/>
 				</div>
 			</div>
 		)

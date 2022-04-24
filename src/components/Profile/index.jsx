@@ -32,7 +32,6 @@ export class index extends React.Component {
 	}
 
 	getFriends = async() =>{
-		
 		let data =	await userRequest.get(`userapp/users/${this.props.match.params.id}`).then(({data}) => data)
 		this.setState({friend: data})
 	}

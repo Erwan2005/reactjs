@@ -1,0 +1,191 @@
+.perso-container{
+    width: 100%;
+    height: 100%;
+    position: relative;
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+}
+
+.perso-header{
+    position: relative;
+    width: 95%;
+    height: 300px;
+    background: var(--bgbtn);
+    border-radius: 10px;
+    display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	overflow: hidden;
+}
+
+.perso-header .header-top{
+    width: 100%;
+    height: 70%;
+    position: relative;
+}
+.perso-header .header-top img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.perso-header .header-top > .avatar{
+    position: absolute;
+    left: 30px;
+    bottom: -50px;
+    width: 130px;
+    height: 130px;
+}
+.perso-header .header-top > .avatar .avatar-relative{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    
+}
+.perso-header .header-top > .avatar .avatar-relative img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.perso-header .header-top > .avatar .avatar-relative > span{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    color: var(--text-primary);
+    background: var(--greyscale);
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.perso-header .header-top .mur-badge{
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    color:var(--text-primary);
+    width: 30px;
+    height:30px;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.menu{
+    padding: 5px 10px;
+    color: var(--text-primary);
+    font-family: var(--fontlight);
+}
+
+.menu ul{
+    display: flex;
+}
+
+.menu ul li{
+    list-style: none;
+	display: inline-block;
+	width: 80px;
+	text-align: center;
+	line-height: 20px;	
+	color: var(--text-primary);
+	font-family: var(--fontlight);
+	position: relative;
+}
+
+.perso-footer{
+    width: 95%;
+    display: grid;
+	grid-template-columns: 1fr 2fr;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	gap: 10px;
+}
+
+.perso-footer .footer-left{
+    background: var(--bgbtn);
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    color: var(--text-primary);
+    font-family: var(--fontlight);
+}
+
+.perso-footer .footer-left > .top{
+    width: 100%;
+    line-height: 40px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--bgbtn);
+    font-family: var(--fontlight);
+}
+
+.perso-footer .footer-left > .input-data{
+    width: 100%;
+    padding: 0 10px;
+    display: flex;
+    gap: 2px;
+    align-items: center;
+}
+
+.perso-footer .footer-left > .input-data textarea{
+    flex-grow: 1;
+    height: auto;
+    background: transparent;
+    font-size: smaller;
+    color: var(--text-primary);
+    border: 1px solid var(--bgbtn);
+    font-family: var(--fontlight);
+    padding: 5px;
+}
+
+.perso-footer .footer-left > .input-data textarea:focus{
+	outline: none;
+}
+
+.perso-footer .footer-left > .input-data span{
+    color: var(--text-primary);
+    font-family: var(--fontlight);
+    font-size: large;
+    transform: rotate(105deg);
+    cursor: pointer;
+    padding: 5px;
+}
+
+.perso-footer .footer-left > .input-data span:hover{
+    color: var(--green);
+}
+
+.perso-footer .footer-left > .input-data button{
+    border: none;
+    background: transparent;
+    padding: 5px;
+    color: var(--text-primary);
+    font-family: var(--fontlight);
+    font-size: larger;
+}
+.perso-footer .footer-left > .input-data button:hover{
+    color: var(--green);
+    cursor: pointer;
+}
+.perso-footer .footer-left > .input-data small{
+    flex-grow: 1;
+    color: var(--greyscale);
+}
+
+.perso-footer .footer-right{
+    background: var(--bgbtn);
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    padding: 5px 10px;
+}

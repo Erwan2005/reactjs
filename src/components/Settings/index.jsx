@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { publicRequest,userRequest } from '../../requestMethods';
 import Friends from '../Friends';
 import Password from '../Password';
+import Personal from '../Personal';
 import { useQuery } from "react-query";
 import './style.css'
 
@@ -95,12 +96,15 @@ export class index extends React.Component {
 					</div>
 					<div className="centrals">
 						<Switch>
-				      <Route exact path={this.props.match.url}>
-				        <Friends />
-				      </Route>
-				      <Route exact path={`${this.props.match.url}/password`}>
-	              <Password/>
-	         	</Route>
+				      	<Route exact path={this.props.match.url}>
+				        	<Friends />
+				      	</Route>
+				      	<Route exact path={`${this.props.match.url}/password`}>
+							<Password/>
+						</Route>
+						<Route path={`${this.props.match.url}/personnal`}>
+							<Personal />
+						</Route>
 				    </Switch>
 				</div>
 			</div>

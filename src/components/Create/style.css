@@ -28,10 +28,11 @@
 .create .rights{ 
 	display: grid;
     grid-template-columns: repeat(1,1fr);
-    grid-gap: 5px;
-	background: var(--background);
+    gap: 5px;
+	background: var(--bgbtn);
     box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
     padding: 20px;
+	border-radius: 10px;
    
     
 }

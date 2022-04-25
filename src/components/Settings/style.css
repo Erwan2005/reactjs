@@ -16,4 +16,5 @@
     height: calc(100vh - 80px);
     margin-top: 10px;
     scrollbar-width: none;
+    overflow-y: auto;
 }

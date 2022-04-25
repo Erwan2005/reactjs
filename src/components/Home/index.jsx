@@ -1,12 +1,15 @@
 import React from 'react'
-import { Home,People,Image,PlayCircleOutline,Settings,LocalMall,Forum,
-        WbSunny } from '@material-ui/icons';
+import {
+	Home, People, Image, PlayCircleOutline, Settings, LocalMall, Forum,
+	WbSunny
+} from '@material-ui/icons';
 import { connect } from "react-redux";
-import { Route,Switch,withRouter,Link } from 'react-router-dom';
-import { publicRequest,userRequest } from '../../requestMethods';
-import	Principal from '../Principal'
+import { Route, Switch, withRouter, Link } from 'react-router-dom';
+import { publicRequest, userRequest } from '../../requestMethods';
+import Principal from '../Principal'
 import Profile from '../Profile'
 import Messenger from '../Messenger'
+import Modal from '../Modal'
 import Setting from '../Settings'
 import Videos from '../Videos'
 import Shop from '../shop/Drawer';
@@ -16,47 +19,56 @@ import _ from 'lodash';
 import './style.css'
 
 function Query(props) {
-  return (props.children(useQuery(props.keyName, props.fn, props.options)));
+	return (props.children(useQuery(props.keyName, props.fn, props.options)));
 }
 
 
 export class index extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props);
 		this.defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-		this.state={
+		this.state = {
 			theme: '',
-			profile:[],
+			profile: [],
 			friends: [],
-	    profiles: [],
-	    user: [],
-	    friend:{},
-	    conversation: false,
-	    messages: [],
-	    private_message:[],
-	    open: false,
-	    checked: false,
-	    theme: '',
-	    onlineUser:[],
-	    socket: null,
+			profiles: [],
+			user: [],
+			friend: {},
+			conversation: false,
+			messages: [],
+			private_message: [],
+			open: false,
+			checked: false,
+			theme: '',
+			onlineUser: [],
+			socket: null,
+			modal: false,
 		};
 
-
+		this.handleClose = this.handleClose.bind(this);
+		this.openModal = this.openModal.bind(this);
 	}
 
-  getMessage = async(id) =>{
-  	let data = await userRequest.get('userapp/message/')
-  	.then(({data}) => data)
-    this.setState({messages: _.sortBy(data.results, "id")})
-    //await this.state.messages.filter(item=> (item.sender === parseInt(id, 10) && item.receiver=== parseInt(this.id, 10)) || (item.receiver === parseInt(id, 10) && item.sender=== parseInt(this.id, 10))).map(checked=>(this.setState({private_message:checked})))
-    await this.state.messages && this.state.messages.map((item) =>{
-    	if ((item.sender === parseInt(id, 10) && item.receiver=== parseInt(this.props.user.id, 10)) || (item.receiver === parseInt(id, 10) && item.sender=== parseInt(this.props.user.id, 10))){
-    		this.setState({private_message:this.state.private_message.concat(item)})
-    	}
-    })
-  };
+	openModal = () => {
+		this.setState({ modal: !this.state.modal })
+	}
 
-	styleElement = () =>{
+	handleClose = () => {
+		this.setState({ modal: !this.state.modal })
+	}
+	getMessage = async (id) => {
+		let data = await userRequest.get('userapp/message/')
+			.then(({ data }) => data)
+		this.setState({ messages: _.sortBy(data.results, "id") })
+		//await this.state.messages.filter(item=> (item.sender === parseInt(id, 10) && item.receiver=== parseInt(this.id, 10)) || (item.receiver === parseInt(id, 10) && item.sender=== parseInt(this.id, 10))).map(checked=>(this.setState({private_message:checked})))
+		await this.state.messages && this.state.messages.map((item) => {
+			if ((item.sender === parseInt(id, 10) && item.receiver === parseInt(this.props.user.id, 10)) || (item.receiver === parseInt(id, 10) && item.sender === parseInt(this.props.user.id, 10))) {
+				this.setState({ private_message: this.state.private_message.concat(item) })
+			}
+		})
+	};
+
+	styleElement = () => {
 		let toggle = document.querySelector('.toggles')
 		let navigation = document.querySelector('.navigations')
 		let main = document.querySelector('.mains')
@@ -64,51 +76,51 @@ export class index extends React.Component {
 		main.classList.toggle('active')
 	}
 
-	menuActive = () =>{
+	menuActive = () => {
 		var list = document.querySelectorAll(".active");
-		
+
 	}
 
-  getCurrent = async() =>{
+	getCurrent = async () => {
 		let data;
 		await userRequest.get(`userapp/users/${this.props.user.id}`).then((res) => (data = res.data))
-		if (this.defaultDark){
-	  		this.setState({theme: 'dark'})
-	  }
+		if (this.defaultDark) {
+			this.setState({ theme: 'dark' })
+		}
 		return data;
 	}
 
 
 
-  
 
-  getUser = async() =>{
-    let data = await userRequest.get('userapp/users/')
-    .then(({data}) => data)
-    this.setState({profiles: data})
-  };
 
-  getFriend = async() =>{
-    let data = await userRequest.get('userapp/friend/')
-    .then(({data}) => data)
-    this.setState({friends: data})
-  };
+	getUser = async () => {
+		let data = await userRequest.get('userapp/users/')
+			.then(({ data }) => data)
+		this.setState({ profiles: data })
+	};
 
-  logout = () => {
-    localStorage.clear()
-    window.location.reload(false);
-  };
+	getFriend = async () => {
+		let data = await userRequest.get('userapp/friend/')
+			.then(({ data }) => data)
+		this.setState({ friends: data })
+	};
 
-  openBox = () =>{
-  	this.setState({open: !this.state.open})
-  }
+	logout = () => {
+		localStorage.clear()
+		window.location.reload(false);
+	};
 
-  componentDidMount(){
-  		
-	  	this.getUser()
-    	this.getFriend()
-    	this.getCurrent()
-	 };
+	openBox = () => {
+		this.setState({ open: !this.state.open })
+	}
+
+	componentDidMount() {
+
+		this.getUser()
+		this.getFriend()
+		this.getCurrent()
+	};
 	render() {
 		return (
 			<div className="home" data-theme={this.state.theme}>
@@ -122,7 +134,7 @@ export class index extends React.Component {
 								</div>
 							</Link>
 						</li>
-						<li onClick={this.menuActive}> 
+						<li onClick={this.menuActive}>
 							<div className="ahref">
 								<span className="icon"><People /></span>
 								<span className="title"> Friends</span>
@@ -174,28 +186,29 @@ export class index extends React.Component {
 						</li>
 					</ul>
 				</div>
-
+				{this.state.modal &&
+					<Modal handleClose={this.handleClose} />}
 				<div className="mains">
 					<Switch>
-	          <Route exact path='/'>
-	              <Principal styleElement={this.styleElement}/>
-	         	</Route>
-	         	<Route exact path='/messenger'>
-	              <Messenger styleElement={this.styleElement}/>
-	         	</Route>
-	         	<Route path='/shop'>
-	              <Shop styleElement={this.styleElement}/>
-	         	</Route>
-	         	<Route path='/profile/:id'>
-	              <Profile styleElement={this.styleElement}/>
-	         	</Route>
-	         	<Route path='/setting'>
-	              <Setting styleElement={this.styleElement}/>
-	         	</Route>
-				<Route path='/videos'>
-	              <Videos styleElement={this.styleElement}/>
-	         	</Route>
-	        </Switch>
+						<Route exact path='/'>
+							<Principal styleElement={this.styleElement} openModal={this.openModal}/>
+						</Route>
+						<Route exact path='/messenger'>
+							<Messenger styleElement={this.styleElement} />
+						</Route>
+						<Route path='/shop'>
+							<Shop styleElement={this.styleElement} />
+						</Route>
+						<Route path='/profile/:id'>
+							<Profile styleElement={this.styleElement} />
+						</Route>
+						<Route path='/setting'>
+							<Setting styleElement={this.styleElement} />
+						</Route>
+						<Route path='/videos'>
+							<Videos styleElement={this.styleElement} />
+						</Route>
+					</Switch>
 				</div>
 			</div>
 		)
@@ -203,6 +216,6 @@ export class index extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user.currentUser,
+	user: state.user.currentUser,
 });
-export default connect(mapStateToProps,null)(withRouter(index))
+export default connect(mapStateToProps, null)(withRouter(index))

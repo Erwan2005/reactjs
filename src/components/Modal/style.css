@@ -1,0 +1,53 @@
+.modal > .container{
+	width: 400px;
+	height: 200px;
+	background: var(--white);
+	border-radius: 10px;
+	position: relative;
+	overflow: hidden;
+    font-family: var(--fontlight);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+}
+.modal > .container > span{
+	position: absolute;
+	top: 0;
+	right: 15px;
+	color: var(--greyscale);
+	background: var(--bgbtn);
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	padding: 5px;
+	cursor: pointer;
+}
+
+.modal > .container > .pass{
+    display: flex;
+    flex-direction: row;
+    color:var(--greyscale);
+    align-items: center;
+}
+.modal > .container > .pass input{
+    padding: 5px;
+    border: 1px solid var(--greyscale);
+    flex-grow: 1;
+    color: var(--greyscale)
+    width
+}
+.modal > .container > .pass span{
+    display: inline-block;
+    width: 50%;
+}
+
+.modal > .container > button{
+    width: 20%;
+    height: 40px;
+    border: 1px solid var(--greyscale);
+    background: transparent;
+    color: var(--greyscale);
+    text-transform: uppercase;
+}

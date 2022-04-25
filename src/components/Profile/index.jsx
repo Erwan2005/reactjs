@@ -96,7 +96,7 @@ export class index extends React.Component {
 							</div>
 							<div className="corp">
 								<small>
-									Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
+								{this.state.friend.about_me}
 								</small>
 							</div>
 							<div className="info">
@@ -112,7 +112,7 @@ export class index extends React.Component {
 									<span><Cake /></span>
 									<div className="txt">
 										<span> Date of Birth</span>
-										<small>@Erwan</small>
+										<small>{this.state.friend.birth_date}</small>
 									</div>
 								</div>
 

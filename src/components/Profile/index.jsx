@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { Route,Switch,withRouter,Link } from 'react-router-dom';
 import { publicRequest,userRequest } from '../../requestMethods';
 import { Person,MenuBook,Room,Cake,Favorite,People,Email } from '@material-ui/icons';
-import Info from '../Info'
 import BoxMessage from '../Box'
 import { useQuery } from "react-query";
 import './style.css'

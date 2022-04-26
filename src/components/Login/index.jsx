@@ -77,7 +77,6 @@ export class index extends React.Component {
 		              />
 		            ))}
 		            <button className="btn-login"
-		              onClick={this.login}
 		              disabled={this.props.user.isFetching}
 		                onClick={this.login}>
 		                  {this.props.user.isFetching ? (

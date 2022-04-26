@@ -116,7 +116,6 @@ export class index extends React.Component {
 	}
 
 	componentDidMount() {
-
 		this.getUser()
 		this.getFriend()
 		this.getCurrent()

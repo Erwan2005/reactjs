@@ -12,8 +12,8 @@ import Messenger from '../Messenger'
 import Modal from '../Modal'
 import Setting from '../Settings'
 import Videos from '../Videos'
+import Weather from '../Weather'
 import Shop from '../shop/Drawer';
-import { io } from "socket.io-client";
 import { useQuery } from "react-query";
 import _ from 'lodash';
 import './style.css'
@@ -170,10 +170,12 @@ export class index extends React.Component {
 							</Link>
 						</li>
 						<li>
-							<div className="ahref">
-								<span className="icon"><WbSunny /></span>
-								<span className="title"> Weather</span>
-							</div>
+							<Link exact to={'/weather'} className="link">
+								<div className="ahref">
+									<span className="icon"><WbSunny /></span>
+									<span className="title"> Weather</span>
+								</div>
+							</Link>
 						</li>
 						<li>
 							<Link to={'/setting'} className="link">
@@ -190,7 +192,7 @@ export class index extends React.Component {
 				<div className="mains">
 					<Switch>
 						<Route exact path='/'>
-							<Principal styleElement={this.styleElement} openModal={this.openModal}/>
+							<Principal styleElement={this.styleElement} openModal={this.openModal} />
 						</Route>
 						<Route exact path='/messenger'>
 							<Messenger styleElement={this.styleElement} />
@@ -206,6 +208,9 @@ export class index extends React.Component {
 						</Route>
 						<Route path='/videos'>
 							<Videos styleElement={this.styleElement} />
+						</Route>
+						<Route path='/weather'>
+							<Weather styleElement={this.styleElement} />
 						</Route>
 					</Switch>
 				</div>

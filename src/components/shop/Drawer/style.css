@@ -102,3 +102,34 @@
 	text-align: center;
 	border: 1px solid var(--background);
 }
+
+.prod-search{
+    position: relative;
+    padding: 0 10px;
+}
+
+.prod-search label{
+    position: relative;
+	width: 100%;
+}
+
+.prod-search label input{
+	width: 100%;
+	height: 40px;
+	border-radius: 40px;
+	padding: 5px 20px;
+	padding-left: 35px;
+	font-size: 18px;
+	outline: none;
+	background: transparent;
+	border: 1px solid var(--green);
+	color: var(--text-primary);
+}
+
+.prod-search label span{
+	position: absolute;
+	top: -5px;
+	left: 10px;
+	font-size: 1.2em;
+	color: var(--text-primary);
+}

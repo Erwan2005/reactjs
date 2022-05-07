@@ -8,7 +8,6 @@ import ScrollToBottom from 'react-scroll-to-bottom';
 import { CircularProgress } from '@material-ui/core';
 import { Route,Switch,withRouter,Link } from 'react-router-dom';
 import { publicRequest,userRequest,parseRequest } from '../../requestMethods';
-import { io } from "socket.io-client";
 import _ from 'lodash';
 import './style.css'
 export class index extends React.Component {
@@ -31,7 +30,6 @@ export class index extends React.Component {
 	    profile: [],
 	    currentUser: {},
 	    conversation: false,
-	    onlineUser:[],
 	  };
 	}
 

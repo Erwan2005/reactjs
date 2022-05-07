@@ -49,7 +49,7 @@ export class index extends React.Component {
 	}
 
   getProduct = async() =>{
-		let data = await publicRequest.get(`shop/product/${this.id}`)
+		let data = await userRequest.get(`shop/product/${this.id}`)
 	  .then(({data})=>data)
 	  this.setState({product: data})
 	}

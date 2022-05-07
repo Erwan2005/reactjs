@@ -49,7 +49,7 @@ export class index extends React.Component {
   		if (this.state.name ==='' || this.state.desc ==='' || this.state.price ==='' || this.state.qty ==='' || this.state.images.length === 0){
   			console.log("Something wrong !")
   		}else{
-  			let data = await publicRequest.post('shop/product/',{seller:this.props.user.id,name:this.state.name,desc:this.state.desc
+  			let data = await userRequest.post('shop/product/',{seller:this.props.user.id,name:this.state.name,desc:this.state.desc
   				,price:this.state.price,qtystock:this.state.qty,pic1:this.state.images[0],pic2:this.state.images[1] && this.state.images[1]
   				,pic3:this.state.images[2] && this.state.images[2],pic4:this.state.images[3] && this.state.images[3],pic5:this.state.images[4] && this.state.images[4]})
   			.then(({data}) => data)
@@ -60,9 +60,9 @@ export class index extends React.Component {
   	}
 
   	getProduct = async() =>{
-	  	let data = await publicRequest.get('shop/product')
+	  	let data = await userRequest.get('shop/product')
 	  	.then(({data}) => data)
-	    this.setState({item: _.sortBy(data, "id")})
+	    this.setState({item: _.sortBy(data.results, "id")})
 	    //await this.state.messages.filter(item=> (item.sender === parseInt(id, 10) && item.receiver=== parseInt(this.id, 10)) || (item.receiver === parseInt(id, 10) && item.sender=== parseInt(this.id, 10))).map(checked=>(this.setState({private_message:checked})))
 	    await this.state.item && this.state.item.map((item) =>{
 	    	if (item.seller === this.props.user.id){
@@ -72,7 +72,7 @@ export class index extends React.Component {
 	  };
 
 	 delProd = async(id)=>{
-	 	let data = await publicRequest.delete(`shop/product/${id}`)
+	 	let data = await userRequest.delete(`shop/product/${id}`)
 	  	.then(({data}) => data)
 	  	const new_data = this.state.products.filter(product => {
 	      if(product.id === id) {

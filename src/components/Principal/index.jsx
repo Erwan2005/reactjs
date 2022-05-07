@@ -9,7 +9,6 @@ import {
 } from '@material-ui/icons';
 import { publicRequest, userRequest } from '../../requestMethods';
 import BoxMessage from '../Box'
-import { io } from "socket.io-client";
 import Post from '../Post'
 import { toast } from 'react-toastify';
 import './style.css'
@@ -33,7 +32,8 @@ export class index extends React.Component {
 			open: false,
 			checked: false,
 			box: false,
-			onlineUser: []
+			search: '',
+			results: [],
 		};
 		this.handleClose = this.handleClose.bind(this);
 	}
@@ -123,24 +123,22 @@ export class index extends React.Component {
 		await userRequest.delete(`userapp/friendrequest/${id}`).then(resp => (console.log(resp)));
 		toast.info('Request accepted')
 	}
-
-	online = () => {
-		let socket = io("http://localhost:8900");
-		socket?.emit("addUser", this.props.user.id);
-		socket.on("getUsers", (users) => {
-			this.setState({ onlineUser: users })
-		});
-	}
 	openModal = () => {
 		this.props.openModal()
 		this.setState({ open: !this.state.open })
+	}
+
+	search = async (e) => {
+		this.setState({ search: e.target.value });
+		let data = await userRequest.get(`userapp/publication/?search=${e.target.value}`)
+			.then(({ data }) => data)
+		this.setState({results: data.results})
 	}
 
 	componentDidMount() {
 		this.getCurrentUser()
 		this.getUser()
 		this.getRequest()
-		this.online()
 	};
 	render() {
 		return (
@@ -151,7 +149,9 @@ export class index extends React.Component {
 					</div>
 					<div className="searchs">
 						<label>
-							<input type="text" placeholder="Search ..." />
+							<input type="text" placeholder="Search ..."
+								value={this.state.search}
+								onChange={this.search} />
 							<span><Search /></span>
 						</label>
 					</div>
@@ -243,7 +243,7 @@ export class index extends React.Component {
 				</div>
 				<div className="central">
 					<div className="posts">
-						<Post />
+						<Post search={this.state.search} results={this.state.results}/>
 					</div>
 					<div className="right-bar">
 						<div className="right-top">

@@ -1,0 +1,88 @@
+.weather.container{
+    width: 100%;
+    height: 100vh;
+    
+}
+nav{
+    padding: 10px 2%;
+    justify-content: space-between;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background: var(--background);
+    position: sticky;
+    top: 0;
+    height: 50px;
+}
+.vid-nav{
+    display: flex;
+    align-items: center;
+    color: var(--text-primary);
+}
+.nav-right{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.nav-right img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.weather{
+    width: 100%;
+    height: calc(100vh - 50px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.current{
+    width: 60%;
+    height: 35%;
+    background: var(--bgbtn);
+    border-radius: 10px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    position: relative;
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.current > .right{
+    position: absolute;
+    top: 50px;
+    right: 30px;
+    width: 30%;
+    height: 100%;
+    background: var(--green);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px 10px;
+}
+
+.current small{
+    font-family: var(--fontlight);
+    color: var(--greyscale);
+    font-size: 15px;
+}
+
+.current .city{
+    font-family: var(--fontlight);
+    color: var(--text-primary);
+    font-size: 30px;
+}
+
+.temp{
+    font-family: var(--light);
+    color: var(--text-primary);
+    font-size: 100px;
+    padding-left: 20%;
+}
+
+.current > .right span{
+    font-family: var(--light);
+    font-size: 20px;
+    color: var(--white);
+
+}

@@ -1,11 +1,11 @@
 import React from 'react'
 import { useQuery } from "react-query";
 import { connect } from "react-redux";
+import { CircularProgress } from '@material-ui/core';
 import { Route, Switch, withRouter, Link } from 'react-router-dom';
 import {
-	Home, People, List, Image, PlayCircleOutline, Settings, LocalMall, Forum,
-	WbSunny, Menu, Search, Brightness4, Notifications, Mail, Person, ExitToApp, ArrowRight,
-	ArrowLeft, Lock, Brightness2
+	Settings, Menu, Search, Notifications, Mail, Person, ExitToApp, ArrowRight,
+	ArrowLeft, Lock
 } from '@material-ui/icons';
 import { publicRequest, userRequest } from '../../requestMethods';
 import BoxMessage from '../Box'
@@ -34,6 +34,7 @@ export class index extends React.Component {
 			box: false,
 			search: '',
 			results: [],
+			loading: false,
 		};
 		this.handleClose = this.handleClose.bind(this);
 	}
@@ -129,10 +130,10 @@ export class index extends React.Component {
 	}
 
 	search = async (e) => {
-		this.setState({ search: e.target.value });
+		this.setState({ search: e.target.value, loading: true});
 		let data = await userRequest.get(`userapp/publication/?search=${e.target.value}`)
 			.then(({ data }) => data)
-		this.setState({results: data.results})
+		this.setState({ results: data.results, loading: false })
 	}
 
 	componentDidMount() {
@@ -152,7 +153,9 @@ export class index extends React.Component {
 							<input type="text" placeholder="Search ..."
 								value={this.state.search}
 								onChange={this.search} />
-							<span><Search /></span>
+							<span className='s1'><Search /></span>
+							{this.state.loading &&
+								<span className='s2'><CircularProgress color="gray" size="15px" /></span>}
 						</label>
 					</div>
 					<div className="main-right">
@@ -243,7 +246,7 @@ export class index extends React.Component {
 				</div>
 				<div className="central">
 					<div className="posts">
-						<Post search={this.state.search} results={this.state.results}/>
+						<Post search={this.state.search} results={this.state.results} />
 					</div>
 					<div className="right-bar">
 						<div className="right-top">

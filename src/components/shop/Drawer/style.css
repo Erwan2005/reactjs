@@ -126,10 +126,17 @@
 	color: var(--text-primary);
 }
 
-.prod-search label span{
+.prod-search label .s1{
 	position: absolute;
 	top: -5px;
 	left: 10px;
+	font-size: 1.2em;
+	color: var(--text-primary);
+}
+.prod-search label .s2{
+	position: absolute;
+	top: -5px;
+	right: 10px;
 	font-size: 1.2em;
 	color: var(--text-primary);
 }

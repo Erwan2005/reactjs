@@ -1,4 +1,4 @@
-.friend-suggest{
+.friend-suggest {
 	position: relative;
 	width: 100%;
 	height: 250px;
@@ -8,19 +8,19 @@
 	flex-direction: column;
 }
 
-.friend-suggest .header{
+.friend-suggest .header {
 	width: 100%;
 	height: 40px;
 	padding: 5px 10px;
 }
 
-.friend-suggest .header span{
+.friend-suggest .header span {
 	font-family: var(--fontlight);
 	color: var(--text-primary);
 	font-size: 18px;
 }
 
-.friend-suggest .friend-sug{
+.friend-suggest .friend-sug {
 	display: flex;
 	gap: 10px;
 	align-items: center;
@@ -28,7 +28,7 @@
 	padding: 5px 10px;
 }
 
-.friend-suggest .friend-sug .sug-card{
+.friend-suggest .friend-sug .sug-card {
 	width: 150px;
 	height: 100%;
 	border: 1px solid var(--bgbtn);
@@ -38,18 +38,19 @@
 	overflow: hidden;
 
 }
-.friend-suggest .friend-sug .sug-card .sug-card-top{
+
+.friend-suggest .friend-sug .sug-card .sug-card-top {
 	width: 100%;
 	height: 55%;
 }
 
-.friend-suggest .friend-sug .sug-card .sug-card-top img{
+.friend-suggest .friend-sug .sug-card .sug-card-top img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 }
 
-.friend-suggest .friend-sug .sug-card .sug-card-bottom{
+.friend-suggest .friend-sug .sug-card .sug-card-bottom {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -57,19 +58,19 @@
 	gap: 2px;
 }
 
-.friend-suggest .friend-sug .sug-card .sug-card-bottom span{
+.friend-suggest .friend-sug .sug-card .sug-card-bottom span {
 	font-family: var(--fontlight);
 	color: var(--text-primary);
 	font-size: 15px;
 }
 
-.friend-suggest .friend-sug .sug-card .sug-card-bottom small{
+.friend-suggest .friend-sug .sug-card .sug-card-bottom small {
 	font-family: var(--fontlight);
 	color: var(--greyscale);
 	font-size: 12px;
 }
 
-.friend-suggest .friend-sug .sug-card .sug-card-bottom button{
+.friend-suggest .friend-sug .sug-card .sug-card-bottom button {
 	width: 70%;
 	height: 30px;
 	background: var(--green);
@@ -77,4 +78,52 @@
 	border-radius: 5px;
 	font-family: var(--fontlight);
 	color: var(--white);
+}
+
+@media(max-width: 991px) {
+	.friend-suggest {
+		height: 150px;
+	}
+
+	.friend-suggest .header {
+		height: 20px;
+		padding: 3px 5px;
+	}
+
+	.friend-suggest .friend-sug {
+		display: flex;
+		gap: 3px;
+		align-items: center;
+		flex-grow: 1;
+		padding: 3px 5px;
+	}
+
+	.friend-suggest .header span {
+		font-size: 12px;
+	}
+
+	.friend-suggest .friend-sug .sug-card {
+		width: 85px;
+	}
+
+	.friend-suggest .friend-sug .sug-card .sug-card-bottom {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding-top: 2px;
+		gap: 1px;
+	}
+
+	.friend-suggest .friend-sug .sug-card .sug-card-bottom span {
+		font-size: 12px;
+	}
+
+	.friend-suggest .friend-sug .sug-card .sug-card-bottom small {
+		font-size: 8px;
+	}
+
+	.friend-suggest .friend-sug .sug-card .sug-card-bottom button {
+		height: 18px;
+		font-size: 12px;
+	}
 }

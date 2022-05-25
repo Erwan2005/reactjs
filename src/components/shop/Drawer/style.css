@@ -1,142 +1,70 @@
-.shop{
+.shop-container {
 	width: 100%;
 	height: 100%;
 	position: relative;
 }
 
-.shop .topbar{
-	position: relative;
-	width: 100%;
-	height: 60px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 0 10px;
-	border-bottom: 1px solid var(--bgbtn);
-}
-
-.shop .topbar .wrapper{
+.shop-container .shop-menu {
 	position: absolute;
-	top: 65px;
-	right: 15px;
-	display: flex;
-	width: 250px;
-	overflow: hidden;
-	border-radius: 5px;
-	background: var(--grey);
-	z-index: 1;
-	color: var(--text-primary);
-	transition: all 0.3s ease;
-
-}
-
-.shop .topbar .wrapper ul{
-	list-style: none;
-	width: 100%;
-	padding: 10px;
-	transition: all 0.3s ease;
-}
-.shop .topbar .wrapper ul li{
-	line-height: 50px;
-	display: flex;
-	border-radius: 5px;
-	align-items: center;
-	font-size: 18px;
-	text-transform: capitalize;
-	transition: 0.5s;
-}
-
-
-.shop .topbar .wrapper ul li .link{
-	text-decoration: none;
-	display: flex;
-	align-items: center;
-	color: var(--text-primary);
-}
-
-.shop .topbar .wrapper ul li:nth-child(1){
-	border-bottom: 1px solid var(--bgbtn);
-}
-
-.shop .topbar .wrapper ul li span{
-	margin-left: 10px;
-}
-
-.shop .topbar .wrapper ul li:nth-child(1):hover{
-	background: transparent;
-	cursor: default;
-}
-.shop .topbar .wrapper ul li:hover{
-	background: var(--bgbtn);
-	cursor: pointer;
-}
-
-.shop .toggle{
-	position: relative;
+	right: 0;
 	top: 0;
-	width: 60px;
-	height: 60px;
+	width: 25%;
+	min-height: 50px;
+	max-height: 50px;
+	border: 1px solid var(--green);
+	background: var(--background);
+	border-radius: 5px;
 	display: flex;
-	justify-content: center;
 	align-items: center;
-	font-size: 2.5rem;
-	cursor: pointer;
-	color: var(--text-primary);
+	justify-content: space-between;
+	gap: 10px;
+	padding: 5px 5px;
+	z-index: 1;
 }
 
-.cart-badge{
+.shop-container .shop-menu .label-menu {
 	position: relative;
 }
 
-.cart-badge span{
-	width: 20px;
-	height: 20px;
-	border-radius: 50%;
-	background-color: var(--red);
+.shop-container .shop-menu .label-menu .dropdown {
 	position: absolute;
-	top: 1px;
-	right: 1px;
-	color: var(--white);
-	font-size: 13px;
-	font-weight: 500;
-	text-align: center;
-	border: 1px solid var(--background);
+	right: 45px;
+	top: -10px;
+	cursor:default;
+	transition: all 0.5s ease-in;
+}
+.shop-container .shop-menu .label-menu .dropdown .menu-list{
+	position: relative;
+	width: 200px;
+	height: 125px;
+	background: var(--grey);
+	border-radius: 5px;
+	box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.4);
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 10px 10px;
 }
 
-.prod-search{
-    position: relative;
-    padding: 0 10px;
+.shop-container .shop-menu .label-menu .dropdown .menu-list::after{
+	position: absolute;
+	right: -7px;
+	top: 14px;
+	content: '';
+	width: 15px;
+	height: 15px;
+	background: var(--grey);
+	transform: rotate(45deg);
 }
 
-.prod-search label{
-    position: relative;
-	width: 100%;
-}
-
-.prod-search label input{
-	width: 100%;
-	height: 40px;
-	border-radius: 40px;
-	padding: 5px 20px;
-	padding-left: 35px;
-	font-size: 18px;
-	outline: none;
-	background: transparent;
-	border: 1px solid var(--green);
+.shop-container .shop-menu .label-menu .dropdown .menu-list .icon-text{
+	font-size: 15px;
+	font-family: var(--fontlight);
 	color: var(--text-primary);
 }
 
-.prod-search label .s1{
-	position: absolute;
-	top: -5px;
-	left: 10px;
-	font-size: 1.2em;
-	color: var(--text-primary);
-}
-.prod-search label .s2{
-	position: absolute;
-	top: -5px;
-	right: 10px;
-	font-size: 1.2em;
-	color: var(--text-primary);
+@media(max-width: 720px) {
+	.shop-container .shop-menu {
+		width: 100%;
+	}
 }

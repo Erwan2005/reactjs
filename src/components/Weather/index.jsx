@@ -64,13 +64,6 @@ export class index extends Component {
   render() {
     return (
       <div className='weather-container'>
-        <nav className='vid-nav'>
-          <Menu className='vid-nav' onClick={this.props.styleElement} style={{ cursor: 'pointer' }} />
-          <div className='nav-right'>
-            <Notifications className='vid-nav' style={{ cursor: 'pointer' }} />
-            <img src='https://cdn.pixabay.com/photo/2021/08/31/11/59/androgynous-6588615_960_720.jpg' />
-          </div>
-        </nav>
         <div className='weather'>
           <div className='current'>
             <small>{moment().format('dddd')}, {moment().format('LL')}</small>

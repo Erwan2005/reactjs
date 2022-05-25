@@ -1,149 +1,36 @@
-import React from 'react'
+import React, { Component } from 'react'
 import {
-	Card, CardHeader, CardActionArea,
-	CardMedia, CardContent,
+	Card, CardHeader, CardContent,
 	CardActions, Collapse, CircularProgress
-} from '@material-ui/core';
-import { MoreVert, FavoriteBorder, Share, Telegram, PermMedia, Room, EmojiEmotions, Favorite, InsertComment } from '@material-ui/icons';
-import { publicRequest, userRequest, BASE_URL, parseRequest } from '../../requestMethods';
-import { toast } from 'react-toastify';
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { Link } from 'react-router-dom';
+} from '@material-ui/core'
+import { connect } from "react-redux"
+import { withRouter } from "react-router"
 import NumericLabel from 'react-pretty-numbers';
-import SuggestFriend from '../FriendSuggest';
 import { format } from 'timeago.js';
 import _ from 'lodash';
-import Resizer from "react-image-file-resizer";
+import { userRequest } from '../../requestMethods'
+import User from '../../assets/user.jpg'
 import './style.css'
-export class index extends React.Component {
+import { ThreeSixtyTwoTone } from '@material-ui/icons';
+export class index extends Component {
 	constructor(props) {
 		super(props);
-		this.refImg = React.createRef();
 		this.state = {
-			expanded: false,
-			anchorElP: '',
-			comment: '',
-			share: '',
-			comments: [],
-			publication: [],
-			users: [],
-			current: [],
-			image: null,
-			video: null,
-			liked: false,
 			like: [],
-			error: '',
-			page: 1,
-			more_exist: true,
-			end: false,
-			loading: false,
-			sending: false,
-		};
-	};
-
+			expanded: false,
+			comment: '',
+			comments: [],
+		}
+		this.handleSearch = this.handleSearch.bind(this)
+	}
 	handleExpandClick = (id) => {
 		this.setState({ [`expanded_${id}`]: _.isUndefined(this.state[`expanded_${id}`]) ? true : !this.state[`expanded_${id}`] });
-	};
-
-	imageHandler = async (e) => {
-		this.setState({ image: '', video: null })
-		const reader = new FileReader();
-		reader.onload = () => {
-			if (reader.readyState === 2) {
-				console.log('File ready')
-			}
-		}
-		reader.readAsDataURL(e.target.files[0])
-		const file = e.target.files[0];
-		if (file.size > 25e6) {
-			toast.error("Please upload a file smaller than 25 MB");
-			return false;
-		} else {
-			if (file.type.split('/')[0] === 'image') {
-				this.setState({ image: file })
-			} if (file.type.split('/')[0] === 'video') {
-				this.setState({ video: file })
-			}
-		}
-	};
-
-	getPub = async () => {
-		try {
-			this.setState({ loading: true })
-			let data = await userRequest.get(`userapp/publication/?page=${this.state.page}`)
-				.then(({ data }) => data)
-			this.setState({ publication: this.state.publication.concat(data.results), loading: false })
-			if (data.next) {
-				this.setState({ page: this.state.page + 1 })
-			} else {
-				this.setState({ more_exist: false, end: true })
-			}
-
-		} catch (error) {
-			throw new Error(error);
-		}
-
 	};
 	getLike = async () => {
 		let data = await userRequest.get('userapp/like/')
 			.then(({ data }) => data)
 		this.setState({ like: data })
 	};
-
-	getCom = async () => {
-		let data = await userRequest.get('userapp/comment/')
-			.then(({ data }) => data)
-		this.setState({ comments: data })
-	};
-	getUser = async () => {
-		let data = await userRequest.get('userapp/users/')
-			.then(({ data }) => data)
-		this.setState({ users: data })
-	};
-	getCurrentUser = async () => {
-		let data = await userRequest.get(`userapp/users/${this.props.user.id}/`)
-			.then(({ data }) => data)
-		this.setState({ current: data })
-	};
-
-	btnComment = async (content, id_post) => {
-		let author = parseInt(this.props.user.id, 10)
-		let post_connected = parseInt(id_post, 10)
-		var contents = { content: content, author: author, post_connected: post_connected }
-		let data = await userRequest.post('userapp/comment/', contents)
-			.then(({ data }) => data)
-		this.setState({ comments: this.state.comments.concat(data) })
-		this.setState({ comment: '' })
-
-	};
-
-	btnShare = async () => {
-		this.setState({ sending: true })
-		const formData = new FormData();
-		let author = parseInt(this.props.user.id, 10)
-		formData.append("user", author)
-		formData.append("message", this.state.share)
-		if (this.state.video !== null) {
-			formData.append(
-				"video",
-				this.state.video,
-				this.state.video.name
-			);
-		} else if (this.state.image !== null) {
-			formData.append(
-				"image",
-				this.state.image,
-				this.state.image.name
-			);
-		}
-		let data = await parseRequest.post('userapp/publication/', formData)
-			.then(({ data }) => data)
-		toast.success('Post is sharing !')
-		this.setState({ share: '', image: '', video: '', publication: [data].concat(this.state.publication), sending: false })
-
-	};
-
 	checkLiked = (userId, postId) => {
 		if (this.state.like.filter(item => item.author === userId && item.post_connected === postId).length === 0)
 			return false
@@ -159,18 +46,6 @@ export class index extends React.Component {
 		this.state.like.filter(item => item.author === userId && item.post_connected === postId).map(cheked => (this.dlt(cheked.id)))
 	};
 
-	postDelete = async (id) => {
-		const new_data = this.state.publication.filter(pub => {
-			if (pub.id === id) {
-				return false
-			}
-			return true;
-		})
-		this.setState({ publication: new_data })
-		let data = await userRequest.delete(`userapp/publication/${id}/`)
-			.then(({ data }) => data)
-		toast.success('Post deleted')
-	}
 
 	postLike = async (author, post_connected) => {
 		let data = await userRequest.post('userapp/like/', { author, post_connected })
@@ -178,259 +53,107 @@ export class index extends React.Component {
 		this.setState({ like: this.state.like.concat(data) })
 	};
 
-	handleScroll = (e) => {
-		const { offsetHeight, scrollTop, scrollHeight } = e.target;
-
-		if (offsetHeight + scrollTop >= scrollHeight) {
-			if (this.state.more_exist) {
-				this.getPub()
-			}
-		}
-	}
-
-	componentDidMount() {
-		this.getCurrentUser()
-		this.getPub()
-		this.getCom()
-		this.getLike()
-		this.getUser()
+	getCom = async () => {
+		let data = await userRequest.get('userapp/comment/')
+			.then(({ data }) => data)
+		this.setState({ comments: data })
 	};
+
+	btnComment = async (content, id_post) => {
+		let author = parseInt(this.props.user.id, 10)
+		let post_connected = parseInt(id_post, 10)
+		var contents = { content: content, author: author, post_connected: post_connected }
+		let data = await userRequest.post('userapp/comment/', contents)
+			.then(({ data }) => data)
+		this.setState({ comments: [data].concat(this.state.comments) })
+		this.setState({ comment: '' })
+
+	};
+	handleSearch = () => {
+		this.props.handleSearch('publication')
+	}
+	componentDidMount() {
+		this.getLike()
+		this.getCom()
+		this.handleSearch()
+	};
+
 	render() {
 		return (
-			<div className="postCont" onScroll={this.handleScroll}>
-				<div className="stories">
-					<div className="storie-card">
-						<img src={this.state.current.avatar} alt="avatar" />
-						<button><span>&#43;</span></button>
-					</div>
+			<div className='post-container'>
+				{this.props.publication && this.props.publication.map((pub, index) => {
+					return (
+						<Card className="card" key={pub.id}>
+							<CardHeader
+								className="cardHeader"
+								avatar={
+									<img src={pub.proprietary[0].avatar} alt="" />
+								}
+								action={
+									<div className="menu">
 
-					<div className="storie-card-right">
-						<img src="https://cdn.pixabay.com/photo/2022/02/12/13/29/desert-7008952_960_720.jpg" alt="" />
-						<img src="https://cdn.pixabay.com/photo/2021/11/19/04/23/lotus-6808054_960_720.jpg" alt="" />
-					</div>
-				</div>
-				<div className="share-post">
-					<div className="top">
-						<img src={this.state.current.avatar} alt="avatar" />
-						<textarea type="text" placeholder="Type anything ..."
-							value={this.state.share}
-							onChange={e => this.setState({ share: e.target.value })}
-						></textarea>
-					</div>
-					<div className="bottom">
-						<div className="options">
-							<div className="option" onClick={(event) => {
-								event.preventDefault();
-								this.refImg.current.click();
-							}}>
-								<PermMedia htmlColor="tomato" className="shareIcon" />
-								<span className="shareOptionText">Photo / video</span>
-							</div>
-							<input type='file' id='file-img' onChange={(e) => {
-								this.imageHandler(e);
-							}} ref={this.refImg} style={{ display: 'none' }} />
+									</div>
 
-							<div className="option">
-								<Room htmlColor="green" className="shareIcon" />
-								<span className="shareOptionText">Location</span>
-							</div>
-
-							<div className="option">
-								<EmojiEmotions htmlColor="goldenrod" className="shareIcon" />
-								<span className="shareOptionText">Feellings</span>
-							</div>
-						</div>
-						<button onClick={this.btnShare} disabled={this.state.sending}>{this.state.sending ? <CircularProgress color="white" size="20px" /> : "Share"}</button>
-					</div>
-				</div>
-				<SuggestFriend />
-				<SuggestFriend />
-				{this.props.search === '' ? (<>
-					{this.state.publication && this.state.publication.map((pub, index) => {
-						return (
-							<Card className="card">
-								<CardHeader
-									className="cardHeader"
-									avatar={
-										<img src={BASE_URL + 'media/' + pub.proprietary[0].avatar} alt="avatar" />
+								}
+								title={
+									<span><h3>{pub.proprietary[0].username}</h3></span>
+								}
+								subheader={<small>{format(pub.date)}</small>}
+							/>
+							{pub.image && <img src={pub.image} alt="" />}
+							{pub.video && (
+								<div><video src={pub.video} controls /></div>)}
+							<CardContent>
+								<h3>{pub.title}</h3>
+								<h4>{pub.message}</h4>
+							</CardContent>
+							<CardActions className="card-action">
+								<div className="item">
+									{(this.checkLiked(this.props.user.id, pub.id)) ? (
+										<span className='icon' onClick={() => this.dltLike(this.props.user.id, pub.id)}><ion-icon name="heart" /></span>
+									) : (
+										<span className='icon' onClick={() => this.postLike(this.props.user.id, pub.id)}><ion-icon name="heart-outline" /></span>
+									)
 									}
-									action={
-										<div className="menu">
-											{pub.proprietary[0].id === this.props.user.id ? (
-												<div className="pop-menu">
-													<span>&#9998;</span>
-													<span onClick={() => this.postDelete(pub.id)}>&#x2716;</span>
-												</div>
-											) : null}
-										</div>
-
-									}
-									title={
-										<Link className="link" to={`/profile/${pub.proprietary[0].id}`}>
-											<h3>{pub.proprietary[0].username}</h3>
-										</Link>
-									}
-									subheader={<small>{format(pub.date)}</small>}
-								/>
-								{pub.image && <img src={pub.image} alt="" />}
-								{pub.video && (
-									<div><video src={pub.video} controls /></div>)}
-
-
+									<small className='text'><NumericLabel params={{ shortFormat: true, }}>{this.state.like.filter(item => item.post_connected === pub.id).length}</NumericLabel></small>
+								</div>
+								<div className="item">
+									<span className='icon'
+										onClick={() => this.handleExpandClick(pub.id)}
+										aria-expanded={this.state[`expanded_${pub.id}`] || false}><ion-icon name="chatbubble-ellipses-outline" /></span>
+									<small className='text'><NumericLabel params={{ shortFormat: true, }}>{this.state.comments.filter(item => item.post_connected === pub.id).length}</NumericLabel></small>
+									<span className='icon'><ion-icon name="share-social-outline" /></span>
+									<small className='text'>11k</small>
+								</div>
+							</CardActions>
+							<Collapse in={this.state[`expanded_${pub.id}`] || false} timeout="auto" unmountOnExit>
 								<CardContent>
-									<h3>{pub.title}</h3>
-									<h5>{pub.message}</h5>
-								</CardContent>
-								<CardActions className="card-action">
-									<div className="item">
-										{(this.checkLiked(this.state.current.id, pub.id)) ? (
-											<Favorite className="icon" onClick={() => this.dltLike(this.props.user.id, pub.id)} />
-										) : (
-											<FavoriteBorder className="icon" onClick={() => this.postLike(this.props.user.id, pub.id)} />
-										)
-										}
-										<small><NumericLabel params={{ shortFormat: true, }}>{this.state.like.filter(item => item.post_connected === pub.id).length}</NumericLabel></small>
+									<div className='col-head'>
+										<img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' />
+										<input type='text' value={this.state.comment} placeholder="What you thing?" onChange={e => this.setState({ comment: e.target.value })} />
+										<span className='send'
+											onClick={() => this.btnComment(this.state.comment, pub.id)}><ion-icon name="send-outline" /></span>
 									</div>
-									<div className="item">
-										<InsertComment className="icon"
-											onClick={() => this.handleExpandClick(pub.id)}
-											aria-expanded={this.state[`expanded_${pub.id}`] || false} />
-										<small><NumericLabel params={{ shortFormat: true, }}>{this.state.comments.filter(item => item.post_connected === pub.id).length}</NumericLabel></small>
-										<Share className="icon" />
-									</div>
-								</CardActions>
-
-								<Collapse in={this.state[`expanded_${pub.id}`] || false} timeout="auto" unmountOnExit>
-									<CardContent>
-										<div className="col-top">
-											<img src={this.state.current.avatar} alt="avatar" />
-											<label>
-												<input type="text" value={this.state.comment} placeholder="Share your advice ..." onChange={e => this.setState({ comment: e.target.value })} />
-												<span onClick={() => this.btnComment(this.state.comment, pub.id)}><Telegram /></span>
-											</label>
-										</div>
-										<div className="col-top">
-											{this.state.users && this.state.users.map(author => {
+									<div className='col-feet'>
+										{this.state.comments && this.state.comments.map(com => {
+											if (com.post_connected === pub.id) {
 												return (
-													<div key={author.id}>
-														{this.state.comments && this.state.comments.map(post_com => {
-															if (author.id === post_com.author && post_com.post_connected === pub.id) {
-																return (
-																	<div className="comments" key={post_com.id}>
-																		<img src={author.avatar} alt="avatar" />
-																		<small>{post_com.content}</small>
-																	</div>
-																)
-															} else return null
-														})}
+													<div className='comment' key={com.id}>
+														<img src={com.commented[0].avatar ? com.commented[0].avatar : User} alt='' />
+														<div className='text'>
+															<span>{com.content}</span>
+															<small>{format(com.date_posted)}</small>
+														</div>
 													</div>
 												)
-											})}
-										</div>
-									</CardContent>
-								</Collapse>
-							</Card>
-						)
-					})}
-				</>) : (<>
-					{this.props.results && this.props.results.map((pub, index) => {
-						return (
-							<Card className="card">
-								<CardHeader
-									className="cardHeader"
-									avatar={
-										<img src={BASE_URL + 'media/' + pub.proprietary[0].avatar} alt="avatar" />
-									}
-									action={
-										<div className="menu">
-											{pub.proprietary[0].id === this.props.user.id ? (
-												<div className="pop-menu">
-													<span>&#9998;</span>
-													<span onClick={() => this.postDelete(pub.id)}>&#x2716;</span>
-												</div>
-											) : null}
-										</div>
-
-									}
-									title={
-										<Link className="link" to={`/profile/${pub.proprietary[0].id}`}>
-											<h3>{pub.proprietary[0].username}</h3>
-										</Link>
-									}
-									subheader={<small>{format(pub.date)}</small>}
-								/>
-								{pub.image && <img src={pub.image} alt="" />}
-								{pub.video && (
-									<div><video src={pub.video} controls /></div>)}
-
-
-								<CardContent>
-									<h3>{pub.title}</h3>
-									<h5>{pub.message}</h5>
+											} else return null
+										})}
+									</div>
 								</CardContent>
-								<CardActions className="card-action">
-									<div className="item">
-										{(this.checkLiked(this.state.current.id, pub.id)) ? (
-											<Favorite className="icon" onClick={() => this.dltLike(this.props.user.id, pub.id)} />
-										) : (
-											<FavoriteBorder className="icon" onClick={() => this.postLike(this.props.user.id, pub.id)} />
-										)
-										}
-										<small><NumericLabel params={{ shortFormat: true, }}>{this.state.like.filter(item => item.post_connected === pub.id).length}</NumericLabel></small>
-									</div>
-									<div className="item">
-										<InsertComment className="icon"
-											onClick={() => this.handleExpandClick(pub.id)}
-											aria-expanded={this.state[`expanded_${pub.id}`] || false} />
-										<small><NumericLabel params={{ shortFormat: true, }}>{this.state.comments.filter(item => item.post_connected === pub.id).length}</NumericLabel></small>
-										<Share className="icon" />
-									</div>
-								</CardActions>
-
-								<Collapse in={this.state[`expanded_${pub.id}`] || false} timeout="auto" unmountOnExit>
-									<CardContent>
-										<div className="col-top">
-											<img src={this.state.current.avatar} alt="avatar" />
-											<label>
-												<input type="text" value={this.state.comment} placeholder="Share your advice ..." onChange={e => this.setState({ comment: e.target.value })} />
-												<span onClick={() => this.btnComment(this.state.comment, pub.id)}><Telegram /></span>
-											</label>
-										</div>
-										<div className="col-top">
-											{this.state.users && this.state.users.map(author => {
-												return (
-													<div key={author.id}>
-														{this.state.comments && this.state.comments.map(post_com => {
-															if (author.id === post_com.author && post_com.post_connected === pub.id) {
-																return (
-																	<div className="comments" key={post_com.id}>
-																		<img src={author.avatar} alt="avatar" />
-																		<small>{post_com.content}</small>
-																	</div>
-																)
-															} else return null
-														})}
-													</div>
-												)
-											})}
-										</div>
-									</CardContent>
-								</Collapse>
-							</Card>
-						)
-					})}
-				</>)}
-				{this.state.loading && (
-					<div className="loading">
-						<CircularProgress color="var(--text-primary)" size="30px" />
-					</div>
-				)}
-
-				{this.state.end && (
-					<div className="end-alert">
-						<span>You've reached the end</span>
-						<button>Refresh</button>
-					</div>)}
+							</Collapse>
+						</Card>
+					)
+				})}
 			</div>
 		)
 	}

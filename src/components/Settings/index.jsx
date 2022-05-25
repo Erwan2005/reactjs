@@ -55,6 +55,8 @@ export class index extends React.Component {
 		  }
   	};
 
+	
+
   	componentDidMount(){
 	  	this.getCurrentUser()
 	 };

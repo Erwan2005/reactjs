@@ -1,7 +1,6 @@
 import React from 'react'
 import { Info, FavoriteBorder, Favorite, AddShoppingCart, StarRate } from "@material-ui/icons";
-import { Link } from 'react-router-dom';
-import { withRouter } from "react-router";
+import { Link, withRouter } from 'react-router-dom';
 import { publicRequest, userRequest } from '../../../requestMethods';
 import { connect } from "react-redux";
 import { addProduct } from "../../../context/cartRedux";
@@ -12,7 +11,6 @@ export class index extends React.Component {
 		this.state = {
 			product: [],
 			quantity: 1
-
 		}
 	}
 
@@ -48,18 +46,18 @@ export class index extends React.Component {
 								<div className="imgBox">
 									<img src={prod.pic1} alt="product" />
 									<ul className="action">
-										<Link exact to={`${this.props.match.url}/products/${prod.id}`} style={{ textDecoration: 'none' }}>
+										<Link to={`${this.props.match.url}/products/${prod.id}`} style={{ textDecoration: 'none' }} exact={true}>
 											<li>
-												<Info />
+												<small className='icon'><ion-icon name="information-circle-outline" /></small>
 												<span>View Details</span>
 											</li>
 										</Link>
 										<li>
-											<FavoriteBorder />
+											<small className='icon'> <ion-icon name="heart-outline"/></small>
 											<span>Add to Wishlist</span>
 										</li>
 										<li onClick={() => this.addCart(prod)}>
-											<AddShoppingCart />
+											<small className='icon'><ion-icon name="cart-outline"/></small>
 											<span>Add to Cart</span>
 										</li>
 									</ul>
@@ -90,7 +88,7 @@ export class index extends React.Component {
 									<div className="imgBox">
 										<img src={prod.pic1} alt="product" />
 										<ul className="action">
-											<Link exact to={`${this.props.match.url}/products/${prod.id}`} style={{ textDecoration: 'none' }}>
+											<Link exact={true} to={`${this.props.match.path}/products/${prod.id}`} style={{ textDecoration: 'none' }}>
 												<li>
 													<Info />
 													<span>View Details</span>

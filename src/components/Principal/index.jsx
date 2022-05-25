@@ -130,7 +130,7 @@ export class index extends React.Component {
 	}
 
 	search = async (e) => {
-		this.setState({ search: e.target.value, loading: true});
+		this.setState({ search: e.target.value, loading: true });
 		let data = await userRequest.get(`userapp/publication/?search=${e.target.value}`)
 			.then(({ data }) => data)
 		this.setState({ results: data.results, loading: false })
@@ -146,7 +146,7 @@ export class index extends React.Component {
 			<div className="cont-principal">
 				<div className="topbars">
 					<div className="toggles" onClick={this.props.styleElement}>
-						<Menu className="themes" />
+						<span className="icon"><ion-icon name="menu-outline" /></span>
 					</div>
 					<div className="searchs">
 						<label>
@@ -170,7 +170,7 @@ export class index extends React.Component {
 										const events = data ?? []
 										return (
 											<>
-												<Person />
+												<ion-icon name="person-outline"></ion-icon>
 												{events.friendRequests ? <span>{events.friendRequests}</span> : null}
 											</>
 										)
@@ -179,14 +179,14 @@ export class index extends React.Component {
 							</div>
 						</div>
 						<div className="topbarStyle">
-							<Notifications className="icons" />
+							<span className="icons" ><ion-icon name="notifications-outline"></ion-icon></span>
 						</div>
 
 						<div className="topbarStyle">
-							<Mail />
+							<ion-icon name="chatbubbles-outline"></ion-icon>
 						</div>
 						<div className="topbarStyle" onClick={this.openBox}>
-							<img src={this.state.profile.avatar} alt="avatar" />
+							<img src={this.props.user.avatar} alt="avatar" />
 						</div>
 					</div>
 					{this.state.open && (
@@ -194,9 +194,9 @@ export class index extends React.Component {
 							<ul className="menu-bar">
 								<li>
 									<div className="topbarStyle">
-										<img src={this.state.profile.avatar} alt="avatar" />
+										<img src={this.props.user.avatar} alt="avatar" />
 									</div>
-									<span>{this.state.profile.username}</span>
+									<span>{this.props.user.username}</span>
 								</li>
 								<li>
 									<div className="with-submenu" onClick={this.subMenu}>

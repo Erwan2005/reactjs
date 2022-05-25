@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
+import Resizer from "react-image-file-resizer";
 import { PhotoCamera } from '@material-ui/icons';
 import {
   Person, MenuBook, Room,
   Cake, Favorite, People, Email
 } from '@material-ui/icons';
+import Avatar from '../../assets/user.jpg'
+import Cover from '../../assets/cover.jpg'
 import { connect } from "react-redux";
 import { Route, Switch, withRouter, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -46,9 +49,44 @@ export class index extends Component {
     } else {
       if (file.type.split('/')[0] === 'image') {
         if (e.target.name === 'covert') {
-          this.updateData('covert', file,)
+          try {
+            Resizer.imageFileResizer(
+              file,
+              900,
+              300,
+              "JPEG",
+              100,
+              0,
+              (uri) => {
+                this.updateData('covert', uri)
+              },
+              "base64",
+              900,
+              300
+            );
+          } catch (err) {
+            console.log(err);
+          }
+          
         } else if (e.target.name === 'avatar') {
-          this.updateData('avatar', file)
+          try {
+            Resizer.imageFileResizer(
+              file,
+              100,
+              100,
+              "JPEG",
+              100,
+              0,
+              (uri) => {
+                this.updateData('avatar', uri)
+              },
+              "base64",
+              100,
+              100
+            );
+          } catch (err) {
+            console.log(err);
+          }
         }
       } else {
         toast.error("Please upload an image file");
@@ -72,16 +110,14 @@ export class index extends Component {
       let formData = new FormData();
       formData.append(
         "img_covert",
-        value,
-        value.name)
+        value)
       let data = await parseRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
       this.setState({ covert: data.img_covert ,div:''})
     } else if (val === 'avatar') {
       let formData = new FormData();
       formData.append(
         "avatar",
-        value,
-        value.name)
+        value)
       let data = await parseRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
       this.setState({ avatar: data.avatar ,div:''})
     } else if (val === 'username') {
@@ -117,7 +153,7 @@ export class index extends Component {
       <div className='perso-container'>
         <div className='perso-header'>
           <div className='header-top'>
-            <img src={this.state.covert} alt='mur' />
+            <img src={this.state.covert ? this.state.covert : Cover} alt='' />
             <div className='mur-badge' onClick={(event) => {
               event.preventDefault();
               this.refImg.current.click();
@@ -127,7 +163,7 @@ export class index extends Component {
             }} ref={this.refImg} style={{ display: 'none' }} name='covert' />
             <div className='avatar'>
               <div className='avatar-relative'>
-                <img src={this.state.avatar} alt='avatar' />
+                <img src={this.state.avatar ? this.state.avatar : Avatar} alt='avatar' />
                 <span onClick={(event) => {
                   event.preventDefault();
                   this.refAv.current.click()
@@ -139,13 +175,12 @@ export class index extends Component {
             </div>
           </div>
 
-          <div className='menu'>
+          <div className='personal-tab'>
             <ul>
               <li>Image</li>
               <li>Videos</li>
               <li>Pages</li>
               <li>Groups</li>
-              <div className="animation start"></div>
             </ul>
           </div>
         </div>
@@ -154,7 +189,7 @@ export class index extends Component {
             <div className='top'>
               <span>Personal infos</span>
             </div>
-            <span>About</span>
+            <span className='text'>About</span>
             <div className='input-data'>
               {(this.state.div === 'about') ?
                 <textarea
@@ -164,7 +199,7 @@ export class index extends Component {
               {(this.state.div === 'about') ? <button onClick={() => this.updateData('about_me', this.state.about)}>&#10003;</button> :
                 <span onClick={() => this.activeOrnot('about')}>&#9998;</span>}
             </div>
-            <span>Username</span>
+            <span className='text'>Username</span>
             <div className='input-data'>
               {( this.state.div === 'username') ?
                 <input type='text' value={this.state.username}
@@ -173,7 +208,7 @@ export class index extends Component {
               {( this.state.div === 'username') ? <button onClick={() => this.updateData('username', this.state.username)}>&#10003;</button> :
                 <span onClick={() => this.activeOrnot('username')}>&#9998;</span>}
             </div>
-            <span>Name</span>
+            <span className='text'>Name</span>
             <div className='input-data'>
               {(this.state.div === 'name') ?
                 <input type='text' value={this.state.firstname}
@@ -182,7 +217,7 @@ export class index extends Component {
               {(this.state.div === 'name') ? <button onClick={() => this.updateData('name', this.state.firstname)}>&#10003;</button> :
                 <span onClick={() => this.activeOrnot('name')}>&#9998;</span>}
             </div>
-            <span>Last name</span>
+            <span className='text'>Last name</span>
             <div className='input-data'>
               {(this.state.div === 'lastname') ?
                 <input type='text' value={this.state.lastname}
@@ -191,7 +226,7 @@ export class index extends Component {
               {( this.state.div === 'lastname') ? <button onClick={() => this.updateData('lastname', this.state.lastname)}>&#10003;</button> :
                 <span onClick={() => this.activeOrnot('lastname')}>&#9998;</span>}
             </div>
-            <span>Date of birth</span>
+            <span className='text'>Date of birth</span>
             <div className='input-data'>
               {(this.state.div === 'birth') ?
                   <input type='date' value={this.state.birth}
@@ -200,11 +235,11 @@ export class index extends Component {
                 {(this.state.div === 'birth') ? <button onClick={() => this.updateData('birth', this.state.birth)}>&#10003;</button> :
                   <span onClick={() => this.activeOrnot('birth')}>&#9998;</span>}
             </div>
-            <span>Adress</span>
+            <span className='text'>Adress</span>
             <div className='input-data'></div>
-            <span>Phone</span>
+            <span className='text'>Phone</span>
             <div className='input-data'></div>
-            <span>Relationship status</span>
+            <span className='text'>Relationship status</span>
             <div className='input-data'></div>
           </div>
           <div className='footer-right'>

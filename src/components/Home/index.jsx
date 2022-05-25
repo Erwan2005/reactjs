@@ -1,219 +1,243 @@
-import React from 'react'
-import {
-	Home, People, Image, PlayCircleOutline, Settings, LocalMall, Forum,
-	WbSunny
-} from '@material-ui/icons';
-import { connect } from "react-redux";
-import { Route, Switch, withRouter, Link } from 'react-router-dom';
-import { publicRequest, userRequest } from '../../requestMethods';
-import Principal from '../Principal'
-import Profile from '../Profile'
-import Messenger from '../Messenger'
-import Modal from '../Modal'
-import Setting from '../Settings'
-import Videos from '../Videos'
+import React, { Component } from 'react'
+import { connect } from "react-redux"
+import Post from '../Post'
+import Add from '../Add'
+import { Route, Switch, withRouter, Link } from 'react-router-dom'
+import { publicRequest, userRequest, BASE_URL, parseRequest } from '../../requestMethods'
+import User from '../../assets/user.jpg'
+import Left from '../Left'
+import Right from '../Right'
 import Weather from '../Weather'
+import Personal from '../Personal';
 import Shop from '../shop/Drawer';
-import { useQuery } from "react-query";
-import _ from 'lodash';
 import './style.css'
-
-function Query(props) {
-	return (props.children(useQuery(props.keyName, props.fn, props.options)));
-}
-
-
-export class index extends React.Component {
+export class index extends Component {
 	constructor(props) {
 		super(props);
 		this.defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 		this.state = {
 			theme: '',
-			profile: [],
-			friends: [],
-			profiles: [],
-			user: [],
-			friend: {},
-			conversation: false,
-			messages: [],
-			private_message: [],
-			open: false,
+			menu1: false,
+			menu2: false,
+			menu3: false,
+			menu4: false,
+			publication: [],
+			page: 1,
+			search: '',
+			results: [],
+			loading: '',
+			engine: '',
 			checked: false,
-			theme: '',
-			onlineUser: [],
-			socket: null,
-			modal: false,
-		};
-
-		this.handleClose = this.handleClose.bind(this);
-		this.openModal = this.openModal.bind(this);
-	}
-
-	openModal = () => {
-		this.setState({ modal: !this.state.modal })
-	}
-
-	handleClose = () => {
-		this.setState({ modal: !this.state.modal })
-	}
-	getMessage = async (id) => {
-		let data = await userRequest.get('userapp/message/')
-			.then(({ data }) => data)
-		this.setState({ messages: _.sortBy(data.results, "id") })
-		//await this.state.messages.filter(item=> (item.sender === parseInt(id, 10) && item.receiver=== parseInt(this.id, 10)) || (item.receiver === parseInt(id, 10) && item.sender=== parseInt(this.id, 10))).map(checked=>(this.setState({private_message:checked})))
-		await this.state.messages && this.state.messages.map((item) => {
-			if ((item.sender === parseInt(id, 10) && item.receiver === parseInt(this.props.user.id, 10)) || (item.receiver === parseInt(id, 10) && item.sender === parseInt(this.props.user.id, 10))) {
-				this.setState({ private_message: this.state.private_message.concat(item) })
-			}
-		})
-	};
-
-	styleElement = () => {
-		let toggle = document.querySelector('.toggles')
-		let navigation = document.querySelector('.navigations')
-		let main = document.querySelector('.mains')
-		navigation.classList.toggle('active')
-		main.classList.toggle('active')
-	}
-
-	menuActive = () => {
-		var list = document.querySelectorAll(".active");
-
-	}
-
-	getCurrent = async () => {
-		let data;
-		await userRequest.get(`userapp/users/${this.props.user.id}`).then((res) => (data = res.data))
-		if (this.defaultDark) {
-			this.setState({ theme: 'dark' })
 		}
-		return data;
+		this.handleToUpdate = this.handleToUpdate.bind(this);
+		this.handleSearch = this.handleSearch.bind(this);
+	}
+	handleToUpdate(data) {
+		this.setState({ publication: [data].concat(this.state.publication) });
+	}
+	handleSearch(type) {
+		this.setState({ engine: type })
+	}
+	activeMenu = () => { }
+	getActiveMenu = (newMethod) => {
+		this.activeMenu = newMethod;
+	}
+	getCurrent = async () => {
+		if (this.props.user.theme === 'light') {
+			this.setState({ theme: '', checked: false })
+		} else {
+			this.setState({ theme: 'dark', checked: true })
+		}
 	}
 
-
-
-
-
-	getUser = async () => {
-		let data = await userRequest.get('userapp/users/')
-			.then(({ data }) => data)
-		this.setState({ profiles: data })
-	};
-
-	getFriend = async () => {
-		let data = await userRequest.get('userapp/friend/')
-			.then(({ data }) => data)
-		this.setState({ friends: data })
-	};
-
+	openBox = (menu) => {
+		if (menu === 'menu1') {
+			this.setState({ menu1: !this.state.menu1, menu2: false, menu3: false, menu4: false })
+		} else if (menu === 'menu2') {
+			this.setState({ menu2: !this.state.menu2, menu1: false, menu3: false, menu4: false })
+		} else if (menu === 'menu3') {
+			this.setState({ menu3: !this.state.menu3, menu1: false, menu2: false, menu4: false })
+		} else if (menu === 'menu4') {
+			this.setState({ menu4: !this.state.menu4, menu1: false, menu2: false, menu3: false })
+		}
+	}
 	logout = () => {
+		this.setState({ menu1: !this.state.menu1 })
 		localStorage.clear()
 		window.location.reload(false);
 	};
 
-	openBox = () => {
-		this.setState({ open: !this.state.open })
-	}
+	getPub = async () => {
+		try {
+			this.setState({ loading: true })
+			let data = await userRequest.get(`userapp/publication/?page=${this.state.page}`)
+				.then(({ data }) => data)
+			this.setState({ publication: this.state.publication.concat(data.results), loading: false })
+			if (data.next) {
+				this.setState({ page: this.state.page + 1 })
+			} else {
+				this.setState({ more_exist: false, end: true })
+			}
 
+		} catch (error) {
+			window.location.reload(true);
+		}
+
+	};
+
+	search = async (e) => {
+		this.setState({ search: e.target.value, loading: true });
+		if (this.state.engine === 'publication') {
+			let data = await userRequest.get(`userapp/publication/?search=${e.target.value}`)
+				.then(({ data }) => data)
+			this.setState({ results: data.results, loading: false })
+		} else if (this.state.engine === 'product') {
+			let data = await userRequest.get(`shop/product/?search=${e.target.value}`)
+				.then(({ data }) => data)
+			this.setState({ results: data.results, loading: false })
+		}
+	}
+	theme = async () => {
+		let theme = ''
+		let formData = new FormData();
+		if (this.state.theme !== '') {
+			theme = 'light'
+			formData.append("color", theme)
+			let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
+			this.setState({ theme: '', checked: false })
+		} else {
+			theme = 'dark'
+			formData.append("color", theme)
+			let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
+			this.setState({ theme: 'dark', checked: true })
+		}
+	}
 	componentDidMount() {
-		this.getUser()
-		this.getFriend()
+
 		this.getCurrent()
+		this.getPub()
 	};
 	render() {
 		return (
-			<div className="home" data-theme={this.state.theme}>
-				<div className="navigations">
-					<ul>
-						<li>
-							<Link to={this.props.match.url} className="link">
-								<div className="ahref">
-									<span className="icon"><Home /></span>
-									<span className="title"> WanWork</span>
+			<div className='home-container' data-theme={this.state.theme}>
+				<nav>
+					<span className='logo'>WanTech</span>
+					<span className='menu' onClick={this.activeMenu}><ion-icon name="menu-outline" /></span>
+					<label>
+						<input type='text' placeholder='Search ...'
+							value={this.state.search}
+							onChange={this.search} />
+						<span className='icon'><ion-icon name="search-outline" /></span>
+					</label>
+					<div className='nav-right'>
+						<div onClick={this.theme}>
+							<input type="checkbox" className="checkbox" id="checkbox" defaultChecked={this.state.checked} onChange={this.changeTheme} />
+							<label htmlFor="checkbox" className="label" >
+								<small>&#9788;</small>
+								<small>&#9790;</small>
+								<div className="ball"></div>
+							</label>
+						</div>
+						<span className='icon nav-icon' onClick={() => this.openBox('menu4')}><ion-icon name="person-outline" /><small>9+</small></span>
+						<span className='icon nav-icon' onClick={() => this.openBox('menu3')}><ion-icon name="notifications-outline" /><small>9+</small></span>
+						<span className='icon nav-icon' onClick={() => this.openBox('menu2')}><ion-icon name="chatbubble-outline" /><small>9+</small></span>
+						<img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' onClick={() => this.openBox('menu1')} />
+						{this.state.menu1 &&
+							<div className='menu1'>
+								<div className='menu-container'>
+									<div className='flex-box'>
+										<Link exact to='/personnal' className="link">
+											<img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' />
+											<span>{this.props.user.username}</span>
+										</Link>
+									</div>
+									<div className='flex-box'>
+										<span className='icon'><ion-icon name="key-outline" /></span>
+										<span>Change password</span>
+									</div>
+									<div className='flex-box' onClick={this.logout}>
+										<span className='icon'><ion-icon name="log-out-outline" /></span>
+										<span>Logout</span>
+									</div>
 								</div>
-							</Link>
-						</li>
-						<li onClick={this.menuActive}>
-							<div className="ahref">
-								<span className="icon"><People /></span>
-								<span className="title"> Friends</span>
-							</div>
-						</li>
-						<li onClick={this.menuActive}>
-							<div className="ahref">
-								<span className="icon"><Image /></span>
-								<span className="title"> Image Gallery</span>
-							</div>
-						</li>
-						<li>
-							<Link to={'/videos'} className="link">
-								<div className="ahref" onClick={this.teste}>
-									<span className="icon"><PlayCircleOutline /></span>
-									<span className="title"> Videos</span>
+							</div>}
+						{this.state.menu2 &&
+							<div className='menu2'>
+								<div className='menu-container2'>
+									<div className='flex-box nav-mes'>
+										<img src={this.props.user.avatar} alt='' />
+										<div className='nav-text'>
+											<span>{this.props.user.username}</span>
+											<small>Ceci est un message le plus longue au monde jusqu'ici</small>
+										</div>
+
+									</div>
+
+									<div className='flex-box nav-mes'>
+										<img src={this.props.user.avatar} alt='' />
+										<div className='nav-text'>
+											<span>{this.props.user.username}</span>
+											<small>Ceci est un message le plus longue au monde jusqu'ici
+												et n'a jamais été battu
+											</small>
+										</div>
+
+									</div>
+
 								</div>
-							</Link>
-						</li>
-						<li>
-							<Link to={'/shop'} className="link">
-								<div className="ahref">
-									<span className="icon"><LocalMall /></span>
-									<span className="title"> Shop</span>
+							</div>}
+						{this.state.menu3 &&
+							<div className='menu3'>
+								<div className='menu-container3'>
+									<div className='flex-box nav-mes'>
+										<img src={this.props.user.avatar} alt='' />
+										<div className='nav-text'>
+											<span>{this.props.user.username}</span>
+											<small>Partage une video</small>
+										</div>
+									</div>
 								</div>
-							</Link>
-						</li>
-						<li>
-							<Link exact to={'/messenger'} className="link">
-								<div className="ahref">
-									<span className="icon"><Forum /></span>
-									<span className="title"> Messenger</span>
+							</div>}
+						{this.state.menu4 &&
+							<div className='menu4'>
+								<div className='menu-container4'>
+									<div className='flex-box nav-mes'>
+										<img src={this.props.user.avatar} alt='' />
+										<div className='nav-text'>
+											<span>{this.props.user.username}</span>
+											<small>11k friend</small>
+											<div className='nav-button'>
+												<span><ion-icon name="checkmark-outline" /></span>
+												<span><ion-icon name="close-outline" /></span>
+											</div>
+										</div>
+									</div>
 								</div>
-							</Link>
-						</li>
-						<li>
-							<Link exact to={'/weather'} className="link">
-								<div className="ahref">
-									<span className="icon"><WbSunny /></span>
-									<span className="title"> Weather</span>
-								</div>
-							</Link>
-						</li>
-						<li>
-							<Link to={'/setting'} className="link">
-								<div className="ahref">
-									<span className="icon"><Settings /></span>
-									<span className="title"> Settings</span>
-								</div>
-							</Link>
-						</li>
-					</ul>
-				</div>
-				{this.state.modal &&
-					<Modal handleClose={this.handleClose} />}
-				<div className="mains">
+							</div>}
+					</div>
+
+				</nav>
+				<main>
+					<Left getActiveMenu={this.getActiveMenu} />
 					<Switch>
-						<Route exact path='/'>
-							<Principal styleElement={this.styleElement} openModal={this.openModal} />
-						</Route>
-						<Route exact path='/messenger'>
-							<Messenger styleElement={this.styleElement} />
-						</Route>
-						<Route path='/shop'>
-							<Shop styleElement={this.styleElement} />
-						</Route>
-						<Route path='/profile/:id'>
-							<Profile styleElement={this.styleElement} />
-						</Route>
-						<Route path='/setting'>
-							<Setting styleElement={this.styleElement} />
-						</Route>
-						<Route path='/videos'>
-							<Videos styleElement={this.styleElement} />
-						</Route>
-						<Route path='/weather'>
-							<Weather styleElement={this.styleElement} />
-						</Route>
+						<div className='central'>
+							<Route exact path='/'>
+								<Add publication={this.handleToUpdate} />
+								<Post publication={this.state.search === '' ? this.state.publication : this.state.results} handleSearch={this.handleSearch} />
+							</Route>
+							<Route path='/shop'>
+								<Shop results={this.state.results} search={this.state.search} handleSearch={this.handleSearch} />
+							</Route>
+							<Route path='/weather'>
+								<Weather />
+							</Route>
+							<Route path={`/personnal`}>
+								<Personal />
+							</Route>
+						</div>
 					</Switch>
-				</div>
+					<Right />
+				</main>
 			</div>
 		)
 	}

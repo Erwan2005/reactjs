@@ -497,3 +497,7 @@
 	border-right: 1px solid var(--bgbtn);
 	font-family: var(--fontlight);
 }
+.icon{
+	font-size: 30px;
+	color: var(--text-primary);
+}

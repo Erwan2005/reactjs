@@ -1,0 +1,135 @@
+.right-container{
+    width: 300px;
+    height: 100%;
+    background: var(--bgbtn);
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+}
+
+.right-container .right-top{
+    max-height: 100px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+ .top-text{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--bgbtn);
+}
+
+.top-text .text-left{
+    font-family: var(--fontlight);
+    color: var(--text-primary);
+}
+
+.top-text .text-right{
+    font-family: var(--fontlight);
+    color: var(--green);
+    cursor: pointer;
+}
+
+.right-container .request{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.right-container .request img{
+    min-width: 35px;
+    min-height: 35px;
+    max-width: 35px;
+    max-height: 35px;
+    border-radius: 50px;
+    object-fit: cover;
+}
+
+.right-container .request .action{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.right-container .request .action .text{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    color: var(--text-primary);
+    font-family: var(--fontlight);
+}
+
+.right-container .request .action .button{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.right-container .request .action .button .accept{
+    border: 1px solid var(--green);
+    font-size: 20px;
+    color: var(--green);
+    width: 50px;
+    height: 40;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    background: transparent;
+    transition: 0.5s;
+}
+
+.right-container .request .action .button .refused{
+    width: 50px;
+    height: 40;
+    background: transparent;
+    border: 1px solid var(--red);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    color: var(--red);
+    transition: 0.5s;
+}
+.right-container .request .action .button .accept:hover{
+    color: var(--white);
+    background: var(--green);
+}
+.right-container .request .action .button .refused:hover{
+    color: var(--white);
+    background: var(--red);
+}
+.right-container .right-feet{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+}
+
+.right-container .right-feet .contact{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background: red;
+}
+
+.right-container .right-feet .other-link{
+    display: flex;
+    text-decoration: none;
+    gap: 5px;
+    color: var(--text-primary);
+    font-family: var(--fontlight);
+    font-size: 12px;
+}
+
+@media(max-width: 720px) {
+    .right-container{
+        display: none;
+    }
+}

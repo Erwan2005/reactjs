@@ -2,15 +2,15 @@
 .product{
     position: relative;
     width: 100%;
-    padding: 10px;
     display: grid;
-    grid-template-columns: repeat(5,1fr);
-    grid-gap: 30px;
-    margin-top: 10px;
+    grid-template-columns: repeat(4,1fr);
+    grid-gap: 10px;
+	align-items: center;
+	justify-content: center;
 }
 
 .product .card{
-	width: 220px;
+	width: 100%;
 	background-color: var(--grey);
 	box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
 }
@@ -102,6 +102,12 @@
 	opacity: 0;
 	transition: 0.5s;
 }
+.product .card .imgBox .action li small{
+	color: var(--green);
+}
+.product .card .imgBox .action li:hover small{
+	color: var(--white);
+}
 
 .product .card .imgBox .action li:hover span{
 	transform: translateY(-50%) translateX(0px);
@@ -143,26 +149,12 @@
 	color: #ccc;
 }
 
-@media(max-width: 768px) {
+@media(max-width: 720px) {
    .product{
-        grid-template-columns: repeat(3,1fr);
-        max-width: 100%;
-        grid-gap: 10px;
-   } 
-}
-
-@media(max-width: 600px) {
-   .product{
-        grid-template-columns: repeat(2,1fr);
-        max-width: 100%;
-        grid-gap: 10px;
-   } 
-}
-
-@media(max-width: 480px) {
-   .product{
-        grid-template-columns: repeat(1,1fr);
-        max-width: 100%;
-        align-items: center;
+        display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		margin-top: 60px;
    } 
 }

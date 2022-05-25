@@ -1,248 +1,45 @@
-.postCont{
-	position: relative;
-    width: 100%;
-    max-height: 100%;
-    padding: 5px;
-    display: grid;
-    grid-template-columns: repeat(1,1fr);
-    gap: 5px;
-    overflow-y: auto;
-    scrollbar-width: none;
-    --ms-overflow-style: none;
-}
-
-.postCont::-webkit-scrollbar{
-	display: none;
-}
-
-.stories{
-	position: relative;
-	max-width: 100%;
-	height: 150px;
-	padding: 5px;
+.post-container{
+	width: 100%;
+	background: var(--background);
 	display: flex;
-	overflow-x: auto;
-	overflow-y: hidden;
-	scrollbar-width: none;
-    --ms-overflow-style: none;
+	flex-direction: column;
+	gap: 10px;
+	padding-bottom: 5px;
 }
 
-.stories::-webkit-scrollbar{
-	display: none;
-}
-.storie-card{
-	position: relative;
-	height: 100%;
-	width: 95px;
-	margin-right: 5px;
-	border-radius: 5px;
-	overflow: hidden;
-}
-
-.storie-card-right{
-	position: relative;
-	height: 100%;
-	width: 95px;
-	margin-right: 5px;
-	border-radius: 5px;
-	overflow: hidden;
-}
-
-.storie-card-right img:nth-child(1){
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-.storie-card-right img:nth-child(2){
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	width: 40px;
-	height: 40px;
-	object-fit: cover;
-	border-radius: 50%;
-	border: 3px solid var(--background);
-}
-
-.storie-card img{
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-.storie-card button{
-	position: absolute;
-	top: 40%;
-	left: 30%;
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	border: 3px solid var(--background);
-	background: var(--green);
-	color: var(--white);
-	font-weight: 500;
-	font-size: 20px;
-	box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
-	text-align: center;
-	cursor: pointer;
-}
-
-.share-post{
-	width: 100%;
-	height: 125px;
-	background: var(--bgbtn);
-	padding: 5px;
-	border-radius: 10px;
-	margin-bottom: 5px;
-}
-
-.share-post .top{
-	width: 100%;
-	border-bottom: 0.5px solid var(--bgbtn);
-	padding: 10px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	overflow: hidden;
-}
-
-.share-post .top img{
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	object-fit: cover;
-}
-
-.share-post .top textarea{
-	width: 100%;
-	max-height: 100px;
-	font-size: 18px;
-	padding: 0 10px;
-	box-sizing: border-box;
-	background: transparent;
-	border: none;
-	color: var(--text-primary);
-	vertical-align: middle;
-	resize: none;
-
-}
-
-.share-post .top textarea:focus{
-	outline: none;
-}
-
-.share-post .bottom{
-	width: 100%;
-	display: flex;
-	padding-left: 20px;
-	align-items: center;
-	justify-content: space-between;
-	margin-top: 5px;
-}
-
-.share-post .bottom .options{
-	display: flex;
-}
-
-.share-post .bottom .options .option{
-	display: flex;
-	align-items: center;
-	padding: 10px;
-	cursor: pointer;
-}
-
-.share-post .bottom .options .option .shareIcon{
-	font-size: 18px;
-	margin-right: 5px;
-}
-
-.share-post .bottom .options .option .shareOptionText{
-	font-size: 13px;
-	font-weight: 500;
-}
-
-.share-post .bottom button{
-	width: 100px;
-	height: 30px;
-	border: 1px solid var(--green);
-	background: transparent;
-	color: var(--text-primary);
-	border-radius: 20px;
-	font-size: 18px;
-}
-
-.share-post .bottom button:hover{
-	background: var(--green);
-	cursor: pointer;
-	color: var(--white);
-}
-
-.postCont .card{
+.post-container .card{
 	color: var(--text-primary);
 	background: var(--bgbtn);
 	box-shadow: none;
 	border-radius: 10px;
 }
 
-.postCont .card .cardHeader{
-	background: var(--bgbtn);
+.cardHeader{
 	overflow: hidden;
 	text-transform: capitalize;
 
 }
-.postCont .card .cardHeader .link{
+.post-container .card .cardHeader img{
+	min-width: 35px;
+    min-height: 35px;
+    max-width: 35px;
+    max-height: 35px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+.link{
 	text-decoration: none;
 	color: var(--text-primary);
 }
 
-.postCont .card .cardHeader .menu{
-	position: relative;
-}
-
-.postCont .card .cardHeader .menu .pop-menu{
-	display: flex;
-	gap: 5px;
-	width: 55px;
-	height: 30px;
-	border-radius: 2px;
-	align-items: center;
-	justify-content: space-between;
-	padding: 5px;
-	font-size: 18px;
-	font-weight: 500;
-	opacity: 0;
-	transition: .5s;
-}
-.postCont .card .cardHeader .menu .pop-menu:hover{
-	opacity: 1;
-}
-
-.postCont .card .cardHeader .menu .pop-menu span:nth-child(1){
-	color: var(--green);
-	cursor: pointer;
-}
-
-.postCont .card .cardHeader .menu .pop-menu span:nth-child(2){
-	color: var(--red);
-	cursor: pointer;
-}
-
-.postCont .card .cardHeader img{
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	object-fit: cover;
-}
-
-.postCont .card img{
+.post-container .card img{
 	width: 100%;
 	height: auto;
 	max-height: 400px;
 	object-fit: cover;
 }
 
-.postCont .card video{
+.post-container .card video{
 	width: 100%;
 	height: auto;
 	object-fit: cover;
@@ -257,163 +54,97 @@
 .card-action .item{
 	display: flex;
 	align-items: center;
+	gap: 10px;
 }
 
 .card-action .item .icon{
-	font-size: 22px;
-	margin-right: 5px;
-	cursor: pointer;
+	font-size: 25px;
+	color: var(--text-primary);
 }
 
-.card-action .item .icon:last-child{
-	margin-left: 5px;
+.card-action .item .text{
+	font-size: 14px;
+	font-family: var(--fontlight);
+	color: var(--text-primary);
 }
 
-.card .col-top{
-	width: 100%;
-	max-height: 100px;
-	padding: 10px 20px;
-	overflow-y: auto;
-	scrollbar-width: none;
-    --ms-overflow-style: none;
-}
-
-.card .col-top::-webkit-scrollbar{
-	display: none;
-}
-
-.card .col-top .comments{
-	width: 100%;
+.col-head{
 	display: flex;
 	align-items: center;
-	margin-bottom: 7px;
-}
+	gap: 10px;
+	position: relative;
+	background: var(--bgbtn);
+	padding: 5px 10px;
+	margin-bottom: 10px;
+	border-radius: 10px;
 
-.card .col-top:nth-child(1){
-	display: flex;
-	align-items: center;
-	border-bottom: 1px solid var(--bgbtn);
-	padding: 5px 0;
-	overflow: hidden;
 }
-
-.card .col-top img{
-	width: 40px;
-	height: 40px;
+.card .col-head img{
+	min-width: 35px;
+    min-height: 35px;
+    max-width: 35px;
+    max-height: 35px;
 	border-radius: 50%;
 	object-fit: cover;
-	margin-right: 5px;
 }
 
-.card .col-top label{
-	position: relative;
-	width: 100%;
-}
-.card .col-top label input{
-	padding: 0px 10px;
-	padding-right: 40px;
+.card .col-head input{
 	border: none;
-	background: transparent;
 	color: var(--text-primary);
+	font-family: var(--fontlight);
+	font-size: 15px;
+	padding: 0;
+	padding-right: 40px;
+	flex-grow: 1;
 }
 
-.card .col-top label span{
+.card .col-head .send{
 	position: absolute;
-	top: 8px;
-	right: 10px;
-	font-size: 1.2em;
+	right: 15px;
+	top: 10px;
+	font-size: 25px;
 	color: var(--text-primary);
+	cursor: pointer;
+	transform: rotate(-40deg);
 }
 
-.end-alert{
+.card .col-feet{
+	max-height: 150px;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	margin-top: 10px;
+	padding-left: 50px;
+	gap: 15px;
+	overflow: auto;
 }
 
-.end-alert span{
-	font-size: 18px;
-	font-weight: 500;
-	color: var(--red);
-	margin-bottom: 10px;
-}
-
-.end-alert button{
-	width: 140px;
-	height: 40px;
-	font-size: 18px;
-	color: var(--white);
-	background: var(--green);
-	border: none;
-	border-radius: 20px;
-	cursor: pointer;
-}
-
-.loading{
-	width: 100%;
-	font-size: 50px;
-	color: var(--text-primary);
+.card .col-feet .comment{
 	display: flex;
-	align-items: center;
-	justify-content: center;
+	gap: 10px;
+	flex-grow: 1;
 }
-
-@media(max-width: 991px) {
-	.share-post .bottom .options .option .shareIcon{
-		font-size: 18px;
-		margin-right: 2px;
-	}
-	.share-post .top textarea{
-		font-size: 15px;
-	}
-	.share-post .bottom .options .option .shareOptionText{
-		display: none;
-	}
-	.card .col-top img{
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		object-fit: cover;
-		margin-right: 5px;
-	}
-
-	.card .col-top label input{
-		font-size: 15px;
-	}
-
-	.storie-card{
-		height: 100%;
-		width: 70px;
-	}
-
-	.storie-card-right{
-		height: 100%;
-		width: 70px;
-	}
-
-	.stories{
-		max-width: 100%;
-		height: 105px;
-	}
-	
+.card .col-feet .comment img{
+	min-width: 35px;
+    min-height: 35px;
+    max-width: 35px;
+    max-height: 35px;
+	border-radius: 50%;
+	object-fit: cover;
 }
+.card .col-feet .comment .text{
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	justify-content: space-between;
+	flex-grow: 1;
+}
+.card .col-feet .comment .text span{
+	font-size: 15px;
+	font-family: var(--fontlight);
+	color: var(--text-primary);
+}
+.card .col-feet .comment .text small{
+	font-size: 10px;
+	color: var(--text-primary);
+	font-family: var(--fontlight);
 
-
-@media(max-width: 480px) {
-	.postCont .card img{
-		width: 100%;
-		height: 150px;
-		object-fit: cover;
-	}
-
-	.card .col-top img{
-		max-width: 30px;
-		max-height: 30px;
-		border-radius: 50%;
-		object-fit: cover;
-		margin-right: 5px;
-	}
-	
 }

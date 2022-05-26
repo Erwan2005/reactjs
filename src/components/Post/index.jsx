@@ -87,7 +87,7 @@ export class index extends Component {
 							<CardHeader
 								className="cardHeader"
 								avatar={
-									<img src={pub.proprietary[0].avatar} alt="" />
+									<img src={pub.proprietary[0].avatar ? pub.proprietary[0].avatar : User} alt="" />
 								}
 								action={
 									<div className="menu">

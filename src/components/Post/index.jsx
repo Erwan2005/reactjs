@@ -90,9 +90,7 @@ export class index extends Component {
 									<img src={pub.proprietary[0].avatar ? pub.proprietary[0].avatar : User} alt="" />
 								}
 								action={
-									<div className="menu">
-
-									</div>
+									<span className='icon'><ion-icon name="ellipsis-vertical-outline"/></span>
 
 								}
 								title={

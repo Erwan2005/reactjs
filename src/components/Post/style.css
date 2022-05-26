@@ -17,7 +17,7 @@
 .cardHeader{
 	overflow: hidden;
 	text-transform: capitalize;
-
+	max-height: 50px;
 }
 .post-container .card .cardHeader img{
 	min-width: 35px;

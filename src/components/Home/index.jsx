@@ -11,6 +11,7 @@ import Weather from '../Weather'
 import Personal from '../Personal';
 import Shop from '../shop/Drawer';
 import './style.css'
+import { FormatListNumberedRtlTwoTone } from '@material-ui/icons'
 export class index extends Component {
 	constructor(props) {
 		super(props);
@@ -104,7 +105,7 @@ export class index extends Component {
 			theme = 'light'
 			formData.append("color", theme)
 			let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
-			this.setState({ theme: '', checked: false })
+			this.setState({ theme: '', checked: FormatListNumberedRtlTwoTone })
 		} else {
 			theme = 'dark'
 			formData.append("color", theme)
@@ -130,8 +131,8 @@ export class index extends Component {
 						<span className='icon'><ion-icon name="search-outline" /></span>
 					</label>
 					<div className='nav-right'>
-						<div onClick={this.theme}>
-							<input type="checkbox" className="checkbox" id="checkbox" defaultChecked={this.state.checked} onChange={this.changeTheme} />
+						<div>
+							<input type="checkbox" className="checkbox" id="checkbox" defaultChecked={this.state.checked} onChange={this.theme} />
 							<label htmlFor="checkbox" className="label" >
 								<small>&#9788;</small>
 								<small>&#9790;</small>

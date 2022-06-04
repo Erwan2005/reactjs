@@ -3,7 +3,8 @@ import { connect } from "react-redux"
 import Post from '../Post'
 import Add from '../Add'
 import { Route, Switch, withRouter, Link } from 'react-router-dom'
-import { publicRequest, userRequest, BASE_URL, parseRequest } from '../../requestMethods'
+import { publicRequest, userRequest, parseRequest } from '../../requestMethods'
+import { useQuery } from "react-query";
 import User from '../../assets/user.jpg'
 import Left from '../Left'
 import Right from '../Right'
@@ -12,10 +13,16 @@ import Personal from '../Personal';
 import Shop from '../shop/Drawer';
 import './style.css'
 import { FormatListNumberedRtlTwoTone } from '@material-ui/icons'
+
+function Query(props) {
+	return (props.children(useQuery(props.keyName, props.fn, props.options)));
+}
 export class index extends Component {
 	constructor(props) {
 		super(props);
 		this.defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+		this.container = React.createRef();
+
 		this.state = {
 			theme: '',
 			menu1: false,
@@ -29,6 +36,7 @@ export class index extends Component {
 			loading: '',
 			engine: '',
 			checked: false,
+			request: false,
 		}
 		this.handleToUpdate = this.handleToUpdate.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
@@ -105,7 +113,7 @@ export class index extends Component {
 			theme = 'light'
 			formData.append("color", theme)
 			let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
-			this.setState({ theme: '', checked: FormatListNumberedRtlTwoTone })
+			this.setState({ theme: '', checked: false })
 		} else {
 			theme = 'dark'
 			formData.append("color", theme)
@@ -113,14 +121,27 @@ export class index extends Component {
 			this.setState({ theme: 'dark', checked: true })
 		}
 	}
+	handleClickOutside = () => {
+		if (this.state.menu1 || this.state.menu2 || this.state.menu3 || this.state.menu4) {
+			this.setState({ menu1: false, menu2: false, menu3: false, menu4: false })
+		}
+	};
+	getCurrentUser = async () => {
+		let data = await userRequest.get(`userapp/users/${this.props.user.id}/`)
+			.then(({ data }) => data)
+		if (data.friendRequests !== 0) {
+			this.setState({ request: true })
+		} else {
+			this.setState({ request: false })
+		}
+	};
 	componentDidMount() {
-
 		this.getCurrent()
 		this.getPub()
 	};
 	render() {
 		return (
-			<div className='home-container' data-theme={this.state.theme}>
+			<div onClick={this.handleClickOutside} className='home-container' data-theme={this.state.theme}>
 				<nav>
 					<span className='logo'>WanTech</span>
 					<span className='menu' onClick={this.activeMenu}><ion-icon name="menu-outline" /></span>
@@ -131,15 +152,27 @@ export class index extends Component {
 						<span className='icon'><ion-icon name="search-outline" /></span>
 					</label>
 					<div className='nav-right'>
-						<div>
-							<input type="checkbox" className="checkbox" id="checkbox" defaultChecked={this.state.checked} onChange={this.theme} />
-							<label htmlFor="checkbox" className="label" >
-								<small>&#9788;</small>
-								<small>&#9790;</small>
-								<div className="ball"></div>
-							</label>
-						</div>
-						<span className='icon nav-icon' onClick={() => this.openBox('menu4')}><ion-icon name="person-outline" /><small>9+</small></span>
+						{this.state.checked ? <span className='icon' onClick={this.theme}><ion-icon name="sunny-outline" /></span> :
+							<span className='icon' onClick={this.theme}><ion-icon name="moon-outline" /></span>
+						}
+
+						<span className='icon nav-icon' onClick={() => this.openBox('menu4')}><ion-icon name="person-outline" />
+							<Query
+								keyName="users"
+								fn={() => this.getCurrentUser()}
+							>
+								{({ data, isLoading, error }) => {
+									if (error) return <h1>Error</h1>;
+									const events = data ?? []
+									return (
+										<>
+
+											{events.friendRequests ? <small>{events.friendRequests > 9 ? '9+' : events.friendRequests}</small> : null}
+										</>
+									)
+								}}
+							</Query>
+						</span>
 						<span className='icon nav-icon' onClick={() => this.openBox('menu3')}><ion-icon name="notifications-outline" /><small>9+</small></span>
 						<span className='icon nav-icon' onClick={() => this.openBox('menu2')}><ion-icon name="chatbubble-outline" /><small>9+</small></span>
 						<img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' onClick={() => this.openBox('menu1')} />
@@ -202,17 +235,20 @@ export class index extends Component {
 						{this.state.menu4 &&
 							<div className='menu4'>
 								<div className='menu-container4'>
-									<div className='flex-box nav-mes'>
-										<img src={this.props.user.avatar} alt='' />
-										<div className='nav-text'>
-											<span>{this.props.user.username}</span>
-											<small>11k friend</small>
-											<div className='nav-button'>
-												<span><ion-icon name="checkmark-outline" /></span>
-												<span><ion-icon name="close-outline" /></span>
+									{this.state.request ? 
+										<div className='flex-box nav-mes'>
+											<img src={this.props.user.avatar} alt='' />
+											<div className='nav-text'>
+												<span>{this.props.user.username}</span>
+												<small>11k friend</small>
+												<div className='nav-button'>
+													<span><ion-icon name="checkmark-outline" /></span>
+													<span><ion-icon name="close-outline" /></span>
+												</div>
 											</div>
-										</div>
-									</div>
+										</div> : <small>No request</small>
+									}
+
 								</div>
 							</div>}
 					</div>

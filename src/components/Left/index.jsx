@@ -59,7 +59,7 @@ export class index extends Component {
                         </li>
                         <li>
                             <NavLink exact to={'/weather'} className={({ isActive }) => (isActive ? 'link active' : 'link')} >
-                                <span><ion-icon name="sunny-outline" /></span>
+                                <span><ion-icon name="thunderstorm-outline"/></span>
                                 <span>Weather</span>
                             </NavLink>
                         </li>

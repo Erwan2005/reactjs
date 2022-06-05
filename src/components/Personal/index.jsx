@@ -179,6 +179,7 @@ export class index extends Component {
   componentDidMount() {
     this.getProfile()
     this.getPub()
+
   };
   render() {
     return (

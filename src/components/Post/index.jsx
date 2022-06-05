@@ -76,6 +76,7 @@ export class index extends Component {
 		this.getLike()
 		this.getCom()
 		this.handleSearch()
+		
 	};
 
 	render() {

@@ -4,13 +4,15 @@
     width: 100%;
     display: grid;
     grid-template-columns: repeat(4,1fr);
-    grid-gap: 10px;
+    grid-gap: 5px;
 	align-items: center;
 	justify-content: center;
 }
 
 .product .card{
 	width: 100%;
+	min-height: 280px;
+	max-height: 280px;
 	background-color: var(--grey);
 	box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
 }
@@ -18,7 +20,8 @@
 .product .card .imgBox{
 	position: relative;
 	width: 100%;
-	height: 210px;
+	min-height: 200px;
+	max-height: 200px;
 	overflow: hidden;
 }
 
@@ -138,14 +141,14 @@
 }
 
 .product .card .content .price .rating{
-	font-size: 20px;
+	font-size: 15px;
 	color: #ffd513;
 	align-items: center;
 	display: flex;
 }
 
 .product .card .content .price .rating .grey{
-	font-size: 20px;
+	font-size: 15px;
 	color: #ccc;
 }
 

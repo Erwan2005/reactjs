@@ -3,6 +3,7 @@ import { Route, Switch, withRouter, Link } from 'react-router-dom'
 import { connect } from "react-redux";
 import Details from '../Details'
 import Product from '../Products'
+import Manage from '../Manage'
 import Cart from '../Cart'
 import './style.css'
 export class index extends Component {
@@ -28,8 +29,8 @@ export class index extends Component {
 		this.props.cart.map((ele, k) => {
 			price = ele.price * ele.quantity + price
 		});
-		this.setState({total: price})
-		
+		this.setState({ total: price })
+
 	};
 	componentDidMount() {
 		this.handleSearch()
@@ -44,7 +45,9 @@ export class index extends Component {
 							<div className='dropdown'>
 								<div className='menu-list'>
 									<span className='icon' onClick={this.seller}><ion-icon name="construct-outline" /> <small className='icon-text'>Seller</small></span>
-									<span className='icon'><ion-icon name="server-outline" /> <small className='icon-text'>Manage product</small></span>
+									<Link to={`${this.props.match.url}/manage`} style={{ textDecoration: 'none' }} exact={true}>
+										<span className='icon'><ion-icon name="server-outline" /> <small className='icon-text'>Manage product</small></span>
+									</Link>
 									<span className='icon'><ion-icon name="analytics-outline" /> <small className='icon-text'>Product Analytics</small></span>
 								</div>
 							</div>}
@@ -61,6 +64,7 @@ export class index extends Component {
 					</Route>
 					<Route exact path={`${this.props.match.path}/products/:id_prod`} component={Details} />
 					<Route exact path={`${this.props.match.path}/cart`} component={Cart} />
+					<Route exact path={`${this.props.match.path}/manage`} component={Manage} />
 				</Switch >
 			</div >
 		)

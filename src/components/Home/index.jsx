@@ -80,6 +80,7 @@ export class index extends Component {
 		this.setState({ menu1: !this.state.menu1 })
 		localStorage.clear()
 		window.location.reload(false);
+		this.props.navigate('/')
 	};
 
 	getPub = async () => {
@@ -118,13 +119,13 @@ export class index extends Component {
 		if (this.state.theme !== '') {
 			theme = 'light'
 			formData.append("color", theme)
-			this.props.dispatchs(themeUpdate(light))
+			this.props.dispatchs(themeUpdate(theme))
 			this.setState({ theme: '', checked: false })
 			let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
 		} else {
 			theme = 'dark'
 			formData.append("color", theme)
-			this.props.dispatchs(themeUpdate(light))
+			this.props.dispatchs(themeUpdate(theme))
 			this.setState({ theme: 'dark', checked: true })
 			let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
 		}

@@ -25,11 +25,11 @@ const userSlice = createSlice({
     },
     covertUpdate: (state, action) => {
       state.isFetching = false;
-      state.currentUser.img_covert = action.payload
+      state.currentUser.covert = action.payload
     },
     themeUpdate: (state, action) =>{
       state.isFetching = false;
-      state.currentUser.color = action.payload
+      state.currentUser.theme = action.payload
     }
   },
 });

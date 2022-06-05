@@ -1,53 +1,85 @@
+.modal{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .modal > .container{
-	width: 400px;
-	height: 200px;
+	width: 450px;
 	background: var(--white);
-	border-radius: 10px;
 	position: relative;
 	overflow: hidden;
-    font-family: var(--fontlight);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     padding: 5px 10px;
 }
-.modal > .container > span{
-	position: absolute;
-	top: 0;
-	right: 15px;
-	color: var(--greyscale);
-	background: var(--bgbtn);
-	width: 10px;
-	height: 10px;
-	border-radius: 50%;
-	padding: 5px;
-	cursor: pointer;
+.modal > .container .red{
+    color: var(--red);
+    position: absolute;
+    top: 0;
+    right: 2px;
 }
 
-.modal > .container > .pass{
-    display: flex;
-    flex-direction: row;
-    color:var(--greyscale);
-    align-items: center;
+.modal > .container .header{
+    color: var(--green);
+    font-size: 20px;
+    font-family: var(--fontlight);
 }
-.modal > .container > .pass input{
-    padding: 5px;
-    border: 1px solid var(--greyscale);
+
+.modal > .container .contents{
+    width: 100%;
     flex-grow: 1;
-    color: var(--greyscale)
-    width
-}
-.modal > .container > .pass span{
-    display: inline-block;
-    width: 50%;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
 }
 
-.modal > .container > button{
-    width: 20%;
-    height: 40px;
-    border: 1px solid var(--greyscale);
+.modal > .container .contents input{
+    padding: 5px 5px;
+    width: 100%;
+    font-size: 16px;
+    font-family: var(--fontlight);
+    color: var(--grey);
+    border: 1px solid var(--grey);
+    border-radius: 0;
+}
+
+.modal > .container .contents small{
+    color: var(--red);
+    width: 100%;
+    min-height: 30px;
+    text-align: left;
+    height: 20px;
+    flex-grow: 1;
+    
+}
+
+.modal > .container .contents button{
+    width: 35%;
+    padding: 5px 5px;
+    font-size: 18px;
+    color: var(--green);
+    font-family: var(--fontlight);
+    border: 1px solid var(--green);
     background: transparent;
-    color: var(--greyscale);
-    text-transform: uppercase;
+    transition: all 0.5s;
+}
+
+.modal > .container .contents button:hover{
+    color: var(--white);
+    background: var(--green);
+    cursor: pointer;
+}
+
+.modal > .container .contents button:disabled{
+    cursor: not-allowed;
 }

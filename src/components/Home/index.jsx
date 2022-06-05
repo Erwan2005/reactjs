@@ -10,8 +10,9 @@ import User from '../../assets/user.jpg'
 import Left from '../Left'
 import Right from '../Right'
 import Weather from '../Weather'
-import Personal from '../Personal';
-import Shop from '../shop/Drawer';
+import Personal from '../Personal'
+import Modal from '../Modal'
+import Shop from '../shop/Drawer'
 import './style.css'
 import { FormatListNumberedRtlTwoTone } from '@material-ui/icons'
 import { light } from '@material-ui/core/styles/createPalette'
@@ -39,9 +40,12 @@ export class index extends Component {
 			engine: '',
 			checked: false,
 			request: false,
+			modal : false,	
 		}
 		this.handleToUpdate = this.handleToUpdate.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
+		this.handleClose = this.handleClose.bind(this);
+		this.openModal = this.openModal.bind(this);
 	}
 	handleToUpdate(data) {
 		this.setState({ publication: [data].concat(this.state.publication) });
@@ -139,6 +143,13 @@ export class index extends Component {
 			this.setState({ request: false })
 		}
 	};
+	openModal = () => {
+		this.setState({ modal: !this.state.modal })
+	}
+
+	handleClose = () => {
+		this.setState({ modal: !this.state.modal })
+	}
 	componentDidMount() {
 		this.getCurrent()
 		this.getPub()
@@ -189,7 +200,7 @@ export class index extends Component {
 											<span>{this.props.user.username}</span>
 										</Link>
 									</div>
-									<div className='flex-box'>
+									<div className='flex-box' onClick={this.openModal}>
 										<span className='icon'><ion-icon name="key-outline" /></span>
 										<span>Change password</span>
 									</div>
@@ -258,6 +269,8 @@ export class index extends Component {
 					</div>
 
 				</nav>
+				{this.state.modal &&
+					<Modal handleClose={this.handleClose} />}
 				<main>
 					<Left getActiveMenu={this.getActiveMenu} />
 					<Switch>
@@ -273,7 +286,7 @@ export class index extends Component {
 								<Weather />
 							</Route>
 							<Route path={`/personnal`}>
-								<Personal />
+								<Personal/>
 							</Route>
 						</div>
 					</Switch>

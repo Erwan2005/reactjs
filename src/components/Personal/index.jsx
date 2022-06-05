@@ -5,6 +5,7 @@ import { avatarUpdate, covertUpdate } from "../../context/userRedux";
 import Avatar from '../../assets/user.jpg'
 import Cover from '../../assets/cover.jpg'
 import { connect } from "react-redux";
+import Post from '../Post'
 import { Route, Switch, withRouter, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { publicRequest, userRequest, parseRequest } from '../../requestMethods';
@@ -24,8 +25,17 @@ export class index extends Component {
       firstname: '',
       lastname: '',
       birth: '',
+      search: '',
+      publication: [],
+      page: 1,
+      more_exist: false,
+      end: false,
     }
+    this.handleSearch = this.handleSearch.bind(this);
   };
+  handleSearch(type) {
+    console.log(type)
+  }
   activeOrnot = (div) => {
     this.setState({ disabled: !this.state.disabled, div: div })
   }
@@ -64,7 +74,7 @@ export class index extends Component {
           } catch (err) {
             console.log(err);
           }
-          
+
         } else if (e.target.name === 'avatar') {
           try {
             Resizer.imageFileResizer(
@@ -94,7 +104,7 @@ export class index extends Component {
     let data = await userRequest.get(`userapp/users/${this.props.user.id}`).then(({ data }) => data)
     this.setState({
       covert: data.img_covert, avatar: data.avatar, about: data.about_me,
-      username: data.username, firstname: data.first_name, lastname: data.last_name,birth: data.birth_date
+      username: data.username, firstname: data.first_name, lastname: data.last_name, birth: data.birth_date
     })
   }
   updateData = async (val, value) => {
@@ -102,15 +112,15 @@ export class index extends Component {
       let formData = new FormData();
       formData.append("about_me", value)
       let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
-      this.setState({ about: data.about_me ,div:''})
+      this.setState({ about: data.about_me, div: '' })
     } else if (val === 'covert') {
       let formData = new FormData();
       formData.append(
         "img_covert",
         value)
-        this.props.dispatchs(covertUpdate(value))
+      this.props.dispatchs(covertUpdate(value))
       let data = await parseRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
-      this.setState({ covert: data.img_covert ,div:''})
+      this.setState({ covert: data.img_covert, div: '' })
     } else if (val === 'avatar') {
       let formData = new FormData();
       formData.append(
@@ -118,42 +128,64 @@ export class index extends Component {
         value)
       this.props.dispatchs(avatarUpdate(value))
       let data = await parseRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
-      this.setState({ avatar: data.avatar ,div:''})
+      this.setState({ avatar: data.avatar, div: '' })
     } else if (val === 'username') {
       let formData = new FormData();
       formData.append("username", value)
       let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
-      this.setState({ username: data.username ,div:''})
-      
+      this.setState({ username: data.username, div: '' })
+
     } else if (val === 'name') {
       let formData = new FormData();
       formData.append("first_name", value)
       let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
-      this.setState({ firstname: data.first_name ,div:''})
+      this.setState({ firstname: data.first_name, div: '' })
     } else if (val === 'lastname') {
       let formData = new FormData();
       formData.append("last_name", value)
       let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
-      this.setState({ lastname: data.last_name ,div:''})
+      this.setState({ lastname: data.last_name, div: '' })
     }
     else if (val === 'birth') {
       let formData = new FormData();
       formData.append("birth_date", value)
       let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
-      this.setState({ birth: data.birth_date ,div:''})
+      this.setState({ birth: data.birth_date, div: '' })
     }
+
+  }
+  getPub = async () => {
+    try {
+      this.setState({ loading: true })
+      let data = await userRequest.get(`userapp/publication/?page=${this.state.page}`)
+        .then(({ data }) => data)
+      if (data.next) {
+        this.setState({ page: this.state.page + 1 })
+      } else {
+        this.setState({ more_exist: false, end: true })
+      }
+      data.results && data.results.map((pub, index) => {
+        if (pub.user === this.props.user.id) {
+          this.setState({ publication: this.state.publication.concat(pub) })
+        }
+      })
+
+    } catch (error) {
+      window.location.reload(true);
+    }
+
 
   }
   componentDidMount() {
     this.getProfile()
-
+    this.getPub()
   };
   render() {
     return (
       <div className='perso-container'>
         <div className='perso-header'>
           <div className='header-top'>
-            <img src={this.props.user.img_covert ? this.props.user.img_covert : Cover} alt='' />
+            <img src={this.props.user.covert ? this.props.user.covert : Cover} alt='' />
             <div className='mur-badge' onClick={(event) => {
               event.preventDefault();
               this.refImg.current.click();
@@ -177,6 +209,7 @@ export class index extends Component {
 
           <div className='personal-tab'>
             <ul>
+              <li>Publication</li>
               <li>Image</li>
               <li>Videos</li>
               <li>Pages</li>
@@ -201,11 +234,11 @@ export class index extends Component {
             </div>
             <span className='text'>Username</span>
             <div className='input-data'>
-              {( this.state.div === 'username') ?
+              {(this.state.div === 'username') ?
                 <input type='text' value={this.state.username}
                   onChange={e => this.setState({ username: e.target.value })} /> :
                 <small>{this.state.username}</small>}
-              {( this.state.div === 'username') ? <button onClick={() => this.updateData('username', this.state.username)}>&#10003;</button> :
+              {(this.state.div === 'username') ? <button onClick={() => this.updateData('username', this.state.username)}>&#10003;</button> :
                 <span onClick={() => this.activeOrnot('username')}>&#9998;</span>}
             </div>
             <span className='text'>Name</span>
@@ -223,17 +256,17 @@ export class index extends Component {
                 <input type='text' value={this.state.lastname}
                   onChange={e => this.setState({ lastname: e.target.value })} /> :
                 <small>{this.state.lastname}</small>}
-              {( this.state.div === 'lastname') ? <button onClick={() => this.updateData('lastname', this.state.lastname)}>&#10003;</button> :
+              {(this.state.div === 'lastname') ? <button onClick={() => this.updateData('lastname', this.state.lastname)}>&#10003;</button> :
                 <span onClick={() => this.activeOrnot('lastname')}>&#9998;</span>}
             </div>
             <span className='text'>Date of birth</span>
             <div className='input-data'>
               {(this.state.div === 'birth') ?
-                  <input type='date' value={this.state.birth}
-                    onChange={e => this.setState({ birth: e.target.value })} /> :
-                  <small>{this.state.birth}</small>}
-                {(this.state.div === 'birth') ? <button onClick={() => this.updateData('birth', this.state.birth)}>&#10003;</button> :
-                  <span onClick={() => this.activeOrnot('birth')}>&#9998;</span>}
+                <input type='date' value={this.state.birth}
+                  onChange={e => this.setState({ birth: e.target.value })} /> :
+                <small>{this.state.birth}</small>}
+              {(this.state.div === 'birth') ? <button onClick={() => this.updateData('birth', this.state.birth)}>&#10003;</button> :
+                <span onClick={() => this.activeOrnot('birth')}>&#9998;</span>}
             </div>
             <span className='text'>Adress</span>
             <div className='input-data'></div>
@@ -243,6 +276,11 @@ export class index extends Component {
             <div className='input-data'></div>
           </div>
           <div className='footer-right'>
+            <Switch>
+              <Route path='/'>
+                <Post publication={this.state.publication} handleSearch={this.handleSearch} />
+              </Route>
+            </Switch>
           </div>
         </div>
       </div >

@@ -85,7 +85,7 @@
 .personal-tab ul li{
     list-style: none;
 	display: flex;
-	width: 80px;
+    padding: 5px 5px;
 	align-items: center;
     justify-content: center;
 	line-height: 20px;	
@@ -201,11 +201,11 @@
 }
 
 .perso-footer .footer-right{
-    background: var(--bgbtn);
     width: 100%;
     height: auto;
     border-radius: 10px;
     padding: 5px 10px;
+    overflow: auto;
 }
 
 @media(max-width: 720px) {

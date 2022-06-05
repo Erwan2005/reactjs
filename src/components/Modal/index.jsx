@@ -9,6 +9,10 @@ export class index extends Component {
         this.state ={
             oldpass: '',
             newpass: '',
+            repeatpass: '',
+            error: false,
+            textError: '',
+            disable: true,
         }
 		
 	}
@@ -19,31 +23,52 @@ export class index extends Component {
         try{
             let data = await userRequest.put('change-password/',{old_password: this.state.oldpass,new_password: this.state.newpass})
             .then(({data}) => data)
-            toast.success('Password changed successfufly')
+            toast.success('Password changed sucessffuly')
             this.props.handleClose()
         }catch (error){
-            toast.error('Old password is wrong')
+            this.setState({error: true, textError: 'Old password is wrong'})
+        }
+    }
+    oldPass = (e) =>{
+        this.setState({oldpass: e.target.value, error: false})
+    }
+
+    newPass = (e) =>{
+        const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+        if(strongRegex.test(e.target.value)) {
+            this.setState({error: false})
+        }else{
+            this.setState({error: true, textError: 'Paswword must have uppercase, lowercase, special character, number and minimum 8 characters'})
+        }
+        this.setState({newpass: e.target.value})
+        
+    }
+    repeatPass = (e) =>{
+        if(e.target.value !== this.state.newpass){
+            this.setState({error: true, textError: "Password don't match", repeatpass: e.target.value})
+        }else{
+            this.setState({error: false, repeatpass: e.target.value, disable: false})
         }
     }
     render() {
         return (
             <div className='modal'>
                 <div className='container'>
-                    <label>Password change</label>
-                    <div className='pass'>
-                        <span>Old Password:</span>
-                        <input type='password'
+                    <span className='icon red' onClick={this.close}><ion-icon name="close-outline"/></span>
+                    <span className='header'>Password change</span>
+                    <div className='contents'>
+                        <input type='password' placeholder='Old password' 
                         value = {this.state.oldpass}
-                        onChange = {e => this.setState({oldpass:e.target.value})}/>
-                    </div>
-                    <div className='pass'>
-                        <span>New Password:</span>
-                        <input type='password' 
+                        onChange = {this.oldPass}/>
+                        <input type='password' placeholder='New password' 
                         value = {this.state.newpass}
-                        onChange = {e => this.setState({newpass:e.target.value})}/>
+                        onChange = {this.newPass}/>
+                        <input type='password' placeholder='Repeat password' 
+                        value = {this.state.repeatpass}
+                        onChange = {this.repeatPass}/>
+                        {this.state.error && <small>{this.state.textError}</small>}
+                        <button onClick={this.changepwd} disabled={this.state.disable}>Change</button>
                     </div>
-                    <button onClick={this.changepwd}>Change</button>
-                    <span onClick={this.close}>&#9747;</span>
                 </div>
             </div>
         )

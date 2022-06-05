@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
-import { Route, Switch, withRouter } from 'react-router-dom'
+import { Route, Switch, withRouter, Link } from 'react-router-dom'
 import { connect } from "react-redux";
 import Details from '../Details'
 import Product from '../Products'
+import Cart from '../Cart'
 import './style.css'
 export class index extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			open: false,
+			total: 0,
 		}
 		this.handleSearch = this.handleSearch.bind(this)
 	}
@@ -18,11 +20,20 @@ export class index extends Component {
 	seller = () => {
 		console.log('mande')
 	}
-	handleSearch = () =>{
+	handleSearch = () => {
 		this.props.handleSearch('product')
 	}
+	total = () => {
+		let price = 0;
+		this.props.cart.map((ele, k) => {
+			price = ele.price * ele.quantity + price
+		});
+		this.setState({total: price})
+		
+	};
 	componentDidMount() {
 		this.handleSearch()
+		this.total()
 	};
 	render() {
 		return (
@@ -38,15 +49,18 @@ export class index extends Component {
 								</div>
 							</div>}
 					</span>
-					<span className='icon nav-icon'><ion-icon name="cart-outline" />{this.props.quantity ? <small>{this.props.quantity}</small> : null}</span>
-					<span>Qty: </span>
-					<span>Price: </span>
+					<Link to={`${this.props.match.url}/cart`} style={{ textDecoration: 'none' }} exact={true}>
+						<span className='icon nav-icon'><ion-icon name="cart-outline" />{this.props.cart.length ? <small>{this.props.cart.length}</small> : null}</span>
+					</Link>
+					<span className='flag'>Qty: {this.props.cart.length ? this.props.cart.length : 0}</span>
+					<span className='flag'>Price: $ {this.state.total}</span>
 				</div>
 				<Switch>
 					<Route exact path={this.props.match.url}>
 						<Product search={this.props.search} results={this.props.results} />
 					</Route>
 					<Route exact path={`${this.props.match.path}/products/:id_prod`} component={Details} />
+					<Route exact path={`${this.props.match.path}/cart`} component={Cart} />
 				</Switch >
 			</div >
 		)
@@ -55,7 +69,7 @@ export class index extends Component {
 
 const mapStateToProps = (state) => ({
 	user: state.user.currentUser,
-	quantity: state.cart.quantity,
+	cart: state.cart.carts,
 });
 
 export default connect(mapStateToProps)(withRouter(index))

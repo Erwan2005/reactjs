@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import Resizer from "react-image-file-resizer";
 import { PhotoCamera } from '@material-ui/icons';
-import {
-  Person, MenuBook, Room,
-  Cake, Favorite, People, Email
-} from '@material-ui/icons';
+import { avatarUpdate, covertUpdate } from "../../context/userRedux";
 import Avatar from '../../assets/user.jpg'
 import Cover from '../../assets/cover.jpg'
 import { connect } from "react-redux";
@@ -111,6 +108,7 @@ export class index extends Component {
       formData.append(
         "img_covert",
         value)
+        this.props.dispatchs(covertUpdate(value))
       let data = await parseRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
       this.setState({ covert: data.img_covert ,div:''})
     } else if (val === 'avatar') {
@@ -118,6 +116,7 @@ export class index extends Component {
       formData.append(
         "avatar",
         value)
+      this.props.dispatchs(avatarUpdate(value))
       let data = await parseRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
       this.setState({ avatar: data.avatar ,div:''})
     } else if (val === 'username') {
@@ -125,6 +124,7 @@ export class index extends Component {
       formData.append("username", value)
       let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
       this.setState({ username: data.username ,div:''})
+      
     } else if (val === 'name') {
       let formData = new FormData();
       formData.append("first_name", value)
@@ -153,7 +153,7 @@ export class index extends Component {
       <div className='perso-container'>
         <div className='perso-header'>
           <div className='header-top'>
-            <img src={this.state.covert ? this.state.covert : Cover} alt='' />
+            <img src={this.props.user.img_covert ? this.props.user.img_covert : Cover} alt='' />
             <div className='mur-badge' onClick={(event) => {
               event.preventDefault();
               this.refImg.current.click();
@@ -163,7 +163,7 @@ export class index extends Component {
             }} ref={this.refImg} style={{ display: 'none' }} name='covert' />
             <div className='avatar'>
               <div className='avatar-relative'>
-                <img src={this.state.avatar ? this.state.avatar : Avatar} alt='avatar' />
+                <img src={this.props.user.avatar ? this.props.user.avatar : Avatar} alt='avatar' />
                 <span onClick={(event) => {
                   event.preventDefault();
                   this.refAv.current.click()
@@ -253,4 +253,7 @@ export class index extends Component {
 const mapStateToProps = (state) => ({
   user: state.user.currentUser,
 });
-export default connect(mapStateToProps, null)(withRouter(index))
+const mapDispatchToProps = (dispatch) => ({
+  dispatchs: dispatch,
+});
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(index))

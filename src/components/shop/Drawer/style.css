@@ -8,7 +8,7 @@
 	position: absolute;
 	right: 0;
 	top: 0;
-	width: 25%;
+	min-width: 25%;
 	min-height: 50px;
 	max-height: 50px;
 	border: 1px solid var(--green);
@@ -61,6 +61,12 @@
 	font-size: 15px;
 	font-family: var(--fontlight);
 	color: var(--text-primary);
+}
+
+.flag{
+	color: var(--text-primary);
+	font-family: var(--fontlight);
+	font-size: 15px;
 }
 
 @media(max-width: 720px) {

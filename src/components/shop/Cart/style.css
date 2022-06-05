@@ -1,168 +1,60 @@
 .cart{
     position: relative;
     width: 100%;
-    padding: 20px;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    grid-gap: 30px;
-    margin-top: 10px;
-}
-
-.cart .details{
-    position: relative;
-    width: 100%;
-    display: grid;
-    background: var(--background);
-    padding: 20px;
-    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
-    border-radius: 20px;
-}
-
-.cardHeader{
+    height: 98%;
     display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+.cart .cart-header{
+    min-width: 60%;
+    max-width: 65%;
+    max-height: 70px;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
-    border-bottom: 1px solid var(--bgbtn);
+    background: var(--bgbtn);
+    padding: 10px 10px;
 }
 
-.cardHeader h2{
-    font-weight: 500;
-    color: var(--red);
-}
-
-.btn{
-    padding: 5px 10px;
-    background: #ff5959;
-    color: var(--white);
-    border-radius: 20px;
-    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.cart .details table{
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-.cart table thead{
-    font-weight: 600;
-    height: 20px;
-    max-height: 25px;
-    padding: 15px;
-
-}
-
-.cart .details table tr{
+.cart .cart-header span:last-child{
     color: var(--text-primary);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.cart .details table tbody tr:hover{
-    background: var(--green);
-    color: var(--white);
-}
-
-.cart .details table tbody tr{
-    height: 80px;
-    max-height: 80px;
-}
-.cart .details table tr:last-child{
-    border-bottom: none;
-}
-
-.cart .details table tbody tr td{
-    padding: 10px;
-}
-
-.cart .details table tr td:last-child{
-    text-align: end;
-}
-.cart .details table tr td:nth-child(2),
-.cart .details table tr td:nth-child(3),
-.cart .details table tr td:nth-child(4)
-{
-    text-align: center;
-}
-
-.cart .details table tbody tr td .edit{
-    cursor: pointer;
-    padding: 3px 5px;
-    background: #7fd0fe;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-
-.cart .details table tbody tr td .delete{
-    cursor: pointer;
-    padding: 3px 5px;
-    background: #ff5959;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
-
-.cart .details table tbody tr td img{
-    width: 100px;
-    height: 100%;
-    object-fit: cover;
-}
-
-.summary{
-    position: relative;
-    max-height: 300px;
-    display: grid;
-    padding: 20px;
-    background: var(--background);
-    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
-    border-radius: 20px;
-    color: var(--text-primary);
-}
-.summary table{
-    width: 100%;
-    height: 100%;
-    margin-bottom: 10px;
-}
-.summary table tr td:last-child{
-    text-align: end;
-}
-.summary table tr:last-child{
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    font-weight: 600;
-}
-
-.summary p{
-    font-size: 13px;
-}
-.summary button{
-    border:  1px solid var(--green);
-    min-height: 30px;
-    background: transparent;
-    border-radius: 20px;
-    color: var(--text-primary);
+    font-family: var(--fontlight);
     font-size: 15px;
-    margin-top: 10px;
 }
 
-.summary button:hover{
-    background: var(--green);
-    color: var(--white);
+.cart .cart-header span:last-child:hover{
+    color: var(--green);
     cursor: pointer;
 }
-.summary img{
-    max-width: 60px;
-    max-height: 13px;
+
+.cart .contents{
+    width: 100%;
+    flex-grow: 1;
+    overflow: auto;
+}
+.cart .contents table{
+    width: 100%;
+    color: var(--text-primary);
+    font-family: var(--fontlight);
+    font-size: 13px;
+    font-weight: lighter;
+}
+
+.cart .contents table img{
+    min-width: 80px;
+    min-height: 80px;
+    max-width: 80px;
+    max-height: 80px;
     object-fit: cover;
 }
-@media(max-width: 768px) {
-   .cart{
-        grid-template-columns: repeat(1,1fr);
-        max-width: 100%;
-   } 
-   .details{
-        overflow-x: auto;
-   }
-   .cardHeader h2{
-        font-size: 20px;
-   }
+.cart .contents table .prod-desc{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+.cart .contents table .red{
+    color: var(--red);
 }

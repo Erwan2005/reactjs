@@ -6,7 +6,6 @@ import Home from './components/Home';
 import User from './components/User'
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevTools } from 'react-query/devtools'
-import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 

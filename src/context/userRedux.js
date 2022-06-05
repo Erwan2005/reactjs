@@ -19,8 +19,20 @@ const userSlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
+    avatarUpdate: (state, action) => {
+      state.isFetching = false;
+      state.currentUser.avatar = action.payload
+    },
+    covertUpdate: (state, action) => {
+      state.isFetching = false;
+      state.currentUser.img_covert = action.payload
+    },
+    themeUpdate: (state, action) =>{
+      state.isFetching = false;
+      state.currentUser.color = action.payload
+    }
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure } = userSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, avatarUpdate, covertUpdate, themeUpdate } = userSlice.actions;
 export default userSlice.reducer;

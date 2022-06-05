@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import Post from '../Post'
 import Add from '../Add'
 import { Route, Switch, withRouter, Link } from 'react-router-dom'
+import { themeUpdate } from "../../context/userRedux";
 import { publicRequest, userRequest, parseRequest } from '../../requestMethods'
 import { useQuery } from "react-query";
 import User from '../../assets/user.jpg'
@@ -13,6 +14,7 @@ import Personal from '../Personal';
 import Shop from '../shop/Drawer';
 import './style.css'
 import { FormatListNumberedRtlTwoTone } from '@material-ui/icons'
+import { light } from '@material-ui/core/styles/createPalette'
 
 function Query(props) {
 	return (props.children(useQuery(props.keyName, props.fn, props.options)));
@@ -112,13 +114,15 @@ export class index extends Component {
 		if (this.state.theme !== '') {
 			theme = 'light'
 			formData.append("color", theme)
-			let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
+			this.props.dispatchs(themeUpdate(light))
 			this.setState({ theme: '', checked: false })
+			let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
 		} else {
 			theme = 'dark'
 			formData.append("color", theme)
-			let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
+			this.props.dispatchs(themeUpdate(light))
 			this.setState({ theme: 'dark', checked: true })
+			let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
 		}
 	}
 	handleClickOutside = () => {
@@ -283,4 +287,7 @@ export class index extends Component {
 const mapStateToProps = (state) => ({
 	user: state.user.currentUser,
 });
-export default connect(mapStateToProps, null)(withRouter(index))
+const mapDispatchToProps = (dispatch) => ({
+	dispatchs: dispatch,
+  });
+  export default connect(mapStateToProps, mapDispatchToProps)(withRouter(index))

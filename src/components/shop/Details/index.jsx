@@ -3,7 +3,7 @@ import { withRouter, Link } from "react-router-dom";
 import { FavoriteBorder, Favorite, AddShoppingCart, Remove, Add, ArrowLeft } from "@material-ui/icons";
 import { publicRequest, userRequest } from '../../../requestMethods';
 import { connect } from "react-redux";
-import { addProduct } from "../../../context/cartRedux";
+import { addCart } from "../../../context/cartRedux";
 import "./style.css"
 
 export class index extends React.Component {
@@ -37,9 +37,7 @@ export class index extends React.Component {
 
 	addCart = (quantity) => {
 		this.insertCart()
-		this.props.dispatchs(
-			addProduct({ ...this.state.product, quantity })
-		);
+		
 	}
 
 	getUser = async () => {

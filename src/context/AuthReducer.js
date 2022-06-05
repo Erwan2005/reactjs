@@ -18,6 +18,18 @@ const AuthReducer = (state, action) => {
         isFetching: false,
         error: true,
       };
+    case "AVATAR_UPDATE":
+      return {
+        user: action.payload,
+        isFetching: false,
+        error: false,
+      };
+    case "COVERT_UPDATE":
+      return {
+        user: action.payload,
+        isFetching: false,
+        error: false,
+      };
     case "FOLLOW":
       return {
         ...state,
@@ -36,10 +48,6 @@ const AuthReducer = (state, action) => {
           ),
         },
       };
-    case "TOGGLE":
-      return { darkMode: !state.darkMode };
-    default:
-      return state;
   }
 };
 

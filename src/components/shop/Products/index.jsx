@@ -3,7 +3,7 @@ import { Info, FavoriteBorder, Favorite, AddShoppingCart, StarRate } from "@mate
 import { Link, withRouter } from 'react-router-dom';
 import { publicRequest, userRequest } from '../../../requestMethods';
 import { connect } from "react-redux";
-import { addProduct } from "../../../context/cartRedux";
+import { addCart } from "../../../context/cartRedux";
 import './style.css'
 export class index extends React.Component {
 	constructor(props) {
@@ -26,11 +26,9 @@ export class index extends React.Component {
 		let data = await publicRequest.post('shop/cart/', { user, id_prod, quantity })
 			.then(({ data }) => data)
 	}
-	addCart = (product) => {
-		this.insertCart(product.id)
-		let quantity = this.state.quantity
+	addCarts = (product) => {
 		this.props.dispatchs(
-			addProduct({ ...product, quantity })
+			addCart(product)
 		);
 	}
 	componentDidMount() {
@@ -56,7 +54,7 @@ export class index extends React.Component {
 											<small className='icon'> <ion-icon name="heart-outline"/></small>
 											<span>Add to Wishlist</span>
 										</li>
-										<li onClick={() => this.addCart(prod)}>
+										<li onClick={() => this.addCarts(prod)}>
 											<small className='icon'><ion-icon name="cart-outline"/></small>
 											<span>Add to Cart</span>
 										</li>

@@ -21,6 +21,13 @@ import { light } from '@material-ui/core/styles/createPalette'
 function Query(props) {
 	return (props.children(useQuery(props.keyName, props.fn, props.options)));
 }
+function QueryPost(props) {
+	return (props.children(useQuery(props.keyName, props.fn, {
+		refetchInterval: 5000,
+		refetchIntervalInBackground: false,
+		refetchOnWindowFocus: false
+	})));
+}
 export class index extends Component {
 	constructor(props) {
 		super(props);
@@ -41,7 +48,7 @@ export class index extends Component {
 			engine: '',
 			checked: false,
 			request: false,
-			modal : false,	
+			modal: false,
 		}
 		this.handleToUpdate = this.handleToUpdate.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
@@ -59,7 +66,7 @@ export class index extends Component {
 	getActiveMenu = (newMethod) => {
 		this.activeMenu = newMethod;
 	}
-	postDelete = async (id)=>{
+	postDelete = async (id) => {
 		const new_data = this.state.publication.filter(pub => {
 			if (pub.id === id) {
 				return false
@@ -103,12 +110,12 @@ export class index extends Component {
 			this.setState({ loading: true })
 			let data = await userRequest.get(`userapp/publication/?page=${this.state.page}`)
 				.then(({ data }) => data)
-			this.setState({ publication: this.state.publication.concat(data.results), loading: false })
 			if (data.next) {
 				this.setState({ page: this.state.page + 1 })
 			} else {
 				this.setState({ more_exist: false, end: true })
 			}
+			return data
 
 		} catch (error) {
 			window.location.reload(true);
@@ -197,7 +204,6 @@ export class index extends Component {
 									const events = data ?? []
 									return (
 										<>
-
 											{events.friendRequests ? <small>{events.friendRequests > 9 ? '9+' : events.friendRequests}</small> : null}
 										</>
 									)
@@ -266,7 +272,7 @@ export class index extends Component {
 						{this.state.menu4 &&
 							<div className='menu4'>
 								<div className='menu-container4'>
-									{this.state.request ? 
+									{this.state.request ?
 										<div className='flex-box nav-mes'>
 											<img src={this.props.user.avatar} alt='' />
 											<div className='nav-text'>
@@ -293,8 +299,22 @@ export class index extends Component {
 						<div className='central'>
 							<Route exact path='/'>
 								<Add publication={this.handleToUpdate} />
-								<Post publication={this.state.search === '' ? this.state.publication : this.state.results} handleSearch={this.handleSearch} 
-								postDelete ={this.postDelete}/>
+								<QueryPost
+									keyName="publication"
+									fn={() => this.getPub()}
+								>
+									{({ data, isLoading, error }) => {
+										if (error) return <h1>Error</h1>;
+										const events = data ?? []
+										return (
+											<>
+												<Post publication={this.state.search === '' ? events.results : this.state.results} handleSearch={this.handleSearch}
+													postDelete={this.postDelete} />
+											</>
+										)
+									}}
+								</QueryPost>
+
 							</Route>
 							<Route path='/shop'>
 								<Shop results={this.state.results} search={this.state.search} handleSearch={this.handleSearch} />
@@ -303,7 +323,7 @@ export class index extends Component {
 								<Weather />
 							</Route>
 							<Route path={`/personnal`}>
-								<Personal/>
+								<Personal />
 							</Route>
 						</div>
 					</Switch>
@@ -319,5 +339,5 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
 	dispatchs: dispatch,
-  });
-  export default connect(mapStateToProps, mapDispatchToProps)(withRouter(index))
+});
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(index))

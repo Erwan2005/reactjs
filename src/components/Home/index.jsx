@@ -13,6 +13,7 @@ import Weather from '../Weather'
 import Personal from '../Personal'
 import Modal from '../Modal'
 import Shop from '../shop/Drawer'
+import { toast } from 'react-toastify'
 import './style.css'
 import { FormatListNumberedRtlTwoTone } from '@material-ui/icons'
 import { light } from '@material-ui/core/styles/createPalette'
@@ -46,6 +47,7 @@ export class index extends Component {
 		this.handleSearch = this.handleSearch.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 		this.openModal = this.openModal.bind(this);
+		this.postDelete = this.postDelete.bind(this);
 	}
 	handleToUpdate(data) {
 		this.setState({ publication: [data].concat(this.state.publication) });
@@ -57,6 +59,19 @@ export class index extends Component {
 	getActiveMenu = (newMethod) => {
 		this.activeMenu = newMethod;
 	}
+	postDelete = async (id)=>{
+		const new_data = this.state.publication.filter(pub => {
+			if (pub.id === id) {
+				return false
+			}
+			return true;
+		})
+		this.setState({ publication: new_data })
+		let data = await userRequest.delete(`userapp/publication/${id}/`)
+			.then(({ data }) => data)
+		toast.success('Post deleted')
+	}
+
 	getCurrent = async () => {
 		if (this.props.user.theme === 'light') {
 			this.setState({ theme: '', checked: false })
@@ -278,7 +293,8 @@ export class index extends Component {
 						<div className='central'>
 							<Route exact path='/'>
 								<Add publication={this.handleToUpdate} />
-								<Post publication={this.state.search === '' ? this.state.publication : this.state.results} handleSearch={this.handleSearch} />
+								<Post publication={this.state.search === '' ? this.state.publication : this.state.results} handleSearch={this.handleSearch} 
+								postDelete ={this.postDelete}/>
 							</Route>
 							<Route path='/shop'>
 								<Shop results={this.state.results} search={this.state.search} handleSearch={this.handleSearch} />

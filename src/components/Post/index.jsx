@@ -20,8 +20,10 @@ export class index extends Component {
 			expanded: false,
 			comment: '',
 			comments: [],
+			open: null,
 		}
 		this.handleSearch = this.handleSearch.bind(this)
+		this.postDelete = this.postDelete.bind(this)
 	}
 	handleExpandClick = (id) => {
 		this.setState({ [`expanded_${id}`]: _.isUndefined(this.state[`expanded_${id}`]) ? true : !this.state[`expanded_${id}`] });
@@ -72,11 +74,19 @@ export class index extends Component {
 	handleSearch = () => {
 		this.props.handleSearch('publication')
 	}
+	handleClickOutside = () => {
+		if (this.state.open !== null) {
+			this.setState({ open: null })
+		}
+	};
+	postDelete = (id) =>{
+		this.props.postDelete(id)
+	}
 	componentDidMount() {
 		this.getLike()
 		this.getCom()
 		this.handleSearch()
-		
+
 	};
 
 	render() {
@@ -84,16 +94,20 @@ export class index extends Component {
 			<div className='post-container'>
 				{this.props.publication && this.props.publication.map((pub, index) => {
 					return (
-						<Card className="card" key={pub.id}>
+						<Card className="card" key={index} onClick={this.handleClickOutside}>
 							<CardHeader
 								className="cardHeader"
 								avatar={
 									<img src={pub.proprietary[0].avatar ? pub.proprietary[0].avatar : User} alt="" />
 								}
-								action={
-									<span className='icon'><ion-icon name="ellipsis-vertical-outline"/></span>
-
-								}
+								action={(<>
+									<span className='icon' onClick={() => this.setState({ open: (pub.id === this.state.open ? null : pub.id) })}><ion-icon name="ellipsis-vertical-outline" /></span>
+									{(this.state.open === pub.id && pub.user === this.props.user.id) &&
+										<div className='menu-head'>
+											<span>Edit</span>
+											<span onClick={()=> this.postDelete(pub.id)}>Delete</span>
+										</div>}
+								</>)}
 								title={
 									<span><h3>{pub.proprietary[0].username}</h3></span>
 								}

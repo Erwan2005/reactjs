@@ -18,7 +18,39 @@
 	overflow: hidden;
 	text-transform: capitalize;
 	max-height: 50px;
+	position: relative;
 }
+.cardHeader .menu-head{
+	position: absolute;
+	top: 4px;
+	right: 10px;
+	width: 70px;
+	height: 40px;
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	padding: 5px 5px;
+	background: var(--grey);
+	border-radius: 5px;
+	box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.4);
+	overflow: hidden;
+	transition: all 0.5s;
+}
+.cardHeader .menu-head span{
+	font-size: 11px;
+	font-family: var(--fontlight);
+	color: var(--text-primary);
+}
+.cardHeader .menu-head span:nth-child(1):hover{
+	color: var(--green);
+	cursor: pointer;
+}
+
+.cardHeader .menu-head span:last-child:hover{
+	color: var(--red);
+	cursor: pointer;
+}
+
 .post-container .card .cardHeader img{
 	min-width: 35px;
     min-height: 35px;

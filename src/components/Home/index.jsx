@@ -12,6 +12,7 @@ import Right from '../Right'
 import Weather from '../Weather'
 import Personal from '../Personal'
 import Modal from '../Modal'
+import Messenger from '../Messenger'
 import Shop from '../shop/Drawer'
 import { toast } from 'react-toastify'
 import './style.css'
@@ -110,12 +111,12 @@ export class index extends Component {
 			this.setState({ loading: true })
 			let data = await userRequest.get(`userapp/publication/?page=${this.state.page}`)
 				.then(({ data }) => data)
+			this.setState({ publication: this.state.publication.concat(data.results), loading: false })
 			if (data.next) {
 				this.setState({ page: this.state.page + 1 })
 			} else {
 				this.setState({ more_exist: false, end: true })
 			}
-			return data
 
 		} catch (error) {
 			window.location.reload(true);
@@ -299,21 +300,8 @@ export class index extends Component {
 						<div className='central'>
 							<Route exact path='/'>
 								<Add publication={this.handleToUpdate} />
-								<QueryPost
-									keyName="publication"
-									fn={() => this.getPub()}
-								>
-									{({ data, isLoading, error }) => {
-										if (error) return <h1>Error</h1>;
-										const events = data ?? []
-										return (
-											<>
-												<Post publication={this.state.search === '' ? events.results : this.state.results} handleSearch={this.handleSearch}
-													postDelete={this.postDelete} />
-											</>
-										)
-									}}
-								</QueryPost>
+								<Post publication={this.state.search === '' ? this.state.publication : this.state.results} handleSearch={this.handleSearch}
+									postDelete={this.postDelete} />
 
 							</Route>
 							<Route path='/shop'>
@@ -321,6 +309,9 @@ export class index extends Component {
 							</Route>
 							<Route path='/weather'>
 								<Weather />
+							</Route>
+							<Route path={`/messenger`}>
+								<Messenger />
 							</Route>
 							<Route path={`/personnal`}>
 								<Personal />

@@ -214,7 +214,7 @@ export class index extends Component {
 	}
 
 	realTime = ()=>{
-		this.socket.current = io("ws://wan-socket.herokuapp.com:3001");
+		this.socket.current = io("https://wan-socket.herokuapp.com:3001");
 		this.socket.current.emit("addUser", this.props.user.id);
 		this.socket.current.on("getUsers", (users) => {
 			this.setState({online: users})

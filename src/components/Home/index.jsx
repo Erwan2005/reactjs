@@ -13,8 +13,10 @@ import Weather from '../Weather'
 import Personal from '../Personal'
 import Modal from '../Modal'
 import Messenger from '../Messenger'
+import Profile from '../Profile'
 import Shop from '../shop/Drawer'
 import { toast } from 'react-toastify'
+import io from "socket.io-client";
 import './style.css'
 import { FormatListNumberedRtlTwoTone } from '@material-ui/icons'
 import { light } from '@material-ui/core/styles/createPalette'
@@ -34,7 +36,7 @@ export class index extends Component {
 		super(props);
 		this.defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 		this.container = React.createRef();
-
+		this.socket = React.createRef();
 		this.state = {
 			theme: '',
 			menu1: false,
@@ -49,7 +51,9 @@ export class index extends Component {
 			engine: '',
 			checked: false,
 			request: false,
+			requests: [],
 			modal: false,
+			online: [],
 		}
 		this.handleToUpdate = this.handleToUpdate.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
@@ -166,6 +170,7 @@ export class index extends Component {
 		} else {
 			this.setState({ request: false })
 		}
+		return data;
 	};
 	openModal = () => {
 		this.setState({ modal: !this.state.modal })
@@ -174,9 +179,54 @@ export class index extends Component {
 	handleClose = () => {
 		this.setState({ modal: !this.state.modal })
 	}
+	getRequest = async () => {
+		let data = await userRequest.get(`userapp/friendrequest/`)
+			.then(({ data }) => data)
+		this.setState({ requests: data })
+	}
+
+	dltRequest = async (id) => {
+		let new_data = this.state.requests.filter(req => {
+			if (req.id === id) {
+				return false
+			}
+			return true;
+		})
+		this.setState({ request: new_data })
+
+		let data = await userRequest.delete(`userapp/friendrequest/${id}`)
+			.then(({ data }) => data)
+		toast.warning('Request denied')
+	};
+
+	addFriend = async (friend, id) => {
+		let new_data = this.state.requests.filter(req => {
+			if (req.id === id) {
+				return false
+			}
+			return true;
+		})
+		this.setState({ request: new_data })
+		await userRequest.post('userapp/friend/', { user: this.props.user.id, friend: friend }).then(resp => (console.log(resp)));
+		await userRequest.post('userapp/friend/', { user: friend, friend: this.props.user.id }).then(resp => (console.log(resp)));
+		await userRequest.delete(`userapp/friendrequest/${id}`).then(resp => (console.log(resp)));
+		toast.info('Request accepted')
+	}
+
+	realTime = ()=>{
+		this.socket.current = io("ws://wan-socket.herokuapp.com:3001");
+		this.socket.current.emit("addUser", this.props.user.id);
+		this.socket.current.on("getUsers", (users) => {
+			this.setState({online: users})
+		});
+		
+	}
+
 	componentDidMount() {
+		this.realTime()
 		this.getCurrent()
 		this.getPub()
+		this.getRequest()
 	};
 	render() {
 		return (
@@ -273,18 +323,23 @@ export class index extends Component {
 						{this.state.menu4 &&
 							<div className='menu4'>
 								<div className='menu-container4'>
-									{this.state.request ?
-										<div className='flex-box nav-mes'>
-											<img src={this.props.user.avatar} alt='' />
-											<div className='nav-text'>
-												<span>{this.props.user.username}</span>
-												<small>11k friend</small>
-												<div className='nav-button'>
-													<span><ion-icon name="checkmark-outline" /></span>
-													<span><ion-icon name="close-outline" /></span>
+									{this.state.request ? (
+										this.state.requests.map(req => {
+											return (
+												<div className='flex-box nav-mes'>
+													<img src={req.users[0].avatar} alt='' />
+													<div className='nav-text'>
+														<span>{req.users[0].username}</span>
+														<small>{req.user[0].username}</small>
+														<div className='nav-button'>
+															<span onClick={() => this.addFriend(req.users[0].id, req.id)}><ion-icon name="checkmark-outline" /></span>
+															<span onClick={() => this.dltRequest(req.id)}><ion-icon name="close-outline" /></span>
+														</div>
+													</div>
 												</div>
-											</div>
-										</div> : <small>No request</small>
+											)
+										})
+									) : <small>No request</small>
 									}
 
 								</div>
@@ -316,9 +371,12 @@ export class index extends Component {
 							<Route path={`/personnal`}>
 								<Personal />
 							</Route>
+							<Route path='/profile/:id'>
+								<Profile />
+							</Route>
 						</div>
 					</Switch>
-					<Right />
+					<Right online={this.state.online}/>
 				</main>
 			</div>
 		)

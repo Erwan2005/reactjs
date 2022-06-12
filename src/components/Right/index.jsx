@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { useQuery } from "react-query";
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
+import BoxMessage from '../Box'
 import { publicRequest, userRequest } from '../../requestMethods';
 import './style.css'
 
@@ -15,18 +16,42 @@ export class index extends Component {
         this.state = {
             requests: [],
             loading: false,
-            request: false
+            request: false,
+            box: false,
+            friends: [],
+            profile: [],
+            friend: null,
+            onlineUser: [],
+
         };
+        this.handleClose = this.handleClose.bind(this);
+    }
+    handleOpen = () => {
+        this.setState({ box: !this.state.box })
+    }
+
+    handleClose = () => {
+        this.setState({ box: !this.state.box })
     }
     getCurrentUser = async () => {
         let data = await userRequest.get(`userapp/users/${this.props.user.id}/`)
             .then(({ data }) => data)
+        this.setState({ friend: data.friends })
         if (data.friendRequests === 0) {
             this.setState({ request: false })
         } else {
             this.setState({ request: true })
         }
     };
+    getFriend = async () => {
+        let data = await userRequest.get(`userapp/friend`)
+            .then(({ data }) => data)
+        this.setState({ friends: data })
+    }
+    componentDidMount() {
+        this.getFriend()
+        this.getCurrentUser()
+    }
     render() {
         return (
             <div className='right-container'>
@@ -69,7 +94,35 @@ export class index extends Component {
                         <small className='text-right'>See all</small>
                     </div>
                     <div className='contact'>
-
+                        {(this.props.online !== null) && (
+                            this.props.online.map(friend => {
+                                return (
+                                    (friend.userId !== this.props.user.id) && (
+                                        this.state.friend.map(frd => {
+                                            if (frd.friend_id === friend.userId) {
+                                                return (
+                                                    this.state.friends.map(online => {
+                                                        if (friend.userId === online.friend) {
+                                                            return (
+                                                                <div className='online-friend' onClick={this.handleOpen} key={online.id}>
+                                                                    <div className='avatar'>
+                                                                        <img src={online.friendprof[0].avatar} alt="" />
+                                                                        <small></small>
+                                                                    </div>
+                                                                    <span key={online.id}>{online.friendprof[0].username}</span>
+                                                                    {this.state.box &&
+                                                                        <BoxMessage handleClose={this.handleClose} user={online.friendprof[0]} />}
+                                                                </div>
+                                                            )
+                                                        } else return null
+                                                    })
+                                                )
+                                            } else return null
+                                        })
+                                    )
+                                )
+                            })
+                        )}
                     </div>
                     <div className='other-link'>
                         <small>News</small>

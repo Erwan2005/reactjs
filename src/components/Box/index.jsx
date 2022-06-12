@@ -47,9 +47,9 @@ export class index extends React.Component {
 			<div className="box-message">
 				<div className="box-header">
 					<div className="header-left">
-						<img src="https://cdn.pixabay.com/photo/2022/03/25/17/54/sakura-7091532_960_720.jpg" alt="" />
+						<img src={this.props.user.avatar} alt="" />
 						<div className="userInfo">
-							<span>Erwan</span>
+							<span>{this.props.user.username}</span>
 							<small>Online</small>
 						</div>
 					</div>

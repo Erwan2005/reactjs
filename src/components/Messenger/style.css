@@ -1,4 +1,4 @@
-.messenger{
+.messenger {
 	height: 100%;
 	width: 100%;
 	position: relative;
@@ -6,16 +6,17 @@
 	flex-direction: column;
 }
 
-.messenger .top{
+.messenger .top {
 	width: 100%;
 	height: 10%;
 	display: flex;
 	flex-direction: row;
 	overflow: auto;
 	gap: 5px;
+	visibility: hidden;
 }
 
-.messenger .top .avatar{
+.messenger .top .avatar {
 	min-width: 35px;
 	min-height: 35px;
 	max-width: 35px;
@@ -24,14 +25,14 @@
 	position: relative;
 }
 
-.messenger .top .avatar img{
+.messenger .top .avatar img {
 	width: 100%;
 	height: 100%;
 	border-radius: 50%;
 	object-fit: cover;
 }
 
-.messenger .top .avatar small{
+.messenger .top .avatar small {
 	width: 8px;
 	height: 8px;
 	border-radius: 50%;
@@ -42,14 +43,15 @@
 	border: 1px solid var(--background);
 }
 
-.messenger .bottom{
+.messenger .bottom {
 	width: 100%;
+	max-height: 98%;
 	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
 }
 
-.messenger .bottom .header{
+.messenger .bottom .header {
 	width: 100%;
 	height: 10%;
 	display: flex;
@@ -61,13 +63,14 @@
 }
 
 .messenger .bottom .header .left,
-.messenger .bottom .header .right{
+.messenger .bottom .header .right {
 	display: flex;
 	gap: 5px;
 	height: 100%;
 	align-items: center;
 }
-.messenger .bottom .header .left img{
+
+.messenger .bottom .header .left img {
 	min-width: 35px;
 	min-height: 35px;
 	max-width: 35px;
@@ -75,12 +78,14 @@
 	border-radius: 50%;
 	object-fit: cover;
 }
-.messenger .bottom .header .left span{
+
+.messenger .bottom .header .left span {
 	font-size: 16px;
 	font-family: var(--fontlight);
 	color: var(--text-primary);
 }
-.messenger .bottom .contents{
+
+.messenger .bottom .contents {
 	flex-grow: 1;
 	width: 100%;
 	border: 1px solid var(--bgbtn);
@@ -91,7 +96,7 @@
 	overflow-y: auto;
 }
 
-.messenger .bottom .contents .friend-ms{
+.messenger .bottom .contents .friend-ms {
 	justify-content: flex-start;
 	display: flex;
 	gap: 10px;
@@ -104,7 +109,7 @@
 	border-radius: 5px;
 }
 
-.messenger .bottom .contents .friend-ms .friand-avatar{
+.messenger .bottom .contents .friend-ms .friand-avatar {
 	height: 100%;
 	min-width: 35px;
 	max-width: 35px;
@@ -113,7 +118,7 @@
 	justify-content: center;
 }
 
-.messenger .bottom .contents .friend-ms .friand-avatar img{
+.messenger .bottom .contents .friend-ms .friand-avatar img {
 	min-width: 35px;
 	min-height: 35px;
 	max-width: 35px;
@@ -122,8 +127,8 @@
 	object-fit: cover;
 }
 
-.messenger .bottom .contents .friend-ms .chat-friend{
-	width: 10%;
+.messenger .bottom .contents .friend-ms .chat-friend {
+	min-width: 10%;
 	max-width: 50%;
 	min-height: 40px;
 	max-height: 200px;
@@ -135,7 +140,7 @@
 	flex-direction: column;
 }
 
-.messenger .bottom .contents .friend-ms .chat-friend .timestamp{
+.messenger .bottom .contents .friend-ms .chat-friend .timestamp {
 	width: 100%;
 	max-height: 15px;
 	text-align: right;
@@ -146,7 +151,7 @@
 	font-family: var(--fontlight);
 }
 
-.messenger .bottom .contents .friend-ms .chat-friend::after{
+.messenger .bottom .contents .friend-ms .chat-friend::after {
 	content: '';
 	position: absolute;
 	bottom: 10px;
@@ -157,7 +162,7 @@
 	transform: translateY(-50%) rotate(45deg);
 }
 
-.messenger .bottom .contents .owner-ms{
+.messenger .bottom .contents .owner-ms {
 	justify-content: flex-end;
 	display: flex;
 	gap: 10px;
@@ -168,8 +173,8 @@
 	border-radius: 5px;
 }
 
-.messenger .bottom .contents .owner-chat{
-	width: 10%;
+.messenger .bottom .contents .owner-chat {
+	min-width: 10%;
 	max-width: 50%;
 	min-height: 40px;
 	max-height: 200px;
@@ -178,11 +183,65 @@
 	color: var(--text-primary);
 	background: var(--green);
 	display: flex;
+	flex-direction: column;
 	border-radius: 5px;
 	position: relative;
 }
 
-.messenger .bottom .contents .owner-chat::before{
+.messenger .bottom .contents .owner-chat .timestamp {
+	width: 100%;
+	max-height: 15px;
+	text-align: left;
+	color: var(--white);
+	font-display: flex;
+	justify-content: flex-end;
+	font-size: 10px;
+	font-family: var(--fontlight);
+}
+
+.messenger .bottom .contents .owner-chat .contents-flex {
+	width: 100%;
+	flex-grow: 1;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.messenger .bottom .contents .chat-friend .contents-flex {
+	width: 100%;
+	flex-grow: 1;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.messenger .bottom .contents .chat-friend .contents-flex span {
+	color: var(--text-primary);
+	font-size: 15px;
+	font-family: var(--light);
+}
+
+.messenger .bottom .contents .chat-friend .contents-flex img {
+	width: 100%;
+	max-height: 150px;
+	object-fit: cover;
+}
+
+.messenger .bottom .contents .owner-ms .owner-chat .contents-flex span {
+	color: var(--white);
+	font-size: 15px;
+	font-family: var(--light);
+}
+
+.messenger .bottom .contents .owner-ms .owner-chat .contents-flex img {
+	width: 100%;
+	max-height: 150px;
+	object-fit: cover;
+}
+
+.messenger .bottom .contents .owner-chat::before {
 	content: '';
 	position: absolute;
 	bottom: 10px;
@@ -192,7 +251,8 @@
 	background: var(--green);
 	transform: translateY(-50%) rotate(45deg);
 }
-.messenger .bottom .bot{
+
+.messenger .bottom .bot {
 	width: 100%;
 	height: 15%;
 	background: var(--bgbtn);
@@ -203,7 +263,7 @@
 	gap: 5px;
 }
 
-.ms-icon{
+.ms-icon {
 	font-size: 30px;
 	color: var(--text-primary);
 	border-radius: 50%;
@@ -212,14 +272,15 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	
+
 }
-.ms-icon:hover{
+
+.ms-icon:hover {
 	background: var(--bgbtn);
 	cursor: pointer;
 }
 
-.messenger .bottom .bot textarea{
+.messenger .bottom .bot textarea {
 	height: 100%;
 	flex-grow: 1;
 	background: transparent;
@@ -230,7 +291,16 @@
 	color: var(--text-primary);
 }
 
-.messenger .bottom .bot textarea:focus{
+.messenger .bottom .bot textarea:focus {
 	outline: none;
 }
 
+@media(max-width: 720px) {
+	.messenger .top {
+		visibility: visible;
+	}
+	.messenger .bottom {
+		width: 100%;
+		max-height: 90%;
+	}
+}

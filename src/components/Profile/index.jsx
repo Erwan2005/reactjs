@@ -1,176 +1,152 @@
 import React from 'react'
 import { connect } from "react-redux";
-import { Route,Switch,withRouter,Link } from 'react-router-dom';
-import { publicRequest,userRequest } from '../../requestMethods';
-import { Person,MenuBook,Room,Cake,Favorite,People,Email } from '@material-ui/icons';
+import { Route, Switch, withRouter, NavLink } from 'react-router-dom';
+import { userRequest } from '../../requestMethods';
 import BoxMessage from '../Box'
+import Post from '../Post'
 import { useQuery } from "react-query";
 import './style.css'
 
 function Query(props) {
-  return props.children(useQuery(props.keyName, props.fn, props.options));
+	return props.children(useQuery(props.keyName, props.fn, props.options));
 }
 
 export class index extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props);
-		this.state={
+		this.state = {
 			friends: [],
-	    friend: {},
-	    box:false,
+			friend: {},
+			box: false,
+			publication: [],
+			page: 1,
+			more_exist: false,
+			end: false,
 		};
 		this.handleClose = this.handleClose.bind(this);
+		this.handleSearch = this.handleSearch.bind(this);
+	};
+	handleSearch(type) {
+		console.log(type)
+	}
+	handleOpen = () => {
+		this.setState({ box: !this.state.box })
 	}
 
-	handleOpen = () =>{
-		this.setState({box:!this.state.box})
+	handleClose = () => {
+		this.setState({ box: !this.state.box })
 	}
 
-	handleClose=()=>{
-		this.setState({box:!this.state.box})
+	getFriends = async () => {
+		let data = await userRequest.get(`userapp/users/${this.props.match.params.id}`).then(({ data }) => data)
+		this.setState({ friend: data })
 	}
-
-	getFriends = async() =>{
-		let data =	await userRequest.get(`userapp/users/${this.props.match.params.id}`).then(({data}) => data)
-		this.setState({friend: data})
-	}
-	getFriend = async() =>{
+	getFriend = async () => {
 		let data = await userRequest.get('userapp/friend/')
-		.then(({data}) => data)
-		this.setState({friends: data})
+			.then(({ data }) => data)
+		this.setState({ friends: data })
 	}
 
-	checkFriend = (friendId) =>{
-	    if (this.state.friends.filter(item=> item.user === this.props.user.id && item.friend === this.props.match.params.id).length === 0)
-	      return false
-	    else return true
+	checkFriend = (friendId) => {
+		if (this.state.friends.filter(item => item.user === this.props.user.id && item.friend === this.props.match.params.id).length === 0)
+			return false
+		else return true
 	};
 
-	sendRequest = async() =>{
-   await userRequest.post('userapp/friendrequest/',
-    ({sender:this.props.user.id,receiver:this.props.match.params.id})).then(res =>{
-      console.log(res)
-    })
-  };
+	sendRequest = async () => {
+		await userRequest.post('userapp/friendrequest/',
+			({ sender: this.props.user.id, receiver: this.props.match.params.id })).then(res => {
+				console.log(res)
+			})
+	};
 
-  componentDidMount(){
+	redirect = () => {
+		if (this.props.match.params.id == this.props.user.id) {
+			this.props.history.push('/personnal')
+		}
+	}
+
+	getPub = async () => {
+		try {
+			this.setState({ loading: true })
+			let data = await userRequest.get(`userapp/publication/?page=${this.state.page}`)
+				.then(({ data }) => data)
+			if (data.next) {
+				this.setState({ page: this.state.page + 1 })
+			} else {
+				this.setState({ more_exist: false, end: true })
+			}
+			data.results && data.results.map((pub, index) => {
+				if (pub.user == this.props.match.params.id) {
+					this.setState({ publication: this.state.publication.concat(pub) })
+					console.log(this.state.publication)
+				}
+			})
+
+		} catch (error) {
+			console.log(error)
+		}
+
+
+	}
+	componentDidMount() {
+		this.redirect()
 		this.getFriend()
 		this.getFriends()
+		this.getPub()
+
 	};
 	render() {
 		return (
 			<div className="profiles">
-				<div className="top">
-					<div className="image">
-						<img src={this.state.friend.img_covert} alt="mur" />
-						<img src={this.state.friend.avatar} alt="avatar" />
+				<div className='top'>
+					<div className='mur'>
+						<img src={this.state.friend.img_covert} alt='' />
+					</div>
+					<div className='avatar'>
+						<img src={this.state.friend.avatar} alt='' />
+					</div>
+					<div className='action'>
 
-					</div>
-					<div className="about">
-						<div className="name">
-							<span>@{this.state.friend.username}</span>
-							<small>11k friends</small>
+						<div className='right'>
+							<span onClick={this.handleOpen}><ion-icon name="mail-outline" /></span>
+							<span onClick={this.sendRequest}><ion-icon name="person-add-outline" /></span>
 						</div>
-						<div className="button">
-							{this.props.match.params.id === this.props.user.id ? null : (
-								this.checkFriend(parseInt(this.props.match.params.id)) && <button onClick={this.sendRequest}>Add friend</button>
-							)}
-							<button onClick={this.handleOpen}><Email /></button>
+						<div className='left'>
+							<ul>
+								<li>
+									<NavLink to={this.props.match.url} className={({ isActive }) => (isActive ? 'link active' : 'link')}>
+										Publication
+									</NavLink>
+								</li>
+								<li>Image</li>
+								<li>Video</li>
+								<li>Page</li>
+								<li>Group</li>
+							</ul>
 						</div>
-					</div>
-					<div className="tab">
-						<ul>
-							<li>About</li>
-							<li>Group</li>
-							<li>Events</li>
-							<div className="animation start"></div>
-						</ul>
 					</div>
 				</div>
-				<div className="bottom">
-					<div className="left">
-						<div className="grid">
-							<div className="header">
-								<span>About</span>
-							</div>
-							<div className="corp">
-								<small>
-								{this.state.friend.about_me}
-								</small>
-							</div>
-							<div className="info">
-								<div className="data">
-									<span><Person /></span>
-									<div className="txt">
-										<span>Name</span>
-										<small>@{this.state.friend.username}</small>
-									</div>
-								</div>
-
-								<div className="data">
-									<span><Cake /></span>
-									<div className="txt">
-										<span> Date of Birth</span>
-										<small>{this.state.friend.birth_date}</small>
-									</div>
-								</div>
-
-								<div className="data">
-									<span><Room /></span>
-									<div className="txt">
-										<span>Address</span>
-										<small>@Erwan</small>
-									</div>
-								</div>
-
-								<div className="data">
-									<span><Favorite /></span>
-									<div className="txt">
-										<span>Relationship Status</span>
-										<small>@Erwan</small>
-									</div>
-								</div>
-
-								<div className="data">
-									<span><MenuBook /></span>
-									<div className="txt">
-										<span>Page</span>
-										<small>@Erwan</small>
-									</div>
-								</div>
-								<div className="data">
-									<span><People /></span>
-									<div className="txt">
-										<span>Group</span>
-										<small>@Erwan</small>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className="grid">
-							<div className="header">
-								<span>Photo</span>
-								<small>See all</small>
-							</div>
-							<div className="images">
-								<img src="https://cdn.pixabay.com/photo/2022/03/25/17/54/sakura-7091532_960_720.jpg" alt="" />
-								<img src="https://cdn.pixabay.com/photo/2012/03/01/00/55/garden-19830_960_720.jpg" alt="" />
-							</div>
-						</div>
+				<div className='contents'>
+					<div className='left'>
+						<span className='about'>{this.state.friend.about_me}</span>
 					</div>
-					<div className="right">
-						<div className="postCont">
-						</div>
+					<div className='right'>
+						<Switch>
+							<Route path='/'>
+								<Post publication={this.state.publication} handleSearch={this.handleSearch} />
+							</Route>
+						</Switch>
 					</div>
 				</div>
 				{this.state.box &&
-				<BoxMessage handleClose={this.handleClose} />}
+					<BoxMessage handleClose={this.handleClose} user={this.state.friend}/>}
 			</div>
 		)
 	}
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user.currentUser,
+	user: state.user.currentUser,
 });
-export default connect(mapStateToProps,null)(withRouter(index))
+export default connect(mapStateToProps, null)(withRouter(index))

@@ -153,17 +153,17 @@ export class index extends React.Component {
 						<img src='https://cdn.pixabay.com/photo/2021/12/04/04/44/woman-6844349_960_720.jpg' alt='' />
 						<small></small>
 					</span>
-					
+
 				</div>
 				<div className='bottom'>
 					<div className='header'>
 						<div className='left'>
-							<img src='https://cdn.pixabay.com/photo/2021/12/04/04/44/woman-6844349_960_720.jpg' alt=''/>
+							<img src='https://cdn.pixabay.com/photo/2021/12/04/04/44/woman-6844349_960_720.jpg' alt='' />
 							<span>Erwan</span>
 						</div>
 						<div className='right'>
-							<span className='ms-icon'><ion-icon name="call-outline"/></span>
-							<span className='ms-icon'><ion-icon name="videocam-outline"/></span>
+							<span className='ms-icon'><ion-icon name="call-outline" /></span>
+							<span className='ms-icon'><ion-icon name="videocam-outline" /></span>
 						</div>
 					</div>
 					<div className='contents'>
@@ -172,14 +172,21 @@ export class index extends React.Component {
 								<img src='https://cdn.pixabay.com/photo/2021/12/04/04/44/woman-6844349_960_720.jpg' alt='' />
 							</div>
 							<div className='chat-friend'>
+								<div className='contents-flex'>
+									<span>Message text</span>
+									<img src='https://cdn.pixabay.com/photo/2021/12/04/04/44/woman-6844349_960_720.jpg' alt='' />
+								</div>
 								<small className='timestamp'>11h10</small>
 							</div>
 						</div>
 						<div className='owner-ms'>
 							<di className='owner-chat'>
-							<small className='timestamp'>11h15</small>
+								<div className='contents-flex'>
+									<span>Message text</span>
+									<img src='https://cdn.pixabay.com/photo/2021/12/04/04/44/woman-6844349_960_720.jpg' alt='' />
+								</div>
+								<small className='timestamp'>11h15</small>
 							</di>
-
 						</div>
 					</div>
 					<div className='bot'>

@@ -4,14 +4,13 @@ import {
 	CardActions, Collapse, CircularProgress
 } from '@material-ui/core'
 import { connect } from "react-redux"
-import { withRouter } from "react-router"
+import { withRouter, Link } from 'react-router-dom'
 import NumericLabel from 'react-pretty-numbers';
 import { format } from 'timeago.js';
 import _ from 'lodash';
 import { userRequest } from '../../requestMethods'
 import User from '../../assets/user.jpg'
 import './style.css'
-import { ThreeSixtyTwoTone } from '@material-ui/icons';
 export class index extends Component {
 	constructor(props) {
 		super(props);
@@ -79,7 +78,7 @@ export class index extends Component {
 			this.setState({ open: null })
 		}
 	};
-	postDelete = (id) =>{
+	postDelete = (id) => {
 		this.props.postDelete(id)
 	}
 	componentDidMount() {
@@ -105,11 +104,13 @@ export class index extends Component {
 									{(this.state.open === pub.id && pub.user === this.props.user.id) &&
 										<div className='menu-head'>
 											<span>Edit</span>
-											<span onClick={()=> this.postDelete(pub.id)}>Delete</span>
+											<span onClick={() => this.postDelete(pub.id)}>Delete</span>
 										</div>}
 								</>)}
 								title={
-									<span><h3>{pub.proprietary[0].username}</h3></span>
+									<Link className="link" to={`/profile/${pub.proprietary[0].id}`}>
+										<span><h3>{pub.proprietary[0].username}</h3></span>
+									</Link>
 								}
 								subheader={<small>{format(pub.date)}</small>}
 							/>

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 import BoxMessage from '../Box'
 import { publicRequest, userRequest } from '../../requestMethods';
+import socket from '../../Socket.js'
 import './style.css'
 
 function Query(props) {
@@ -22,7 +23,6 @@ export class index extends Component {
             profile: [],
             friend: null,
             onlineUser: [],
-
         };
         this.handleClose = this.handleClose.bind(this);
     }
@@ -48,9 +48,16 @@ export class index extends Component {
             .then(({ data }) => data)
         this.setState({ friends: data })
     }
+    online = ()=>{
+        socket.emit("addUser", this.props.user.id);
+		socket.on("getUsers", (users) => {
+			this.setState({onlineUser: users})
+		});
+    }
     componentDidMount() {
         this.getFriend()
         this.getCurrentUser()
+        this.online()
     }
     render() {
         return (
@@ -94,8 +101,8 @@ export class index extends Component {
                         <small className='text-right'>See all</small>
                     </div>
                     <div className='contact'>
-                        {(this.props.online !== null) && (
-                            this.props.online.map(friend => {
+                        {(this.state.onlineUser) && (
+                            this.state.onlineUser.map(friend => {
                                 return (
                                     (friend.userId !== this.props.user.id) && (
                                         this.state.friend.map(frd => {

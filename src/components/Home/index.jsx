@@ -16,7 +16,7 @@ import Messenger from '../Messenger'
 import Profile from '../Profile'
 import Shop from '../shop/Drawer'
 import { toast } from 'react-toastify'
-import io from "socket.io-client";
+
 import './style.css'
 import { FormatListNumberedRtlTwoTone } from '@material-ui/icons'
 import { light } from '@material-ui/core/styles/createPalette'
@@ -213,19 +213,7 @@ export class index extends Component {
 		toast.info('Request accepted')
 	}
 
-	realTime = ()=>{
-		this.socket.current = io("https://wan-socket.herokuapp.com",{ 
-			transports: ['websocket', 'polling', 'flashsocket'] 
-		});
-		this.socket.current.emit("addUser", this.props.user.id);
-		this.socket.current.on("getUsers", (users) => {
-			this.setState({online: users})
-		});
-		
-	}
-
 	componentDidMount() {
-		this.realTime()
 		this.getCurrent()
 		this.getPub()
 		this.getRequest()
@@ -378,7 +366,7 @@ export class index extends Component {
 							</Route>
 						</div>
 					</Switch>
-					<Right online={this.state.online}/>
+					<Right/>
 				</main>
 			</div>
 		)

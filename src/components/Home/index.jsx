@@ -53,7 +53,7 @@ export class index extends Component {
 			request: false,
 			requests: [],
 			modal: false,
-			online: [],
+
 		}
 		this.handleToUpdate = this.handleToUpdate.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
@@ -80,7 +80,7 @@ export class index extends Component {
 		})
 		this.setState({ publication: new_data })
 		let data = await userRequest.delete(`userapp/publication/${id}/`)
-			.then(({ data }) => data)
+		.then(({ data }) => data)
 		toast.success('Post deleted')
 	}
 
@@ -183,6 +183,7 @@ export class index extends Component {
 		let data = await userRequest.get(`userapp/friendrequest/`)
 			.then(({ data }) => data)
 		this.setState({ requests: data })
+		
 	}
 
 	dltRequest = async (id) => {
@@ -217,6 +218,7 @@ export class index extends Component {
 		this.getCurrent()
 		this.getPub()
 		this.getRequest()
+		
 	};
 	render() {
 		return (

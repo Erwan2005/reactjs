@@ -43,19 +43,14 @@ export class index extends Component {
             this.setState({ request: true })
         }
     };
-    getFriend = async () => {
-        let data = await userRequest.get(`userapp/friend`)
-            .then(({ data }) => data)
-        this.setState({ friends: data })
-    }
-    online = ()=>{
-        socket.emit("addUser", this.props.user.id);
-		socket.on("getUsers", (users) => {
-			this.setState({onlineUser: users})
-		});
+    online = () => {
+        socket.emit("addUser", this.props.user);
+        socket.on("getUsers", (users) => {
+            this.setState({ onlineUser: users })
+            console.log(users)
+        });
     }
     componentDidMount() {
-        this.getFriend()
         this.getCurrentUser()
         this.online()
     }
@@ -104,25 +99,19 @@ export class index extends Component {
                         {(this.state.onlineUser) && (
                             this.state.onlineUser.map(friend => {
                                 return (
-                                    (friend.userId !== this.props.user.id) && (
+                                    (friend.userprof.id !== this.props.user.id) && (
                                         this.state.friend.map(frd => {
-                                            if (frd.friend_id === friend.userId) {
+                                            if (frd.friend_id === friend.userprof.id) {
                                                 return (
-                                                    this.state.friends.map(online => {
-                                                        if (friend.userId === online.friend) {
-                                                            return (
-                                                                <div className='online-friend' onClick={this.handleOpen} key={online.id}>
-                                                                    <div className='avatar'>
-                                                                        <img src={online.friendprof[0].avatar} alt="" />
-                                                                        <small></small>
-                                                                    </div>
-                                                                    <span key={online.id}>{online.friendprof[0].username}</span>
-                                                                    {this.state.box &&
-                                                                        <BoxMessage handleClose={this.handleClose} user={online.friendprof[0]} />}
-                                                                </div>
-                                                            )
-                                                        } else return null
-                                                    })
+                                                    <div className='online-friend' onClick={this.handleOpen} key={frd.id}>
+                                                        <div className='avatar'>
+                                                            <img src={friend.userprof.avatar} alt="" />
+                                                            <small></small>
+                                                        </div>
+                                                        <span>{friend.userprof.username}</span>
+                                                        {this.state.box &&
+                                                            <BoxMessage handleClose={this.handleClose} user={friend.userprof} />}
+                                                    </div>
                                                 )
                                             } else return null
                                         })

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { Route, Switch, withRouter, NavLink } from 'react-router-dom';
+import {  withRouter, NavLink } from 'react-router-dom';
 import './style.css'
 export class index extends Component {
     constructor(props) {
@@ -44,8 +44,10 @@ export class index extends Component {
                             <span>Image Gallery</span>
                         </li>
                         <li>
-                            <span><ion-icon name="film-outline" /></span>
-                            <span>Videos</span>
+                            <NavLink to={'/video'} className={({ isActive }) => (isActive ? 'link active' : 'link')} >
+                                <span><ion-icon name="film-outline" /></span>
+                                <span>Videos</span>
+                            </NavLink>
                         </li>
                         <li>
                             <NavLink exact to={'/shop'} className={({ isActive }) => (isActive ? 'link active' : 'link')}>

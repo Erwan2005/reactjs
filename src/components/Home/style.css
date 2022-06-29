@@ -358,11 +358,6 @@ main {
 	.logo {
 		display: none;
 	}
-
-	.menu {
-		display: block;
-	}
-
 	.home-container nav {
 		gap: 10px;
 	}

@@ -14,7 +14,10 @@ import Personal from '../Personal'
 import Modal from '../Modal'
 import Messenger from '../Messenger'
 import Profile from '../Profile'
+import socket from '../../Socket.js'
 import Shop from '../shop/Drawer'
+import Video from '../VideoList'
+import Player from '../VideoPlayer'
 import { toast } from 'react-toastify'
 
 import './style.css'
@@ -53,6 +56,7 @@ export class index extends Component {
 			request: false,
 			requests: [],
 			modal: false,
+			friendReq: [],
 
 		}
 		this.handleToUpdate = this.handleToUpdate.bind(this);
@@ -60,6 +64,7 @@ export class index extends Component {
 		this.handleClose = this.handleClose.bind(this);
 		this.openModal = this.openModal.bind(this);
 		this.postDelete = this.postDelete.bind(this);
+		this.sendFriend = this.sendFriend.bind(this);
 	}
 	handleToUpdate(data) {
 		this.setState({ publication: [data].concat(this.state.publication) });
@@ -80,8 +85,19 @@ export class index extends Component {
 		})
 		this.setState({ publication: new_data })
 		let data = await userRequest.delete(`userapp/publication/${id}/`)
-		.then(({ data }) => data)
+			.then(({ data }) => data)
 		toast.success('Post deleted')
+	}
+
+	sendFriend = async(id) =>{
+		await userRequest.post('userapp/friendrequest/',
+			({ sender: this.props.user.id, receiver: id })).then(res => {
+				console.log(res)
+			})
+			socket.emit("friendRequest",{
+				senderId: this.props.user.id,
+				receiverId: id,
+			})
 	}
 
 	getCurrent = async () => {
@@ -165,6 +181,7 @@ export class index extends Component {
 	getCurrentUser = async () => {
 		let data = await userRequest.get(`userapp/users/${this.props.user.id}/`)
 			.then(({ data }) => data)
+		
 		if (data.friendRequests !== 0) {
 			this.setState({ request: true })
 		} else {
@@ -183,7 +200,14 @@ export class index extends Component {
 		let data = await userRequest.get(`userapp/friendrequest/`)
 			.then(({ data }) => data)
 		this.setState({ requests: data })
-		
+		socket.emit("addUser", this.props.user.id);
+        socket.on("getUsers", (users) => {
+            this.setState({ onlineUser: users })
+        });
+		socket.on("getRequest", (data) => {
+			this.setState({ friendReq: [data].concat(this.state.friendReq) })
+		})
+
 	}
 
 	dltRequest = async (id) => {
@@ -218,7 +242,7 @@ export class index extends Component {
 		this.getCurrent()
 		this.getPub()
 		this.getRequest()
-		
+
 	};
 	render() {
 		return (
@@ -238,20 +262,11 @@ export class index extends Component {
 						}
 
 						<span className='icon nav-icon' onClick={() => this.openBox('menu4')}><ion-icon name="person-outline" />
-							<Query
-								keyName="users"
-								fn={() => this.getCurrentUser()}
-							>
-								{({ data, isLoading, error }) => {
-									if (error) return <h1>Error</h1>;
-									const events = data ?? []
-									return (
-										<>
-											{events.friendRequests ? <small>{events.friendRequests > 9 ? '9+' : events.friendRequests}</small> : null}
-										</>
-									)
-								}}
-							</Query>
+							{this.state.friendReq.length > 0 ?
+								<small>{this.state.friendReq.length > 9 ? '9+' : this.state.friendReq.length}</small> :
+								<small>{this.state.requests.filter(item => item.receiver === this.props.user.id).length > 9 ? '9+' :
+									this.state.requests.filter(item => item.receiver === this.props.user.id).length}</small>
+							}
 						</span>
 						<span className='icon nav-icon' onClick={() => this.openBox('menu3')}><ion-icon name="notifications-outline" /><small>9+</small></span>
 						<span className='icon nav-icon' onClick={() => this.openBox('menu2')}><ion-icon name="chatbubble-outline" /><small>9+</small></span>
@@ -363,12 +378,18 @@ export class index extends Component {
 							<Route path={`/personnal`}>
 								<Personal />
 							</Route>
+							<Route path={'/video'}>
+								<Video />
+							</Route>
+							<Route path={'/player'}>
+								<Player />
+							</Route>
 							<Route path='/profile/:id'>
-								<Profile />
+								<Profile sendFriend={this.sendFriend}/>
 							</Route>
 						</div>
 					</Switch>
-					<Right/>
+					<Right />
 				</main>
 			</div>
 		)

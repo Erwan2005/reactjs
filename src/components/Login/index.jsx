@@ -56,7 +56,9 @@ export class index extends React.Component {
 	  login = () =>{
 	    login(this.props.dispatchs, { username: this.state.values.email, password: this.state.values.password });
 	  }
-
+	  doThis = ()=>{
+		console.log("login success")
+	  }
   	componentDidMount(){
 	  	this.preferedTheme()
 	  };

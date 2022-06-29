@@ -17,14 +17,14 @@ export const parseRequest = axios.create({
   baseURL: BASE_URL,
   headers: {
     "content-type": "multipart/form-data",
-    Authorization: `Token ${TOKEN}`, 
+    "Authorization": `Token ${TOKEN}`, 
   }
 });
 
 export const userRequest = axios.create({
   baseURL: BASE_URL,
   headers: { 
-    Authorization: `Token ${TOKEN}`, 
+    "Authorization": `Token ${TOKEN}`, 
   },
 });
 

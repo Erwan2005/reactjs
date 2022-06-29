@@ -48,11 +48,12 @@ export class index extends Component {
             .then(({ data }) => data)
         this.setState({ friends: data })
     }
-    online = ()=>{
+    online = () => {
         socket.emit("addUser", this.props.user.id);
-		socket.on("getUsers", (users) => {
-			this.setState({onlineUser: users})
-		});
+        socket.on("getUsers", (users) => {
+            this.setState({ onlineUser: users })
+        });
+        
     }
     componentDidMount() {
         this.getFriend()
@@ -110,16 +111,18 @@ export class index extends Component {
                                                 return (
                                                     this.state.friends && this.state.friends.map(online => {
                                                         if (friend.userId === online.friend) {
-                                                            return (
+                                                            return (<>
                                                                 <div className='online-friend' onClick={this.handleOpen} key={online.id}>
                                                                     <div className='avatar'>
                                                                         <img src={online.friendprof[0].avatar} alt="" />
                                                                         <small></small>
                                                                     </div>
                                                                     <span key={online.id}>{online.friendprof[0].username}</span>
-                                                                    {this.state.box &&
-                                                                        <BoxMessage handleClose={this.handleClose} user={online.friendprof[0]} />}
+
                                                                 </div>
+                                                                {this.state.box &&
+                                                                    <BoxMessage handleClose={this.handleClose} user={online.friendprof[0]} />}
+                                                            </>
                                                             )
                                                         } else return null
                                                     })

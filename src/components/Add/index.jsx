@@ -11,7 +11,7 @@ export class index extends Component {
         this.refImg = React.createRef();
         this.state = {
             image: null,
-            videop: null,
+            video: null,
             share: '',
             sending: false,
         }
@@ -26,17 +26,38 @@ export class index extends Component {
             }
         }
         reader.readAsDataURL(e.target.files[0])
-        const file = e.target.files[0];
-        if (file.size > 25e6) {
+        const file = e.target.files;
+        let size = 0;
+        let ext = [];
+        for (let i = 0; i < file.length; i++) {
+            let type = file[i].type.split('/')[0];
+            if (ext.indexOf(type) < 0) {
+                ext.push(type)
+            }
+            size += file[i].size
+        }
+        if (size > 25e6) {
             toast.error("Please upload a file smaller than 25 MB");
             return false;
+        } else if (ext.length > 1) {
+            toast.error("You can't mixed a file");
+            return false;
         } else {
-            if (file.type.split('/')[0] === 'image') {
+            if (ext[0] === 'image') {
                 this.setState({ image: file })
-            } if (file.type.split('/')[0] === 'video') {
-                this.setState({ video: file })
+            } else if (ext[0] === 'video') {
+                if (file.length > 1) {
+                    toast.error("Please upload only one video");
+                    return false;
+                } else {
+                    this.setState({ video: file[0] })
+                }
+            } else {
+                toast.error("Please upload image or video");
+                return false;
             }
         }
+
     };
 
     btnShare = async () => {
@@ -52,19 +73,17 @@ export class index extends Component {
                 this.state.video.name
             );
         } else if (this.state.image !== null) {
-            formData.append(
-                "image",
-                this.state.image,
-                this.state.image.name
-            );
+            for (let i = 0; i < this.state.image.length; i++) {
+                formData.append("images", this.state.image[i]);
+            }
         }
         let data = await parseRequest.post('userapp/publication/', formData)
             .then(({ data }) => data)
         toast.success('Post is sharing !')
-        this.setState({ share: '', image: '', video: '', sending: false})
+        this.setState({ share: '', image: '', video: '', sending: false })
         this.pubUpdate(data)
     };
-    pubUpdate = (data)=>{
+    pubUpdate = (data) => {
         this.props.publication(data)
     }
     render() {
@@ -108,7 +127,7 @@ export class index extends Component {
                 <div className='add-bottom'>
                     <div className='bottom-header'>
                         <img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' />
-                        <textarea placeholder='Share your advice ...'
+                        <textarea placeholder='Your post ...'
                             value={this.state.share}
                             onChange={e => this.setState({ share: e.target.value })} />
                     </div>
@@ -132,7 +151,7 @@ export class index extends Component {
                             </div>
                             <input type='file' id='file-img' onChange={(e) => {
                                 this.imageHandler(e);
-                            }} ref={this.refImg} style={{ display: 'none' }} />
+                            }} ref={this.refImg} style={{ display: 'none' }} multiple />
                         </div>
                         <button className='btn-share' onClick={this.btnShare} disabled={this.state.sending}>{this.state.sending ? <CircularProgress color="white" size="20px" /> : "Share"}</button>
                     </div>

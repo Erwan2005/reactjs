@@ -5,6 +5,7 @@ import { userRequest } from '../../requestMethods';
 import BoxMessage from '../Box'
 import Post from '../Post'
 import { useQuery } from "react-query";
+import socket from '../../Socket.js'
 import './style.css'
 
 function Query(props) {
@@ -25,6 +26,7 @@ export class index extends React.Component {
 		};
 		this.handleClose = this.handleClose.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
+		this.sendRequest = this.sendRequest.bind(this);
 	};
 	handleSearch(type) {
 		console.log(type)
@@ -53,16 +55,16 @@ export class index extends React.Component {
 		else return true
 	};
 
-	sendRequest = async () => {
-		await userRequest.post('userapp/friendrequest/',
-			({ sender: this.props.user.id, receiver: this.props.match.params.id })).then(res => {
-				console.log(res)
-			})
+	sendRequest = () => {
+		this.props.sendFriend(this.props.match.params.id)
 	};
 
 	redirect = () => {
 		if (this.props.match.params.id == this.props.user.id) {
 			this.props.history.push('/personnal')
+		}
+		if (this.props.user == null){
+			this.props.history.push('/')
 		}
 	}
 

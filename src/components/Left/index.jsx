@@ -30,24 +30,8 @@ export class index extends Component {
                 <div className='left-top'>
                     <ul>
                         <li>
-                            <NavLink to='/' className={({ isActive }) => (isActive ? 'link active' : 'link')} exact={true}>
-                                <span><ion-icon name="home-outline" /></span>
-                                <span>Home</span>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <span><ion-icon name="people-outline" /></span>
-                            <span>Friend</span>
-                        </li>
-                        <li>
                             <span><ion-icon name="images-outline" /></span>
                             <span>Image Gallery</span>
-                        </li>
-                        <li>
-                            <NavLink to={'/video'} className={({ isActive }) => (isActive ? 'link active' : 'link')} >
-                                <span><ion-icon name="film-outline" /></span>
-                                <span>Videos</span>
-                            </NavLink>
                         </li>
                         <li>
                             <NavLink exact to={'/shop'} className={({ isActive }) => (isActive ? 'link active' : 'link')}>

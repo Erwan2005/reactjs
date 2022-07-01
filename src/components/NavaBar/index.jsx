@@ -1,0 +1,107 @@
+import React from 'react'
+import { connect } from "react-redux"
+import User from '../../assets/user.jpg'
+import { withRouter, NavLink, Link } from 'react-router-dom'
+import Menu from '../MenuBox'
+import Modal from '../Modal'
+import Logo from '../../assets/logo.png'
+import './style.css'
+export class index extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            search: '',
+            modal: false,
+            menu1: false,
+        }
+        this.theme = this.theme.bind(this)
+        this.search = this.search.bind(this)
+        this.openModal = this.openModal.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.logout = this.logout.bind(this);
+    }
+    theme = () => {
+        this.props.theme()
+    }
+    search = (e) => {
+        this.setState({ search: e.target.value })
+        this.props.search(e.target.value)
+    }
+    openModal = () => {
+        this.setState({ modal: !this.state.modal })
+    }
+    handleClose = () => {
+        this.setState({ modal: !this.state.modal })
+    }
+    logout = () => {
+        //this.props.navigation.navigate('/')
+        localStorage.clear()
+        window.location.reload(false);
+    };
+    showMenu = (menu) => {
+        if (menu === 'menu1') {
+            this.setState({ menu1: !this.state.menu1 })
+        }
+    }
+    render() {
+        return (
+            <div className='navbar'>
+                <div className='left'>
+                    <img src={Logo} alt='' className='logo' />
+                    <label className='search'>
+                        <input type='text' placeholder='Search ...'
+                            value={this.state.search}
+                            onChange={this.search} />
+                        <span className='search-icon'><ion-icon name="search-outline" /></span>
+                    </label>
+                </div>
+                <div className='center'>
+                    <ul>
+                        <li>
+                            <NavLink to='/' className={({ isActive }) => (isActive ? 'link active' : 'link')} exact={true}>
+                                <span><ion-icon name="home-outline" /></span>
+                            </NavLink></li>
+                        <li><span><ion-icon name="people-outline" /></span></li>
+                        <li>
+                            <NavLink to={'/video'} className={({ isActive }) => (isActive ? 'link active' : 'link')} >
+                                <span><ion-icon name="desktop-outline" /></span>
+                            </NavLink>
+                        </li>
+
+                    </ul>
+                </div>
+                <div className='right'>
+                    {this.props.user.theme === 'light' ? <span className='icon' onClick={this.theme}><ion-icon name="moon-outline" /></span> : <span className='icon' onClick={this.theme}><ion-icon name="sunny-outline" /></span>}
+                    <span className='icon'><ion-icon name="chatbubble-outline" /></span>
+                    <span className='icon'><ion-icon name="notifications-outline" /></span>
+                    <img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' className='avatar' onClick={() => this.showMenu('menu1')} />
+                    {this.state.menu1 &&
+                        <Menu openModal={this.openModal} logout={this.logout}>
+                            <Link exact to='/personnal' className="link">
+                                <div className='userMenu'>
+                                    <img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' />
+                                    <span className='userName'>{this.props.user.username}</span>
+                                </div>
+                            </Link>
+                            <div className='textIcon' onClick={this.openModal}>
+                                <span className='icon'><ion-icon name="key-outline" /></span>
+                                <span className='text'>Change password</span>
+                            </div>
+                            <div className='textIcon' onClick={this.logout}>
+                                <span className='icon'><ion-icon name="log-out-outline" /></span>
+                                <span className='text'>Logout</span>
+                            </div>
+                        </Menu>
+                    }
+                </div>
+                {this.state.modal &&
+                    <Modal handleClose={this.handleClose} />}
+            </div>
+        )
+    }
+}
+
+const mapStateToProps = (state) => ({
+    user: state.user.currentUser,
+});
+export default connect(mapStateToProps, null)(withRouter(index))

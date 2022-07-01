@@ -1,0 +1,62 @@
+.menu-container{
+    position: fixed;
+    right: 10px;
+    top: 3.5em;
+    width: 200px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.4);
+	background: var(--grey);
+    padding: 5px 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu-container .userMenu{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--bgbtn);
+}
+
+.menu-container .userMenu:hover{
+    cursor: pointer;
+}
+
+.menu-container .userMenu img{
+    min-width: 35px;
+    min-height: 35px;
+    max-width: 35px;
+    max-height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.menu-container .userMenu .userName{
+    color: var(--text-primary);
+    font-family: var(--fontlight);
+    font-size: 17px;
+}
+.menu-container > .textIcon{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.menu-container > .textIcon:hover{
+    cursor: pointer;
+}
+.menu-container > .textIcon .icon{
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    font-size: 25px;
+}
+
+.menu-container > .textIcon .text{
+    color: var(--text-primary);
+    font-size: 15px;
+    font-family: var(--fontlight);
+}

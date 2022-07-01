@@ -11,13 +11,13 @@ import Left from '../Left'
 import Right from '../Right'
 import Weather from '../Weather'
 import Personal from '../Personal'
-import Modal from '../Modal'
 import Messenger from '../Messenger'
 import Profile from '../Profile'
 import socket from '../../Socket.js'
 import Shop from '../shop/Drawer'
 import Video from '../VideoList'
 import Player from '../VideoPlayer'
+import NavBar from '../NavaBar'
 import { toast } from 'react-toastify'
 
 import './style.css'
@@ -61,10 +61,12 @@ export class index extends Component {
 		}
 		this.handleToUpdate = this.handleToUpdate.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
-		this.handleClose = this.handleClose.bind(this);
-		this.openModal = this.openModal.bind(this);
+		
+		
 		this.postDelete = this.postDelete.bind(this);
 		this.sendFriend = this.sendFriend.bind(this);
+		this.theme = this.theme.bind(this);
+		this.search = this.search.bind(this);
 	}
 	handleToUpdate(data) {
 		this.setState({ publication: [data].concat(this.state.publication) });
@@ -89,15 +91,15 @@ export class index extends Component {
 		toast.success('Post deleted')
 	}
 
-	sendFriend = async(id) =>{
+	sendFriend = async (id) => {
 		await userRequest.post('userapp/friendrequest/',
 			({ sender: this.props.user.id, receiver: id })).then(res => {
 				console.log(res)
 			})
-			socket.emit("friendRequest",{
-				senderId: this.props.user.id,
-				receiverId: id,
-			})
+		socket.emit("friendRequest", {
+			senderId: this.props.user.id,
+			receiverId: id,
+		})
 	}
 
 	getCurrent = async () => {
@@ -119,12 +121,7 @@ export class index extends Component {
 			this.setState({ menu4: !this.state.menu4, menu1: false, menu2: false, menu3: false })
 		}
 	}
-	logout = () => {
-		this.setState({ menu1: !this.state.menu1 })
-		localStorage.clear()
-		window.location.reload(false);
-		this.props.navigate('/')
-	};
+	
 
 	getPub = async () => {
 		try {
@@ -144,14 +141,14 @@ export class index extends Component {
 
 	};
 
-	search = async (e) => {
-		this.setState({ search: e.target.value, loading: true });
+	search = async (query) => {
+		this.setState({ search: query, loading: true });
 		if (this.state.engine === 'publication') {
-			let data = await userRequest.get(`userapp/publication/?search=${e.target.value}`)
+			let data = await userRequest.get(`userapp/publication/?search=${query}`)
 				.then(({ data }) => data)
 			this.setState({ results: data.results, loading: false })
 		} else if (this.state.engine === 'product') {
-			let data = await userRequest.get(`shop/product/?search=${e.target.value}`)
+			let data = await userRequest.get(`shop/product/?search=${query}`)
 				.then(({ data }) => data)
 			this.setState({ results: data.results, loading: false })
 		}
@@ -181,7 +178,7 @@ export class index extends Component {
 	getCurrentUser = async () => {
 		let data = await userRequest.get(`userapp/users/${this.props.user.id}/`)
 			.then(({ data }) => data)
-		
+
 		if (data.friendRequests !== 0) {
 			this.setState({ request: true })
 		} else {
@@ -189,21 +186,15 @@ export class index extends Component {
 		}
 		return data;
 	};
-	openModal = () => {
-		this.setState({ modal: !this.state.modal })
-	}
-
-	handleClose = () => {
-		this.setState({ modal: !this.state.modal })
-	}
+	
 	getRequest = async () => {
 		let data = await userRequest.get(`userapp/friendrequest/`)
 			.then(({ data }) => data)
 		this.setState({ requests: data })
 		socket.emit("addUser", this.props.user.id);
-        socket.on("getUsers", (users) => {
-            this.setState({ onlineUser: users })
-        });
+		socket.on("getUsers", (users) => {
+			this.setState({ onlineUser: users })
+		});
 		socket.on("getRequest", (data) => {
 			this.setState({ friendReq: [data].concat(this.state.friendReq) })
 		})
@@ -246,116 +237,8 @@ export class index extends Component {
 	};
 	render() {
 		return (
-			<div onClick={this.handleClickOutside} className='home-container' data-theme={this.state.theme}>
-				<nav>
-					<span className='logo'>WanTech</span>
-					<span className='menu' onClick={this.activeMenu}><ion-icon name="menu-outline" /></span>
-					<label>
-						<input type='text' placeholder='Search ...'
-							value={this.state.search}
-							onChange={this.search} />
-						<span className='icon'><ion-icon name="search-outline" /></span>
-					</label>
-					<div className='nav-right'>
-						{this.state.checked ? <span className='icon' onClick={this.theme}><ion-icon name="sunny-outline" /></span> :
-							<span className='icon' onClick={this.theme}><ion-icon name="moon-outline" /></span>
-						}
-
-						<span className='icon nav-icon' onClick={() => this.openBox('menu4')}><ion-icon name="person-outline" />
-							{this.state.friendReq.length > 0 ?
-								<small>{this.state.friendReq.length > 9 ? '9+' : this.state.friendReq.length}</small> :
-								<small>{this.state.requests.filter(item => item.receiver === this.props.user.id).length > 9 ? '9+' :
-									this.state.requests.filter(item => item.receiver === this.props.user.id).length}</small>
-							}
-						</span>
-						<span className='icon nav-icon' onClick={() => this.openBox('menu3')}><ion-icon name="notifications-outline" /><small>9+</small></span>
-						<span className='icon nav-icon' onClick={() => this.openBox('menu2')}><ion-icon name="chatbubble-outline" /><small>9+</small></span>
-						<img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' onClick={() => this.openBox('menu1')} />
-						{this.state.menu1 &&
-							<div className='menu1'>
-								<div className='menu-container'>
-									<div className='flex-box'>
-										<Link exact to='/personnal' className="link">
-											<img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' />
-											<span>{this.props.user.username}</span>
-										</Link>
-									</div>
-									<div className='flex-box' onClick={this.openModal}>
-										<span className='icon'><ion-icon name="key-outline" /></span>
-										<span>Change password</span>
-									</div>
-									<div className='flex-box' onClick={this.logout}>
-										<span className='icon'><ion-icon name="log-out-outline" /></span>
-										<span>Logout</span>
-									</div>
-								</div>
-							</div>}
-						{this.state.menu2 &&
-							<div className='menu2'>
-								<div className='menu-container2'>
-									<div className='flex-box nav-mes'>
-										<img src={this.props.user.avatar} alt='' />
-										<div className='nav-text'>
-											<span>{this.props.user.username}</span>
-											<small>Ceci est un message le plus longue au monde jusqu'ici</small>
-										</div>
-
-									</div>
-
-									<div className='flex-box nav-mes'>
-										<img src={this.props.user.avatar} alt='' />
-										<div className='nav-text'>
-											<span>{this.props.user.username}</span>
-											<small>Ceci est un message le plus longue au monde jusqu'ici
-												et n'a jamais été battu
-											</small>
-										</div>
-
-									</div>
-
-								</div>
-							</div>}
-						{this.state.menu3 &&
-							<div className='menu3'>
-								<div className='menu-container3'>
-									<div className='flex-box nav-mes'>
-										<img src={this.props.user.avatar} alt='' />
-										<div className='nav-text'>
-											<span>{this.props.user.username}</span>
-											<small>Partage une video</small>
-										</div>
-									</div>
-								</div>
-							</div>}
-						{this.state.menu4 &&
-							<div className='menu4'>
-								<div className='menu-container4'>
-									{this.state.request ? (
-										this.state.requests.map(req => {
-											return (
-												<div className='flex-box nav-mes'>
-													<img src={req.users[0].avatar} alt='' />
-													<div className='nav-text'>
-														<span>{req.users[0].username}</span>
-														<small>{req.user[0].username}</small>
-														<div className='nav-button'>
-															<span onClick={() => this.addFriend(req.users[0].id, req.id)}><ion-icon name="checkmark-outline" /></span>
-															<span onClick={() => this.dltRequest(req.id)}><ion-icon name="close-outline" /></span>
-														</div>
-													</div>
-												</div>
-											)
-										})
-									) : <small>No request</small>
-									}
-
-								</div>
-							</div>}
-					</div>
-
-				</nav>
-				{this.state.modal &&
-					<Modal handleClose={this.handleClose} />}
+			<div className='home-container' data-theme={this.state.theme}>
+				<NavBar theme={this.theme} search={this.search}/>
 				<main>
 					<Left getActiveMenu={this.getActiveMenu} />
 					<Switch>
@@ -385,12 +268,13 @@ export class index extends Component {
 								<Player />
 							</Route>
 							<Route path='/profile/:id'>
-								<Profile sendFriend={this.sendFriend}/>
+								<Profile sendFriend={this.sendFriend} />
 							</Route>
 						</div>
 					</Switch>
 					<Right />
 				</main>
+				
 			</div>
 		)
 	}

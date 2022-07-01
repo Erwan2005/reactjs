@@ -1,6 +1,5 @@
 .messenger {
-	height: 100%;
-	width: 100%;
+	height: calc(100vh - 3em);
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -94,6 +93,7 @@
 	position: relative;
 	padding: 5px 5px;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .messenger .bottom .contents .friend-ms {

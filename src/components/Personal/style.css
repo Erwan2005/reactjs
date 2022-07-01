@@ -10,6 +10,7 @@
     position: relative;
     width: 100%;
     min-height: 300px;
+    max-height: 300px;
     background: var(--bgbtn);
     border-radius: 10px;
     display: flex;

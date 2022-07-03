@@ -1,0 +1,102 @@
+.call{
+    position: fixed;
+    top: 0;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.call > .container{
+    width: 60%;
+    height: 70%;
+    background: var(--background);
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.call > .container .me{
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    border: 1px solid var(--bgbtn);
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 0px;
+    z-index: 1;
+}
+.call > .container .me video{
+    width: 120px;
+    object-fit: contain;
+    
+}
+.call > .container .friend{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.call > .container .friend video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.call > .container .action{
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.call > .container .action span{
+    font-size: 25px;
+    min-width: 40px;
+    min-height: 40px;
+    max-width: 40px;
+    max-height: 40px;
+    background: var(--bgbtn);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.call > .container .action .mic,
+.call > .container .action .video{
+    color: var(--green);
+}
+
+.call > .container .action .end{
+    color: var(--red);
+}
+
+.call > .container .close{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    min-width: 35px;
+    min-height: 35px;
+    max-width: 35px;
+    max-height: 35px;
+    border-radius: 50%;
+    background: var(--bgbtn);
+    color: var(--red);
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+}

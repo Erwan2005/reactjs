@@ -2,6 +2,8 @@ import React from 'react'
 import { Videocam,Call,Close,AttachFile,
 	EmojiEmotions,ThumbUp,Telegram } from '@material-ui/icons';
 import { toast } from 'react-toastify';
+import socket from '../../Socket.js'
+import CallFriend from '../Call'
 import './style.css'
 export class index extends React.Component {
 	constructor(props){
@@ -12,7 +14,10 @@ export class index extends React.Component {
 			doc_file: null,
 			image: null,
 			video: null,
+			isCalling: false,
 		}
+		this.handleClose = this.handleClose.bind(this)
+		this. calling = this.calling.bind(this)
 	}
 
 	docHandler = async (e) => {
@@ -42,6 +47,17 @@ export class index extends React.Component {
 	close = () =>{
 		this.props.handleClose()
 	}
+	call = () => {
+		this.setState({isCalling: !this.state.isCalling })
+		this.calling()
+	}
+	handleClose = () => {
+		this.setState({isCalling: !this.state.isCalling })
+	}
+
+	calling = () => {
+		this.props.call(this.props.idCall)
+	}
 	render() {
 		return (
 			<div className="box-message">
@@ -54,7 +70,7 @@ export class index extends React.Component {
 						</div>
 					</div>
 					<div className="header-right">
-						<span><Call/></span>
+						<span onClick={this.call}><Call/></span>
 						<span><Videocam/></span>
 						<span><Close onClick={this.close}/></span>
 					</div>
@@ -81,6 +97,9 @@ export class index extends React.Component {
 					this.docHandler(e);
 					}} ref={this.refFl} style={{display: 'none'}}/>
 				</div>
+				{this.state.isCalling && 
+					<CallFriend handleClose={this.handleClose} currentVideo={this.props.currentVideo} friendVideo={this.props.friendVideo}/>
+				}
 			</div>
 		)
 	}

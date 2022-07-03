@@ -56,7 +56,13 @@ export class index extends React.Component {
 	};
 
 	sendRequest = () => {
+		let receiverId = this.props.match.params.id
+		socket.emit("sendRequest", {
+			senderId: this.props.user.id,
+			receiverId,
+		  });
 		this.props.sendFriend(this.props.match.params.id)
+
 	};
 
 	redirect = () => {

@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { useQuery } from "react-query";
 import { connect } from "react-redux";
+import { addPeer } from "../../context/peerRedux";
 import { withRouter } from 'react-router-dom';
+import Peer from 'peerjs';
 import BoxMessage from '../Box'
 import { publicRequest, userRequest } from '../../requestMethods';
 import socket from '../../Socket.js'
@@ -14,6 +16,9 @@ function Query(props) {
 export class index extends Component {
     constructor(props) {
         super(props);
+        this.currentVideo = React.createRef();
+        this.friendVideo = React.createRef();
+        this.peerInstance = React.createRef();
         this.state = {
             requests: [],
             loading: false,
@@ -23,8 +28,10 @@ export class index extends Component {
             profile: [],
             friend: null,
             onlineUser: [],
+            peerId: null,
         };
         this.handleClose = this.handleClose.bind(this);
+        this.call = this.call.bind(this);
     }
     handleOpen = () => {
         this.setState({ box: !this.state.box })
@@ -48,17 +55,50 @@ export class index extends Component {
             .then(({ data }) => data)
         this.setState({ friends: data })
     }
-    online = () => {
-        socket.emit("addUser", this.props.user.id);
-        socket.on("getUsers", (users) => {
-            this.setState({ onlineUser: users })
+
+    call = (remotePeerId) => {
+        var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+        getUserMedia({ video: true, audio: true }, (mediaStream) => {
+
+            this.currentVideo.current.srcObject = mediaStream;
+            this.currentVideo.current.play();
+
+            const call = this.peerInstance.current.call(remotePeerId, mediaStream)
+
+            call.on('stream', (remoteStream) => {
+                this.friendVideo.current.srcObject = remoteStream
+                this.friendVideo.current.play();
+            });
         });
-        
     }
     componentDidMount() {
         this.getFriend()
         this.getCurrentUser()
-        this.online()
+        const peer = new Peer();
+        this.setState({ peer: peer })
+        peer.on('open', id => {
+            socket.emit("addUser", this.props.user.id, id)
+            socket.on("getUsers", (users) => {
+                this.setState({ onlineUser: users })
+            });
+        });
+
+        peer.on('call', (call) => {
+            var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+            getUserMedia({ video: true, audio: true }, (mediaStream) => {
+                this.currentVideo.current.srcObject = mediaStream;
+                this.currentVideo.current.play();
+                call.answer(mediaStream)
+                call.on('stream', function (remoteStream) {
+                    this.friendVideo.current.srcObject = remoteStream
+                    this.friendVideo.current.play();
+                });
+            });
+        })
+        this.peerInstance.current = peer
+
     }
     render() {
         return (
@@ -121,7 +161,8 @@ export class index extends Component {
 
                                                                 </div>
                                                                 {this.state.box &&
-                                                                    <BoxMessage handleClose={this.handleClose} user={online.friendprof[0]} />}
+                                                                    <BoxMessage handleClose={this.handleClose} user={online.friendprof[0]} friendVideo={this.friendVideo}
+                                                                        currentVideo={this.currentVideo} call={this.call} idCall={friend.peerId}/>}
                                                             </>
                                                             )
                                                         } else return null
@@ -135,11 +176,7 @@ export class index extends Component {
                         )}
                     </div>
                     <div className='other-link'>
-                        <small>News</small>
-                        <small>Sport</small>
-                        <small>Movie</small>
-                        <small>Techno</small>
-                        <small> | ©{new Date().getFullYear()} Wantech.</small>
+                        <small> Copyright © Wantech {new Date().getFullYear()}.</small>
                     </div>
                 </div>
             </div>
@@ -150,4 +187,7 @@ export class index extends Component {
 const mapStateToProps = (state) => ({
     user: state.user.currentUser,
 });
-export default connect(mapStateToProps, null)(withRouter(index))
+const mapDispatchToProps = (dispatch) => ({
+    dispatchs: dispatch,
+});
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(index))

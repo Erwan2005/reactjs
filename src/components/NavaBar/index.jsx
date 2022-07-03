@@ -47,11 +47,15 @@ export class index extends React.Component {
             this.setState({ menu2: !this.state.menu2, menu1: false, menu3: false })
         } else if (menu === 'menu3') {
             this.setState({ menu3: !this.state.menu3, menu1: false, menu2: false })
+        }else{
+            if(this.state.menu1 || this.state.menu2 || this.state.menu3){
+               this.setState({menu1: false, menu2: false, menu3: false}) 
+            }
         }
     }
     render() {
         return (
-            <div className='navbar'>
+            <div className='navbar' onClick={() => this.showMenu('other')}>
                 <div className='left'>
                     <img src={Logo} alt='' className='logo' />
                     <label className='search'>

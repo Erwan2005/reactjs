@@ -1,15 +1,12 @@
 import React from 'react'
-import {
-	Search, Image, EmojiEmotions, AttachFile,
-	ThumbUp, Telegram, Videocam, Call, MoreVert,
-	Menu, Notifications
-} from '@material-ui/icons';
+
 import { toast } from 'react-toastify';
 import { connect } from "react-redux";
 import ScrollToBottom from 'react-scroll-to-bottom';
 import { CircularProgress } from '@material-ui/core';
 import { Route, Switch, withRouter, Link } from 'react-router-dom';
 import { publicRequest, userRequest, parseRequest } from '../../requestMethods';
+import MediaCall from '../Call'
 import _ from 'lodash';
 import './style.css'
 export class index extends React.Component {
@@ -143,7 +140,6 @@ export class index extends React.Component {
 	componentDidMount() {
 		this.getProfile()
 		this.getCurrent()
-
 	};
 	render() {
 		return (
@@ -196,6 +192,7 @@ export class index extends React.Component {
 						<span className='ms-icon'><ion-icon name="thumbs-up-outline" /></span>
 					</div>
 				</div>
+				<MediaCall />
 			</div>
 		)
 	}

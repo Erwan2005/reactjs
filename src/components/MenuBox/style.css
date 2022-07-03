@@ -10,6 +10,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: auto;
+    max-height: 200px;
 }
 
 .menu-container .userMenu{
@@ -35,8 +37,16 @@
 
 .menu-container .userMenu .userName{
     color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+}
+.menu-container .userMenu .userName > span{
     font-family: var(--fontlight);
-    font-size: 17px;
+    font-size: 15px;
+}
+.menu-container .userMenu .userName > small{
+    font-family: var(--light);
+    font-size: 10px;
 }
 .menu-container > .textIcon{
     display: flex;
@@ -59,4 +69,12 @@
     color: var(--text-primary);
     font-size: 15px;
     font-family: var(--fontlight);
+}
+
+@media(max-width: 720px) {
+	.menu-container{
+        height: 100vh;
+        width: 100vw;
+        right: 0;
+    }
 }

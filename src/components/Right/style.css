@@ -171,8 +171,7 @@
     font-family: var(--fontlight);
     font-size: 12px;
 }
-
-@media(max-width: 720px) {
+@media(max-width: 920px) {
     .right-container{
         display: none;
     }

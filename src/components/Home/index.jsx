@@ -18,6 +18,7 @@ import Shop from '../shop/Drawer'
 import Video from '../VideoList'
 import Player from '../VideoPlayer'
 import NavBar from '../NavaBar'
+import PubPage from '../PubPage'
 import { toast } from 'react-toastify'
 
 import './style.css'
@@ -270,11 +271,13 @@ export class index extends Component {
 							<Route path='/profile/:id'>
 								<Profile sendFriend={this.sendFriend} />
 							</Route>
+							<Route path='/publication/:id'>
+								<PubPage />
+							</Route>
 						</div>
 					</Switch>
 					<Right />
 				</main>
-				
 			</div>
 		)
 	}

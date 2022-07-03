@@ -13,6 +13,8 @@ export class index extends React.Component {
             search: '',
             modal: false,
             menu1: false,
+            menu2: false,
+            menu3: false,
         }
         this.theme = this.theme.bind(this)
         this.search = this.search.bind(this)
@@ -40,7 +42,11 @@ export class index extends React.Component {
     };
     showMenu = (menu) => {
         if (menu === 'menu1') {
-            this.setState({ menu1: !this.state.menu1 })
+            this.setState({ menu1: !this.state.menu1, menu2: false, menu3: false })
+        } else if (menu === 'menu2') {
+            this.setState({ menu2: !this.state.menu2, menu1: false, menu3: false })
+        } else if (menu === 'menu3') {
+            this.setState({ menu3: !this.state.menu3, menu1: false, menu2: false })
         }
     }
     render() {
@@ -67,20 +73,24 @@ export class index extends React.Component {
                                 <span><ion-icon name="desktop-outline" /></span>
                             </NavLink>
                         </li>
-
+                        <li><span><ion-icon name="grid-outline" /></span></li>
                     </ul>
                 </div>
                 <div className='right'>
                     {this.props.user.theme === 'light' ? <span className='icon' onClick={this.theme}><ion-icon name="moon-outline" /></span> : <span className='icon' onClick={this.theme}><ion-icon name="sunny-outline" /></span>}
-                    <span className='icon'><ion-icon name="chatbubble-outline" /></span>
-                    <span className='icon'><ion-icon name="notifications-outline" /></span>
+                    <span className='icon' onClick={() => this.showMenu('menu3')}><ion-icon name="chatbubble-outline" />
+                        <small>+9</small></span>
+                    <span className='icon' onClick={() => this.showMenu('menu2')}><ion-icon name="notifications-outline" />
+                        <small>1</small></span>
                     <img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' className='avatar' onClick={() => this.showMenu('menu1')} />
                     {this.state.menu1 &&
                         <Menu openModal={this.openModal} logout={this.logout}>
                             <Link exact to='/personnal' className="link">
                                 <div className='userMenu'>
                                     <img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' />
-                                    <span className='userName'>{this.props.user.username}</span>
+                                    <div className='userName'>
+                                        <span className='userName'>{this.props.user.username}</span>
+                                    </div>
                                 </div>
                             </Link>
                             <div className='textIcon' onClick={this.openModal}>
@@ -91,6 +101,30 @@ export class index extends React.Component {
                                 <span className='icon'><ion-icon name="log-out-outline" /></span>
                                 <span className='text'>Logout</span>
                             </div>
+                        </Menu>
+                    }
+                    {this.state.menu2 &&
+                        <Menu openModal={this.openModal} logout={this.logout}>
+                            <div className='userMenu'>
+                                <img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' />
+                                <div className='userName'>
+                                    <span className='userName'>{this.props.user.username}</span>
+                                    <small>Comment your post</small>
+                                </div>
+                            </div>
+
+                        </Menu>
+                    }
+                    {this.state.menu3 &&
+                        <Menu openModal={this.openModal} logout={this.logout}>
+                            <div className='userMenu'>
+                                <img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' />
+                                <div className='userName'>
+                                    <span className='userName'>{this.props.user.username}</span>
+                                    <small>Hi how are you ?</small>
+                                </div>
+                            </div>
+
                         </Menu>
                     }
                 </div>

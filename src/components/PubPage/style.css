@@ -1,0 +1,197 @@
+.pagepub{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pagepub video{
+    width: 100%;
+    height: auto;
+}
+.pagepub .head-skeleton{
+    width: 100%;
+    height: 250px;
+    background: var(--gray);
+}
+
+.pagepub .bottom-skeleton{
+    width: 100%;
+    height: 30px;
+    background: var(--gray);
+}
+
+.pagepub .images{
+    width: 100%;
+    height: 400px;
+    position: relative;
+    background: var(--bgbtn);
+}
+
+.pagepub .images img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.pagepub .images span{
+    min-width: 35px;
+    min-height: 35px;
+    max-width: 35px;
+    max-height: 35px;
+    border-radius: 50%;
+    background: var(--bgbtn);
+    font-size: 25px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagepub .images span:hover{
+    cursor: pointer;
+}
+
+.pagepub .images .left{
+    position:absolute;
+    left: 5px;
+    top: 40%;
+}
+
+.pagepub .images .right{
+    position:absolute;
+    right: 5px;
+    top: 40%;
+}
+
+.pagepub .page-avatar{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    padding: 5px 5px;
+}
+.pagepub .page-avatar img{
+    min-width: 35px;
+    min-height: 35px;
+    max-width: 35px;
+    max-height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.pagepub .page-avatar .page-text{
+    width: 100%;
+    flex-grow: 1;
+    color: var(--text-primary);
+    font-family: var(--fontlight);
+    font-size: 15px;
+}
+
+.pagepub > .action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 5px;
+    color: var(--text-primary);
+    max-height: 20px;
+}
+
+.pagepub > .action > div .icon{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagepub > .action > div small{
+    font-size: 15px;
+    font-family: var(--light);
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pagepub > .action > div{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.pagepub > .text-input{
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    max-height: 50px;
+    background: var(--bgbtn);
+    padding: 5px 5px;
+    gap: 5px;
+    border-radius: 5px;
+}
+
+.pagepub > .text-input input{
+    height: 100%;
+    background: transparent;
+    border: none;
+    font-size: 15px;
+    font-family: var(--fontlight);
+    color: var(--text-primary);
+    padding: 0;
+    flex-grow: 1;
+}
+.pagepub > .text-input img{
+    min-width: 35px;
+    min-height: 35px;
+    max-width: 35px;
+    max-height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.pagepub > .text-input span{
+    font-size: 25px;
+    color: var(--text-primary);
+    height: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.pagepub > .comments{
+    display: flex;
+    gap: 5px;
+    color: var(--text-primary);
+}
+
+.pagepub > .comments img{
+    min-width: 35px;
+    min-height: 35px;
+    max-width: 35px;
+    max-height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.pagepub > .comments .text{
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex-grow: 1;
+    border-bottom: 1px solid var(--bgbtn);
+    padding-bottom: 2px;
+}
+
+.pagepub > .comments .text span{
+    font-family: var(--fontlight);
+    text-transform: capitalize;
+    letter-spacing: 2px;
+}
+
+.pagepub > .comments .text small{
+    font-size: 15px;
+    font-family: var(--light);
+}
+.pagepub > .comments .text small:last-child{
+    font-size: 8px;
+    font-family: var(--fontlight);
+}

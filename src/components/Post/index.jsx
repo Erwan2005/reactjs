@@ -115,35 +115,37 @@ export class index extends Component {
 								}
 								subheader={<small>{format(pub.date)}</small>}
 							/>
-							{pub.images[0].image !== null && <>
-								<div className='imageArray'>
-									{pub.images.length === 2 ? <>
-										<div className='only2'>
-											{pub.images && pub.images.slice(0, 2).map((pic, index) => {
-												return (
-													<img src={pic.image} alt='' />
-												)
-											})}
-										</div></> : <>
-										<div className='imageTop'>
-											<img src={pub.images[0].image} alt='' />
-										</div>
-										<div className='imageBot'>
-											{pub.images && pub.images.slice(1, 4).map((pic, index) => {
-												return (
-													<div className={pub.images.length > 4 ? 'image' : 'image2'} key={index}>
+							<Link className='link' to={`/publication/${pub.id}`}>
+								{pub.images[0].image !== null && <>
+									<div className='imageArray'>
+										{pub.images.length === 2 ? <>
+											<div className='only2'>
+												{pub.images && pub.images.slice(0, 2).map((pic, index) => {
+													return (
 														<img src={pic.image} alt='' />
-														{pub.images.length > 4 ? <span className='textImage'>+ {pub.images.length - 4}</span> : null}
-													</div>
-												)
-											})
-											}
-										</div>
-									</>}
-								</div>
-							</>}
-							{pub.video && (
-								<div><video src={pub.video} controls controlsList='nodownload' /></div>)}
+													)
+												})}
+											</div></> : <>
+											<div className='imageTop'>
+												<img src={pub.images[0].image} alt='' />
+											</div>
+											<div className='imageBot'>
+												{pub.images && pub.images.slice(1, 4).map((pic, index) => {
+													return (
+														<div className={pub.images.length > 4 ? 'image' : 'image2'} key={index}>
+															<img src={pic.image} alt='' />
+															{pub.images.length > 4 ? <span className='textImage'>+ {pub.images.length - 4}</span> : null}
+														</div>
+													)
+												})
+												}
+											</div>
+										</>}
+									</div>
+								</>}
+								{pub.video && (
+									<div><video src={pub.video} controls controlsList='nodownload' /></div>)}
+							</Link>
 							<CardContent>
 								<h3>{pub.title}</h3>
 								<h4>{pub.message}</h4>
@@ -195,6 +197,7 @@ export class index extends Component {
 						</Card>
 					)
 				})}
+
 			</div>
 		)
 	}

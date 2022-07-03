@@ -29,6 +29,10 @@ const userSlice = createSlice({
       state.isFetching = false;
       state.currentUser.covert = action.payload
     },
+    usernameUpdate: (state, action) => {
+      state.isFetching = false;
+      state.currentUser.username = action.payload
+    },
     themeUpdate: (state, action) =>{
       state.isFetching = false;
       state.currentUser.theme = action.payload
@@ -36,5 +40,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, avatarUpdate, covertUpdate, themeUpdate } = userSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, avatarUpdate, covertUpdate, usernameUpdate, themeUpdate } = userSlice.actions;
 export default userSlice.reducer;

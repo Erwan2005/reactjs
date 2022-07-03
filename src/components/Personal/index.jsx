@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Resizer from "react-image-file-resizer";
 import { PhotoCamera } from '@material-ui/icons';
-import { avatarUpdate, covertUpdate } from "../../context/userRedux";
+import { avatarUpdate, covertUpdate,usernameUpdate } from "../../context/userRedux";
 import Avatar from '../../assets/user.jpg'
 import Cover from '../../assets/cover.jpg'
 import { connect } from "react-redux";
@@ -132,6 +132,7 @@ export class index extends Component {
     } else if (val === 'username') {
       let formData = new FormData();
       formData.append("username", value)
+      this.props.dispatchs(usernameUpdate(value))
       let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
       this.setState({ username: data.username, div: '' })
 

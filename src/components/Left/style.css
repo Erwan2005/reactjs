@@ -69,9 +69,8 @@
 
 
 
-@media(max-width: 720px) {
+@media(max-width: 920px) {
     .left-container {
-        min-width: 0px;
-        max-width: 0px;
+        display: none;
     }
 }

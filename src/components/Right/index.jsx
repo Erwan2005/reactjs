@@ -76,7 +76,6 @@ export class index extends Component {
         this.getFriend()
         this.getCurrentUser()
         const peer = new Peer();
-        this.setState({ peer: peer })
         peer.on('open', id => {
             socket.emit("addUser", this.props.user.id, id)
             socket.on("getUsers", (users) => {

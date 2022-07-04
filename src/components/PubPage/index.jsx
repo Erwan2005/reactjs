@@ -5,6 +5,7 @@ import { userRequest } from '../../requestMethods';
 import { withRouter } from 'react-router-dom'
 import NumericLabel from 'react-pretty-numbers';
 import { format } from 'timeago.js';
+import Picker from 'emoji-picker-react';
 import './style.css'
 export class index extends Component {
     constructor(props) {
@@ -16,6 +17,7 @@ export class index extends Component {
             like: [],
             comment: '',
             comments: [],
+            emoji: false,
         }
     }
     getPub = async () => {
@@ -82,26 +84,33 @@ export class index extends Component {
 
     };
 
-    
+    emojiFunc = () => {
+        this.setState({ emoji: !this.state.emoji })
+        console.log(this.state.emoji)
+    }
+
+    onEmojiClick = (event, emojiObject) => {
+        this.setState({comment: this.state.comment.concat(emojiObject.emoji)})
+    };
     componentDidMount() {
         this.getLike()
         this.getCom()
         this.getPub()
 
         const keyDownHandler = event => {
-			console.log('User pressed: ', event.key);
+            console.log('User pressed: ', event.key);
 
-			if (event.key === 'Enter') {
-				event.preventDefault();
+            if (event.key === 'Enter') {
+                event.preventDefault();
 
-				this.btnComment(this.state.comment, this.state.publication.id)
-			}
-		};
-		document.addEventListener('keydown', keyDownHandler);
+                this.btnComment(this.state.comment, this.state.publication.id)
+            }
+        };
+        document.addEventListener('keydown', keyDownHandler);
 
-		return () => {
-			document.removeEventListener('keydown', keyDownHandler);
-		};
+        return () => {
+            document.removeEventListener('keydown', keyDownHandler);
+        };
     }
     render() {
         return (
@@ -147,10 +156,20 @@ export class index extends Component {
                             <small></small>
                         </div>
                     </div>
+
                     <label className='text-input'>
                         <img src={this.props.user.avatar ? this.props.user.avatar : User} alt="" />
+                        
                         <input type="text" placeholder='Your text' value={this.state.comment} onChange={e => this.setState({ comment: e.target.value })} />
-                        <span><ion-icon name="happy-outline" /></span>
+                        <span onClick={this.emojiFunc}><ion-icon name="happy-outline" /></span>
+                        {this.state.emoji && <Picker pickerStyle={{
+                            background: 'var(--background)',
+                            boxShadow: '1px 1px 12px rgba(0, 0, 0, 0.4)', border: '1px solid var(--bgbtn)',
+                            position: 'absolute', right: '0', bottom: '60px', fontSize: '15px'
+                        }}
+                            groupVisibility={{
+                                flags: false,
+                            }} onEmojiClick = { this.onEmojiClick }/>}
                     </label>
                     {this.state.comments && this.state.comments.map(com => {
                         if (com.post_connected === this.state.publication.id) {

@@ -155,6 +155,8 @@
     height: 20px;
     display: flex;
     align-items: center;
+    z-index: 0;
+    cursor: pointer;
 }
 
 .pagepub > .comments{

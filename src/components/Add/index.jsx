@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { CircularProgress } from '@material-ui/core';
 import { publicRequest, userRequest, BASE_URL, parseRequest } from '../../requestMethods';
 import User from '../../assets/user.jpg'
+import Picker from 'emoji-picker-react';
 import './style.css'
 export class index extends Component {
     constructor(props) {
@@ -14,6 +15,7 @@ export class index extends Component {
             video: null,
             share: '',
             sending: false,
+            emoji: false,
         }
         this.pubUpdate = this.pubUpdate.bind(this);
     }
@@ -86,6 +88,12 @@ export class index extends Component {
     pubUpdate = (data) => {
         this.props.publication(data)
     }
+    onEmojiClick = (event, emojiObject) => {
+        this.setState({ share: this.state.share.concat(emojiObject.emoji) })
+    };
+    emojiFunc = () => {
+        this.setState({ emoji: !this.state.emoji })
+    }
     render() {
         return (
             <div className='add-container'>
@@ -145,9 +153,17 @@ export class index extends Component {
                                 <span className='share-icon'><ion-icon name="location-outline" /></span>
                                 <small className='share-text'>Location</small>
                             </div>
-                            <div className='video-image'>
+                            <div className='video-image' onClick={this.emojiFunc}>
                                 <span className='share-icon'><ion-icon name="happy-outline" /></span>
                                 <small className='share-text'>Feellings</small>
+                                {this.state.emoji && <Picker pickerStyle={{
+                                    background: 'var(--background)',
+                                    boxShadow: '1px 1px 12px rgba(0, 0, 0, 0.4)', border: '1px solid var(--bgbtn)',
+                                    position: 'absolute', left: '50px', bottom: '-20px', fontSize: '15px',height: '300px'
+                                }}
+                                    groupVisibility={{
+                                        flags: false,
+                                    }} onEmojiClick={this.onEmojiClick} />}
                             </div>
                             <input type='file' id='file-img' onChange={(e) => {
                                 this.imageHandler(e);

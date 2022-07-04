@@ -156,6 +156,7 @@
     align-items: center;
     gap: 5px;
     cursor: pointer;
+    position: relative;
 }
 .video-image .share-icon{
     display: inline;

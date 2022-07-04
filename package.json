@@ -29,6 +29,7 @@
     "react-dropzone": "^14.2.1",
     "react-image-file-resizer": "^0.4.7",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-input-emoji": "^4.1.0",
     "react-pdf-thumbnail": "^0.1.0",
     "react-pretty-numbers": "^3.0.0",
     "react-query": "^3.34.16",

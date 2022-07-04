@@ -158,6 +158,10 @@
     cursor: pointer;
     position: relative;
 }
+.video-image .emoji{
+    display: flex;
+    gap: 5px;
+}
 .video-image .share-icon{
     display: inline;
     color: tomato;

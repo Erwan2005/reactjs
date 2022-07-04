@@ -5,7 +5,7 @@ import { userRequest } from '../../requestMethods';
 import { withRouter } from 'react-router-dom'
 import NumericLabel from 'react-pretty-numbers';
 import { format } from 'timeago.js';
-import Picker from 'emoji-picker-react';
+import Emoji from '../Emoji'
 import './style.css'
 export class index extends Component {
     constructor(props) {
@@ -89,8 +89,8 @@ export class index extends Component {
         console.log(this.state.emoji)
     }
 
-    onEmojiClick = (event, emojiObject) => {
-        this.setState({comment: this.state.comment.concat(emojiObject.emoji)})
+    onEmojiClick = (emojiObject) => {
+        this.setState({comment: this.state.comment.concat(emojiObject)})
     };
     componentDidMount() {
         this.getLike()
@@ -162,14 +162,7 @@ export class index extends Component {
                         
                         <input type="text" placeholder='Your text' value={this.state.comment} onChange={e => this.setState({ comment: e.target.value })} />
                         <span onClick={this.emojiFunc}><ion-icon name="happy-outline" /></span>
-                        {this.state.emoji && <Picker pickerStyle={{
-                            background: 'var(--background)',
-                            boxShadow: '1px 1px 12px rgba(0, 0, 0, 0.4)', border: '1px solid var(--bgbtn)',
-                            position: 'absolute', right: '0', bottom: '60px', fontSize: '15px'
-                        }}
-                            groupVisibility={{
-                                flags: false,
-                            }} onEmojiClick = { this.onEmojiClick }/>}
+                        {this.state.emoji && <Emoji onEmojiClick={this.onEmojiClick} class= 'right'/>}
                     </label>
                     {this.state.comments && this.state.comments.map(com => {
                         if (com.post_connected === this.state.publication.id) {

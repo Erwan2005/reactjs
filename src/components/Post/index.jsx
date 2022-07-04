@@ -117,7 +117,7 @@ export class index extends Component {
 							/>
 							<Link className='link' to={`/publication/${pub.id}`}>
 								{pub.images[0].image !== null && <>
-									<div className='imageArray'>
+									<div className={pub.images.length > 2 ? 'imageArray' : 'imageArray1'}>
 										{pub.images.length === 2 ? <>
 											<div className='only2'>
 												{pub.images && pub.images.slice(0, 2).map((pic, index) => {

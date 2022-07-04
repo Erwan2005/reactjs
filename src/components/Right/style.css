@@ -1,7 +1,6 @@
 .right-container{
     min-width: 20%;
     height: calc(100vh - 3em);
-    background: var(--bgbtn);
     padding: 10px 10px;
     display: flex;
     flex-direction: column;

@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { toast } from 'react-toastify';
 import { CircularProgress } from '@material-ui/core';
-import { publicRequest, userRequest, BASE_URL, parseRequest } from '../../requestMethods';
+import { userRequest, parseRequest } from '../../requestMethods';
 import User from '../../assets/user.jpg'
 import Emoji from '../Emoji'
+import Story from '../Story'
 import './style.css'
 export class index extends Component {
     constructor(props) {
@@ -16,9 +17,15 @@ export class index extends Component {
             share: '',
             sending: false,
             emoji: false,
+            story: false,
+            storys: [],
         }
         this.pubUpdate = this.pubUpdate.bind(this);
         this.onEmojiClick = this.onEmojiClick.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+    }
+    handleClose = () => {
+        this.setState({ story: !this.state.story })
     }
     imageHandler = async (e) => {
         this.setState({ image: '', video: null })
@@ -95,6 +102,17 @@ export class index extends Component {
     emojiFunc = () => {
         this.setState({ emoji: !this.state.emoji })
     }
+
+    getStory = async () => {
+        let data = await userRequest.get('userapp/story')
+            .then(({ data }) => data)
+        this.setState({ storys: data })
+        console.log(data)
+    }
+
+    componentDidMount() {
+        this.getStory()
+    }
     render() {
         return (
             <div className='add-container'>
@@ -103,35 +121,19 @@ export class index extends Component {
                         <div className='story'>
                             <img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' />
                         </div>
-                        <span className='card-icon story-icon'><ion-icon name="add-outline" /></span>
+                        <span className='card-icon story-icon' onClick={() => this.setState({ story: !this.state.story })}><ion-icon name="add-outline" /></span>
                         <span className='story-text'>Create story</span>
                     </div>
-
-                    <div className='add-card'>
-                        <div className='story'>
-                            <img src='https://cdn.pixabay.com/photo/2019/03/05/05/12/model-4035591_960_720.jpg' alt='' />
-                        </div>
-                        <img src='https://cdn.pixabay.com/photo/2019/03/05/05/12/model-4035591_960_720.jpg' alt='' className='story-img' />
-                    </div>
-                    <div className='add-card'>
-                        <div className='story'>
-                            <img src='https://cdn.pixabay.com/photo/2019/03/05/05/12/model-4035591_960_720.jpg' alt='' />
-                        </div>
-                        <img src='https://cdn.pixabay.com/photo/2019/03/05/05/12/model-4035591_960_720.jpg' alt='' className='story-img' />
-                    </div>
-                    <div className='add-card'>
-                        <div className='story'>
-                            <img src='https://cdn.pixabay.com/photo/2019/03/05/05/12/model-4035591_960_720.jpg' alt='' />
-                        </div>
-                        <img src='https://cdn.pixabay.com/photo/2019/03/05/05/12/model-4035591_960_720.jpg' alt='' className='story-img' />
-                    </div>
-                    <div className='add-card'>
-                        <div className='story'>
-                            <img src='https://cdn.pixabay.com/photo/2019/03/05/05/12/model-4035591_960_720.jpg' alt='' />
-                        </div>
-                        <img src='https://cdn.pixabay.com/photo/2019/03/05/05/12/model-4035591_960_720.jpg' alt='' className='story-img' />
-                    </div>
-                    <span className='story-see card-icon'><ion-icon name="arrow-forward-outline" /></span>
+                    {this.state.storys && this.state.storys.map(story => {
+                        return (
+                            <div className='add-card'>
+                                <div className='story'>
+                                    <img src={story.profile && story.profile[0].avatar} alt='' />
+                                </div>
+                                <img src={story.images && story.images[0].image} alt='' className='story-img' />
+                            </div>
+                        )
+                    })}
                 </div>
                 <div className='add-bottom'>
                     <div className='bottom-header'>
@@ -159,7 +161,7 @@ export class index extends Component {
                                     <span className='share-icon'><ion-icon name="happy-outline" /></span>
                                     <small className='share-text'>Feellings</small>
                                 </div>
-                                {this.state.emoji && <Emoji onEmojiClick={this.onEmojiClick} class= 'left'/>}
+                                {this.state.emoji && <Emoji onEmojiClick={this.onEmojiClick} class='left' />}
                             </div>
 
                             <input type='file' id='file-img' onChange={(e) => {
@@ -169,6 +171,7 @@ export class index extends Component {
                         <button className='btn-share' onClick={this.btnShare} disabled={this.state.sending}>{this.state.sending ? <CircularProgress color="white" size="20px" /> : "Share"}</button>
                     </div>
                 </div>
+                {this.state.story && <Story handleClose={this.handleClose} />}
             </div>
         )
     }

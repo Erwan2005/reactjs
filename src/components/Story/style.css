@@ -1,0 +1,123 @@
+.story-cont{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.story-cont > .container{
+    width: 40%;
+    background: var(--background);
+    position: relative;
+    border-radius: 5px;
+    padding: 10px 10px;
+}
+
+.story-cont > .container .header{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    height: 40px;
+}
+
+.story-cont > .container .header img{
+    min-height: 35px;
+    min-width: 35px;
+    max-height: 35px;
+    max-width: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.story-cont > .container .header span{
+    font-family: var(--fontlight);
+    color: var(--text-primary);
+    font-size: 15px;
+    text-transform: capitalize;
+}
+
+.story-cont > .container .close{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    min-height: 30px;
+    min-width: 30px;
+    max-height: 30px;
+    max-width: 30px;
+    border-radius: 50%;
+    background: var(--bgbtn);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    color: var(--red);
+    cursor: pointer;
+}
+
+.story-cont > .container .contents{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+}
+
+.story-cont > .container .contents input{
+    width: 100%;
+    border: 1px solid var(--bgbtn);
+    border-radius: 0;
+    color: var(--text-primary);
+    font-family: var(--fontlight);
+    font-size: 15px;
+    padding: 10px 10px;
+    text-transform: capitalize;
+}
+
+.story-cont > .container .contents .images{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+}
+
+.story-cont > .container .contents .images img{
+    width: calc(100% / 5);
+    height: 100%;
+    object-fit: cover;
+}
+.story-cont > .container .contents span{
+    width: 100%;
+    padding: 10px 5px;
+    text-align: center;
+    border: 1px dashed var(--green);
+    color: var(--text-primary);
+    font-size: 15px;
+    font-family: var(--fontlight);
+    cursor: pointer;
+}
+.story-cont > .container .contents button{
+    height: 40px;
+    width: 20%;
+    background: transparent;
+    border: 1px solid var(--green);
+    border-radius: 2px;
+    color: var(--text-primary);
+    font-family: var(--fontlight);
+    font-size: 100%;
+    text-transform: uppercase;
+    transition: all 0.5s ease-in-out;
+
+}
+
+.story-cont > .container .contents button:hover{
+    background: var(--green);
+    color: var(--white);
+    cursor: pointer;
+}

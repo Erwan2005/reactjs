@@ -37,10 +37,25 @@
     
 }
 .login .link{
-	text-decoration: none;
-	color: var(--text-primary);
+	width: 100%;
+	padding: 2px 2px;
+	display: flex;
+	flex-direction: column;
 }
 
+.login .link span{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--text-primary);
+	font-size: 12px;
+	font-family: var(--fontlight);
+}
+
+.login .link span:hover{
+	color: var(--green);
+	cursor: pointer;
+}
 .error{
 	color: var(--red);
 	font-size: 15px;

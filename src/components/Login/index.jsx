@@ -3,8 +3,8 @@ import FormInput from "../formInput/FormInput";
 import { login } from "../../context/apiCall";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import Reset from '../ResetPassword'
 import { Link, Typography, CircularProgress } from '@material-ui/core';
-import bcrypt from 'bcryptjs'
 import './style.css'
 
 export class index extends React.Component {
@@ -17,7 +17,13 @@ export class index extends React.Component {
 				password: "",
 			}),
 			theme: '',
+			open: false,
 		};
+		this.handleClose = this.handleClose.bind(this);
+	}
+
+	handleClose = () => {
+		this.setState({open: !this.state.open})
 	}
 
 	preferedTheme = () => {
@@ -99,12 +105,10 @@ export class index extends React.Component {
 							"Log In"
 						)}
 					</button>
-					<Link variant="body2" component="button" onClick={this.creatAccount} className="link">
-						{"Not have an account?"}
-					</Link><br/>
-					<Link variant="body2" component="button" className="link">
-						{"Forgot password"}
-					</Link>
+					<div className='link'>
+						<span onClick={this.creatAccount} >Not have an account ?</span>
+						<span className='link' onClick={()=>this.setState({open: !this.state.open})}>Forgot password ?</span>
+					</div>
 					<Typography variant="body2" color="textSecondary" align="center">
 						{'Copyright © '}
 						<Link color="inherit" href="https://material-ui.com/">
@@ -114,6 +118,7 @@ export class index extends React.Component {
 						{'.'}
 					</Typography>
 				</div>
+				{this.state.open && <Reset handleClose={this.handleClose}/>}
 			</div>
 		)
 	}

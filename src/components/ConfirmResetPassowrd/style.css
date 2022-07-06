@@ -1,0 +1,63 @@
+.confirm{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background);
+}
+
+.confirm > .container{
+    width: 40%;
+    padding: 10px 10px;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid var(--bgbtn);
+}
+
+.confirm > .container .header{
+    color: var(--green);
+    font-size: 18px;
+    font-family: var(--fontlight);
+    letter-spacing: 2px;
+}
+
+.confirm > .container input{
+    width: 100%;
+    border: 1px solid var(--green);
+    border-radius: 2px;
+    padding: 10px 10px;
+    color: var(--text-primary);
+}
+.confirm > .container small{
+    color: var(--red);
+    width: 100%;
+    min-height: 30px;
+    text-align: left;
+    height: 20px;
+    flex-grow: 1;
+    
+}
+.confirm > .container button{
+    width: 20%;
+    border: 1px solid var(--green);
+    padding: 5px 5px;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 15px;
+    font-family: var(--fontlight);
+    text-transform: uppercase;
+}
+
+.confirm > .container button:hover{
+    color: var(--white);
+    background: var(--green);
+    cursor: pointer;
+}
+
+.confirm > .container button:disabled{
+    cursor: not-allowed;
+}

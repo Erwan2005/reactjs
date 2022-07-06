@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
-import Resizer from "react-image-file-resizer";
 import { userRequest } from '../../../requestMethods';
 import { toast } from 'react-toastify';
 

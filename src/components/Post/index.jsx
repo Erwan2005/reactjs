@@ -10,6 +10,7 @@ import { format } from 'timeago.js';
 import _ from 'lodash';
 import { userRequest } from '../../requestMethods'
 import User from '../../assets/user.jpg'
+
 import './style.css'
 export class index extends Component {
 	constructor(props) {
@@ -82,11 +83,11 @@ export class index extends Component {
 		this.props.postDelete(id)
 	}
 
+
 	componentDidMount() {
 		this.getLike()
 		this.getCom()
-		this.handleSearch()
-
+		this.handleSearch() 
 	};
 
 	render() {

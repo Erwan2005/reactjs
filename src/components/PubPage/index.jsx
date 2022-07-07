@@ -20,18 +20,6 @@ export class index extends Component {
             emoji: false,
         }
     }
-    getPub = async () => {
-        try {
-            this.setState({ loading: true })
-            let data = await userRequest.get(`userapp/publication/${this.props.match.params.id}`)
-                .then(({ data }) => data)
-            this.setState({ publication: data, loading: false })
-
-
-        } catch (error) {
-            console.log(error)
-        }
-    };
     prevNext = (action, array) => {
         if (action === 'prev') {
             this.state.index > 0 && this.setState({ index: this.state.index - 1 })
@@ -95,7 +83,8 @@ export class index extends Component {
     componentDidMount() {
         this.getLike()
         this.getCom()
-        this.getPub()
+        const pub = this.props.publication.filter((pub) => pub.id == this.props.match.params.id)
+        this.setState({publication: pub[0]})
 
         const keyDownHandler = event => {
             console.log('User pressed: ', event.key);
@@ -186,5 +175,6 @@ export class index extends Component {
 
 const mapStateToProps = (state) => ({
     user: state.user.currentUser,
+    publication: state.publication.publications,
 });
 export default connect(mapStateToProps, null)(withRouter(index))

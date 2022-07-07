@@ -17,7 +17,6 @@ const pubSlice = createSlice({
         },
         rmvPub: (state, action) => {
             const data = state.publications.filter((el) => el.id !== action.payload);
-            console.log(data)
             return {
                 ...state,
                 publications: data

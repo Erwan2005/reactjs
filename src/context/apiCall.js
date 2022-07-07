@@ -14,10 +14,11 @@ export const login = async (dispatch, user) => {
 
 export const getpublication = async (dispatch) => {
   try {
-    const res = await userRequest.get("userapp/publication");
-    dispatch(addPub(res.data.results));
+    const res = await userRequest.get("userapp/publication?page=1");
+    res.data.results && res.data.results.map(pub =>{
+      dispatch(addPub(pub));
+    })
   } catch (err) {
     console.log(err)
-    window.location.reload(true);
   }
 };

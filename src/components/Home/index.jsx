@@ -4,6 +4,7 @@ import Post from '../Post'
 import Add from '../Add'
 import { Route, Switch, withRouter, Link } from 'react-router-dom'
 import { themeUpdate } from "../../context/userRedux";
+import { rmvPub } from "../../context/pubRedux"
 import { publicRequest, userRequest, parseRequest } from '../../requestMethods'
 import { useQuery } from "react-query";
 import User from '../../assets/user.jpg'
@@ -20,7 +21,6 @@ import Player from '../VideoPlayer'
 import NavBar from '../NavaBar'
 import PubPage from '../PubPage'
 import { toast } from 'react-toastify'
-
 import './style.css'
 import { FormatListNumberedRtlTwoTone } from '@material-ui/icons'
 import { light } from '@material-ui/core/styles/createPalette'
@@ -80,6 +80,7 @@ export class index extends Component {
 		this.activeMenu = newMethod;
 	}
 	postDelete = async (id) => {
+		this.props.dispatchs(rmvPub(id))
 		const new_data = this.state.publication.filter(pub => {
 			if (pub.id === id) {
 				return false
@@ -139,7 +140,6 @@ export class index extends Component {
 		} catch (error) {
 			window.location.reload(true);
 		}
-
 	};
 
 	search = async (query) => {
@@ -199,7 +199,7 @@ export class index extends Component {
 		socket.on("getRequest", (data) => {
 			this.setState({ friendReq: [data].concat(this.state.friendReq) })
 		})
-
+		
 	}
 
 	dltRequest = async (id) => {
@@ -234,7 +234,7 @@ export class index extends Component {
 		this.getCurrent()
 		this.getPub()
 		this.getRequest()
-
+		console.log(this.props.publication)
 	};
 	render() {
 		return (
@@ -246,7 +246,7 @@ export class index extends Component {
 						<div className='central'>
 							<Route exact path='/'>
 								<Add publication={this.handleToUpdate} />
-								<Post publication={this.state.search === '' ? this.state.publication : this.state.results} handleSearch={this.handleSearch}
+								<Post publication={this.state.search === '' ? this.props.publication : this.state.results} handleSearch={this.handleSearch}
 									postDelete={this.postDelete} />
 
 							</Route>
@@ -285,6 +285,7 @@ export class index extends Component {
 
 const mapStateToProps = (state) => ({
 	user: state.user.currentUser,
+	publication: state.publication.publications,
 });
 const mapDispatchToProps = (dispatch) => ({
 	dispatchs: dispatch,

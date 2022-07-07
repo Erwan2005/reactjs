@@ -6,6 +6,7 @@ import { userRequest, parseRequest } from '../../requestMethods';
 import User from '../../assets/user.jpg'
 import Emoji from '../Emoji'
 import Story from '../Story'
+import { addPub } from "../../context/pubRedux"
 import './style.css'
 export class index extends Component {
     constructor(props) {
@@ -19,6 +20,16 @@ export class index extends Component {
             emoji: false,
             story: false,
             storys: [],
+            data: {
+                comments: null,
+                date: null,
+                id: null,
+                images: null,
+                message: null,
+                proprietary: null,
+                user: null,
+                video: null,
+            },
         }
         this.pubUpdate = this.pubUpdate.bind(this);
         this.onEmojiClick = this.onEmojiClick.bind(this);
@@ -94,7 +105,7 @@ export class index extends Component {
         this.pubUpdate(data)
     };
     pubUpdate = (data) => {
-        this.props.publication(data)
+        this.props.dispatchs(addPub(data));
     }
     onEmojiClick = (emojiObject) => {
         this.setState({ share: this.state.share.concat(emojiObject) })
@@ -179,5 +190,9 @@ export class index extends Component {
 
 const mapStateToProps = (state) => ({
     user: state.user.currentUser,
+    publication: state.publication.publications,
 });
-export default connect(mapStateToProps, null)(index)
+const mapDispatchToProps = (dispatch) => ({
+	dispatchs: dispatch,
+});
+export default connect(mapStateToProps, mapDispatchToProps)(index)

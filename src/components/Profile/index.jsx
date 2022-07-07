@@ -39,10 +39,6 @@ export class index extends React.Component {
 		this.setState({ box: !this.state.box })
 	}
 
-	getFriends = async () => {
-		let data = await userRequest.get(`userapp/users/${this.props.match.params.id}`).then(({ data }) => data)
-		this.setState({ friend: data })
-	}
 	getFriend = async () => {
 		let data = await userRequest.get('userapp/friend/')
 			.then(({ data }) => data)
@@ -75,33 +71,17 @@ export class index extends React.Component {
 	}
 
 	getPub = async () => {
-		try {
-			this.setState({ loading: true })
-			let data = await userRequest.get(`userapp/publication/?page=${this.state.page}`)
-				.then(({ data }) => data)
-			if (data.next) {
-				this.setState({ page: this.state.page + 1 })
-			} else {
-				this.setState({ more_exist: false, end: true })
-			}
-			data.results && data.results.map((pub, index) => {
-				if (pub.user == this.props.match.params.id) {
-					this.setState({ publication: this.state.publication.concat(pub) })
-					console.log(this.state.publication)
-				}
-			})
-
-		} catch (error) {
-			console.log(error)
-		}
+		const pub = this.props.publication.filter((pub) => pub.user == this.props.match.params.id)
+        this.setState({publication: pub})
 
 
 	}
 	componentDidMount() {
 		this.redirect()
 		this.getFriend()
-		this.getFriends()
 		this.getPub()
+		const user = this.props.users.filter((user) => user.id == this.props.match.params.id)
+        this.setState({friend: user[0]})
 
 	};
 	render() {
@@ -156,5 +136,7 @@ export class index extends React.Component {
 
 const mapStateToProps = (state) => ({
 	user: state.user.currentUser,
+	publication: state.all.publications,
+	users: state.all.users,
 });
 export default connect(mapStateToProps, null)(withRouter(index))

@@ -175,6 +175,6 @@ export class index extends Component {
 
 const mapStateToProps = (state) => ({
     user: state.user.currentUser,
-    publication: state.publication.publications,
+    publication: state.all.publications,
 });
 export default connect(mapStateToProps, null)(withRouter(index))

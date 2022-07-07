@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Resizer from "react-image-file-resizer";
 import { PhotoCamera } from '@material-ui/icons';
-import { avatarUpdate, covertUpdate,usernameUpdate } from "../../context/userRedux";
+import { avatarUpdate, covertUpdate, usernameUpdate } from "../../context/userRedux";
 import Avatar from '../../assets/user.jpg'
 import Cover from '../../assets/cover.jpg'
 import { connect } from "react-redux";
@@ -100,11 +100,12 @@ export class index extends Component {
       }
     }
   };
-  getProfile = async () => {
-    let data = await userRequest.get(`userapp/users/${this.props.user.id}`).then(({ data }) => data)
+  getProfile = () => {
+    const user = this.props.users.filter((user) => user.id == this.props.user.id)
+    console.log(user)
     this.setState({
-      covert: data.img_covert, avatar: data.avatar, about: data.about_me,
-      username: data.username, firstname: data.first_name, lastname: data.last_name, birth: data.birth_date
+      covert: user[0].img_covert, avatar: user[0].avatar, about: user[0].about_me,
+      username: user[0].username, firstname: user[0].first_name, lastname: user[0].last_name, birth: user[0].birth_date
     })
   }
   updateData = async (val, value) => {
@@ -179,7 +180,8 @@ export class index extends Component {
   }
   componentDidMount() {
     this.getProfile()
-    this.getPub()
+    const pub = this.props.publication.filter((pub) => pub.user == this.props.user.id)
+    this.setState({ publication: pub })
 
   };
   render() {
@@ -292,6 +294,8 @@ export class index extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user.currentUser,
+  publication: state.all.publications,
+  users: state.all.users,
 });
 const mapDispatchToProps = (dispatch) => ({
   dispatchs: dispatch,

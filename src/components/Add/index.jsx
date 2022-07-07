@@ -6,7 +6,7 @@ import { userRequest, parseRequest } from '../../requestMethods';
 import User from '../../assets/user.jpg'
 import Emoji from '../Emoji'
 import Story from '../Story'
-import { addPub } from "../../context/pubRedux"
+import { addPub } from "../../context/allRedux"
 import './style.css'
 export class index extends Component {
     constructor(props) {
@@ -19,17 +19,6 @@ export class index extends Component {
             sending: false,
             emoji: false,
             story: false,
-            storys: [],
-            data: {
-                comments: null,
-                date: null,
-                id: null,
-                images: null,
-                message: null,
-                proprietary: null,
-                user: null,
-                video: null,
-            },
         }
         this.pubUpdate = this.pubUpdate.bind(this);
         this.onEmojiClick = this.onEmojiClick.bind(this);
@@ -114,16 +103,6 @@ export class index extends Component {
         this.setState({ emoji: !this.state.emoji })
     }
 
-    getStory = async () => {
-        let data = await userRequest.get('userapp/story')
-            .then(({ data }) => data)
-        this.setState({ storys: data })
-        console.log(data)
-    }
-
-    componentDidMount() {
-        this.getStory()
-    }
     render() {
         return (
             <div className='add-container'>
@@ -135,7 +114,7 @@ export class index extends Component {
                         <span className='card-icon story-icon' onClick={() => this.setState({ story: !this.state.story })}><ion-icon name="add-outline" /></span>
                         <span className='story-text'>Create story</span>
                     </div>
-                    {this.state.storys && this.state.storys.map(story => {
+                    {this.props.story && this.props.story.map(story => {
                         return (
                             <div className='add-card'>
                                 <div className='story'>
@@ -190,7 +169,8 @@ export class index extends Component {
 
 const mapStateToProps = (state) => ({
     user: state.user.currentUser,
-    publication: state.publication.publications,
+    publication: state.all.publications,
+    story: state.all.story,
 });
 const mapDispatchToProps = (dispatch) => ({
 	dispatchs: dispatch,

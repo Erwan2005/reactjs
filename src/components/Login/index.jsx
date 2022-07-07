@@ -1,6 +1,6 @@
 import React from 'react'
 import FormInput from "../formInput/FormInput";
-import { login,getpublication } from "../../context/apiCall";
+import { login,getpublication,getUsers,getStory } from "../../context/apiCall";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import Reset from '../ResetPassword'
@@ -62,6 +62,8 @@ export class index extends React.Component {
 	login = () => {
 		login(this.props.dispatchs, { username: this.state.values.email, password: this.state.values.password });
 		getpublication(this.props.dispatchs)
+		getUsers(this.props.dispatchs)
+		getStory(this.props.dispatchs)
 	}
  
 	componentDidMount() {

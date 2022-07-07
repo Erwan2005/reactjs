@@ -4,7 +4,7 @@ import Post from '../Post'
 import Add from '../Add'
 import { Route, Switch, withRouter, Link } from 'react-router-dom'
 import { themeUpdate } from "../../context/userRedux";
-import { rmvPub } from "../../context/pubRedux"
+import { rmvPub } from "../../context/allRedux"
 import { publicRequest, userRequest, parseRequest } from '../../requestMethods'
 import { useQuery } from "react-query";
 import User from '../../assets/user.jpg'
@@ -234,7 +234,6 @@ export class index extends Component {
 		this.getCurrent()
 		this.getPub()
 		this.getRequest()
-		console.log(this.props.publication)
 	};
 	render() {
 		return (
@@ -285,7 +284,8 @@ export class index extends Component {
 
 const mapStateToProps = (state) => ({
 	user: state.user.currentUser,
-	publication: state.publication.publications,
+	publication: state.all.publications,
+	users: state.all.users,
 });
 const mapDispatchToProps = (dispatch) => ({
 	dispatchs: dispatch,

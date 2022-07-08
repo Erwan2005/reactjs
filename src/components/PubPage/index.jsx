@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux"
-import User from '../../assets/user.jpg'
+import User from '../../assets/user.svg'
 import { userRequest } from '../../requestMethods';
 import { withRouter } from 'react-router-dom'
 import NumericLabel from 'react-pretty-numbers';

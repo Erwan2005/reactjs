@@ -11,13 +11,13 @@ export class index extends Component {
     }
     createSvgHeading = () => {
         return json && json.map((item, index) =>
-            <button className={`emoji-panel__btn ${this.state.emojiIndex === index ? 'active' : ''}`} key={index} onClick={() => this.setState({ emojiIndex: index })}> {item.char}</button >
+            <button className={`emoji-panel__btn ${this.state.emojiIndex === index ? 'active' : ''}`} key={index} onClick={() => this.setState({ emojiIndex: index })}>{this.createSvg(item.unicode, item.title)}</button >
         )
     }
 
     createSvgBody = (index) => {
         return json && json[index].emojis.map((item, index) =>
-            <button className="emoji-panel__btn" key={index} onClick={() => this.onEmojiSelect(item)}>{item.char}</button>
+            <button className="emoji-panel__btn" key={index} onClick={() => this.onEmojiSelect(item)}>{this.createSvg(item.unicode, item.title)}</button>
         )
     }
 

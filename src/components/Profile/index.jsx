@@ -6,6 +6,7 @@ import BoxMessage from '../Box'
 import Post from '../Post'
 import { useQuery } from "react-query";
 import socket from '../../Socket.js'
+import User from '../../assets/user.svg'
 import './style.css'
 
 function Query(props) {
@@ -92,7 +93,7 @@ export class index extends React.Component {
 						<img src={this.state.friend.img_covert} alt='' />
 					</div>
 					<div className='avatar'>
-						<img src={this.state.friend.avatar} alt='' />
+						<img src={this.state.friend.avatar ? this.state.friend.avatar : User} alt='' />
 					</div>
 					<div className='action'>
 

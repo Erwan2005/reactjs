@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { toast } from 'react-toastify';
 import { connect } from "react-redux";
-import User from '../../assets/user.jpg'
+import User from '../../assets/user.svg'
 import { parseRequest } from '../../requestMethods';
 import './style.css'
 export class index extends Component {

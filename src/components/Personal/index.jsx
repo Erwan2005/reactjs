@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Resizer from "react-image-file-resizer";
 import { PhotoCamera } from '@material-ui/icons';
 import { avatarUpdate, covertUpdate, usernameUpdate } from "../../context/userRedux";
-import Avatar from '../../assets/user.jpg'
+import Avatar from '../../assets/user.svg'
 import Cover from '../../assets/cover.jpg'
 import { connect } from "react-redux";
 import Post from '../Post'
@@ -154,28 +154,6 @@ export class index extends Component {
       let data = await publicRequest.patch(`userapp/users/${this.props.user.id}/`, formData).then(({ data }) => data)
       this.setState({ birth: data.birth_date, div: '' })
     }
-
-  }
-  getPub = async () => {
-    try {
-      this.setState({ loading: true })
-      let data = await userRequest.get(`userapp/publication/?page=${this.state.page}`)
-        .then(({ data }) => data)
-      if (data.next) {
-        this.setState({ page: this.state.page + 1 })
-      } else {
-        this.setState({ more_exist: false, end: true })
-      }
-      data.results && data.results.map((pub, index) => {
-        if (pub.user === this.props.user.id) {
-          this.setState({ publication: this.state.publication.concat(pub) })
-        }
-      })
-
-    } catch (error) {
-      window.location.reload(true);
-    }
-
 
   }
   componentDidMount() {

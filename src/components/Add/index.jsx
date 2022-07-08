@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { toast } from 'react-toastify';
 import { CircularProgress } from '@material-ui/core';
 import { userRequest, parseRequest } from '../../requestMethods';
-import User from '../../assets/user.jpg'
+import User from '../../assets/user.svg'
 import Emoji from '../Emoji'
 import Story from '../Story'
 import { addPub } from "../../context/allRedux"
@@ -118,7 +118,7 @@ export class index extends Component {
                         return (
                             <div className='add-card'>
                                 <div className='story'>
-                                    <img src={story.profile && story.profile[0].avatar} alt='' />
+                                    <img src={story.profile && story.profile[0].avatar ? story.profile[0].avatar : User} alt='' />
                                 </div>
                                 <img src={story.images && story.images[0].image} alt='' className='story-img' />
                             </div>

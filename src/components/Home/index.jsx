@@ -7,7 +7,6 @@ import { themeUpdate } from "../../context/userRedux";
 import { rmvPub } from "../../context/allRedux"
 import { publicRequest, userRequest, parseRequest } from '../../requestMethods'
 import { useQuery } from "react-query";
-import User from '../../assets/user.jpg'
 import Left from '../Left'
 import Right from '../Right'
 import Weather from '../Weather'

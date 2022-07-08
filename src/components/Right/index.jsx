@@ -7,6 +7,7 @@ import Peer from 'peerjs';
 import BoxMessage from '../Box'
 import { publicRequest, userRequest } from '../../requestMethods';
 import socket from '../../Socket.js'
+import User from '../../assets/user.svg'
 import './style.css'
 
 function Query(props) {
@@ -153,7 +154,7 @@ export class index extends Component {
                                                             return (<>
                                                                 <div className='online-friend' onClick={this.handleOpen} key={online.id}>
                                                                     <div className='avatar'>
-                                                                        <img src={online.friendprof[0].avatar} alt="" />
+                                                                        <img src={online.friendprof[0].avatar ? online.friendprof[0].avatar : User} alt="" />
                                                                         <small></small>
                                                                     </div>
                                                                     <span key={online.id}>{online.friendprof[0].username}</span>

@@ -9,7 +9,9 @@ import NumericLabel from 'react-pretty-numbers';
 import { format } from 'timeago.js';
 import _ from 'lodash';
 import { userRequest } from '../../requestMethods'
-import User from '../../assets/user.jpg'
+import User from '../../assets/user.svg'
+import Public from '../../assets/public.svg'
+import Friend from '../../assets/friend.svg'
 
 import './style.css'
 export class index extends Component {
@@ -87,7 +89,7 @@ export class index extends Component {
 	componentDidMount() {
 		this.getLike()
 		this.getCom()
-		this.handleSearch() 
+		this.handleSearch()
 	};
 
 	render() {
@@ -99,7 +101,7 @@ export class index extends Component {
 							<CardHeader
 								className="cardHeader"
 								avatar={
-									<img src={pub.proprietary[0].avatar ? pub.proprietary[0].avatar : User} alt="" />
+									<img className='avatar' src={pub.proprietary[0].avatar ? pub.proprietary[0].avatar : User} alt="" />
 								}
 								action={(<>
 									<span className='icon' onClick={() => this.setState({ open: (pub.id === this.state.open ? null : pub.id) })}><ion-icon name="ellipsis-vertical-outline" /></span>
@@ -114,7 +116,11 @@ export class index extends Component {
 										<span><h3>{pub.proprietary[0].username}</h3></span>
 									</Link>
 								}
-								subheader={<small>{format(pub.date)}</small>}
+								subheader={<div className='sub'>
+									<small>{format(pub.date)}</small>
+									<img src={Public} alt=""/>
+									<small>Public</small>
+								</div>}
 							/>
 							<Link className='link' to={`/publication/${pub.id}`}>
 								{pub.images[0].image !== null && <>

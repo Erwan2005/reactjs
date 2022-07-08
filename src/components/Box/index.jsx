@@ -3,6 +3,7 @@ import { Videocam,Call,Close,AttachFile,
 	EmojiEmotions,ThumbUp,Telegram } from '@material-ui/icons';
 import { toast } from 'react-toastify';
 import socket from '../../Socket.js'
+import User from '../../assets/user.svg'
 import CallFriend from '../Call'
 import './style.css'
 export class index extends React.Component {
@@ -63,7 +64,7 @@ export class index extends React.Component {
 			<div className="box-message">
 				<div className="box-header">
 					<div className="header-left">
-						<img src={this.props.user.avatar} alt="" />
+						<img src={this.props.user.avatar ? this.props.user.avatar : User} alt="" />
 						<div className="userInfo">
 							<span>{this.props.user.username}</span>
 							<small>Online</small>

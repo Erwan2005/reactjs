@@ -1,9 +1,9 @@
 import React from 'react'
 import { withRouter, Link } from "react-router-dom";
-import { FavoriteBorder, Favorite, AddShoppingCart, Remove, Add, ArrowLeft } from "@material-ui/icons";
 import { publicRequest, userRequest } from '../../../requestMethods';
 import { connect } from "react-redux";
 import { addCart } from "../../../context/cartRedux";
+import User from '../../../assets/user.svg'
 import "./style.css"
 
 export class index extends React.Component {
@@ -81,7 +81,7 @@ export class index extends React.Component {
 						<small className="categories">Home/woman/hair</small>
 						<div className='seller-contact'>
 							<span className='icon'><ion-icon name="chatbubbles-outline"/></span>
-							<img src={this.state.product.proprietary} alt='' />
+							<img src={this.state.product.proprietary ? this.state.product.proprietary : User} alt='' />
 						</div>
 					</div>
 					<h3>{this.state.product.name}</h3>

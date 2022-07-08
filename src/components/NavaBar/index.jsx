@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux"
-import User from '../../assets/user.jpg'
+import User from '../../assets/user.svg'
 import { withRouter, NavLink, Link } from 'react-router-dom'
 import Menu from '../MenuBox'
 import Modal from '../Modal'

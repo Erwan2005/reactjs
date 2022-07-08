@@ -24,7 +24,18 @@
 	max-height: 50px;
 	position: relative;
 }
-
+.cardHeader .sub{
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+.cardHeader .sub img{
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	object-fit: cover;
+	color: var(--text-primary);
+}
 .cardHeader > .icon{
 	min-width: 60px;
 	min-height: 60px;
@@ -66,7 +77,7 @@
 	cursor: pointer;
 }
 
-.post-container .card .cardHeader img{
+.post-container .card .cardHeader .avatar{
 	min-width: 35px;
     min-height: 35px;
     max-width: 35px;

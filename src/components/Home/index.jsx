@@ -252,7 +252,7 @@ export class index extends Component {
 								<Shop results={this.state.results} search={this.state.search} handleSearch={this.handleSearch} />
 							</Route>
 							<Route path='/weather'>
-								<Weather />
+								<Weather search={this.state.search}/>
 							</Route>
 							<Route path={`/messenger`}>
 								<Messenger />

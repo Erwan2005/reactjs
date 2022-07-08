@@ -1,6 +1,6 @@
 import React from 'react'
 import FormInput from "../formInput/FormInput";
-import { login,getpublication,getUsers,getStory } from "../../context/apiCall";
+import { login, getpublication, getUsers, getStory } from "../../context/apiCall";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import Reset from '../ResetPassword'
@@ -23,7 +23,7 @@ export class index extends React.Component {
 	}
 
 	handleClose = () => {
-		this.setState({open: !this.state.open})
+		this.setState({ open: !this.state.open })
 	}
 
 	preferedTheme = () => {
@@ -61,11 +61,16 @@ export class index extends React.Component {
 	};
 	login = () => {
 		login(this.props.dispatchs, { username: this.state.values.email, password: this.state.values.password });
-		getpublication(this.props.dispatchs)
-		getUsers(this.props.dispatchs)
-		getStory(this.props.dispatchs)
+		if (this.props.publication[0]) {
+			console.log('already fetch')
+
+		} else {
+			getpublication(this.props.dispatchs)
+			getUsers(this.props.dispatchs)
+			getStory(this.props.dispatchs)
+		}
 	}
- 
+
 	componentDidMount() {
 		this.preferedTheme()
 		const keyDownHandler = event => {
@@ -110,7 +115,7 @@ export class index extends React.Component {
 					</button>
 					<div className='link'>
 						<span onClick={this.creatAccount} >Not have an account ?</span>
-						<span className='link' onClick={()=>this.setState({open: !this.state.open})}>Forgot password ?</span>
+						<span className='link' onClick={() => this.setState({ open: !this.state.open })}>Forgot password ?</span>
 					</div>
 					<Typography variant="body2" color="textSecondary" align="center">
 						{'Copyright © '}
@@ -121,7 +126,7 @@ export class index extends React.Component {
 						{'.'}
 					</Typography>
 				</div>
-				{this.state.open && <Reset handleClose={this.handleClose}/>}
+				{this.state.open && <Reset handleClose={this.handleClose} />}
 			</div>
 		)
 	}
@@ -129,6 +134,7 @@ export class index extends React.Component {
 
 const mapStateToProps = (state) => ({
 	user: state.user,
+	publication: state.all.publications,
 });
 
 const mapDispatchToProps = (dispatch) => ({

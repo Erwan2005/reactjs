@@ -1,63 +1,26 @@
 import React, { Component } from 'react'
-import getFormattedWeatherData from "./services/weatherService";
 import { formatToLocalTime, iconUrlFromCode } from "./services/weatherService";
 import { CircularProgress } from '@material-ui/core';
 import './style.css'
 export class index extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      weather: null,
-      query: {
-        q: 'toamasina'
-      },
-      units: 'metric',
-      loading: false,
-    }
+    this.handleLocationClick = this.handleLocationClick.bind(this)
+    this.handleUnitsChange = this.handleUnitsChange.bind(this)
+    this.handleSearch = this.handleSearch.bind(this)
   }
-  handleLocationClick = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        let lat = position.coords.latitude;
-        let lon = position.coords.longitude;
+  handleLocationClick = () =>{
+    this.props.locationWeather()
+  }
+  handleUnitsChange = (unit) => {
+    this.props.handleUnitsChange(unit)
+  }
+  handleSearch = () => {
+    this.props.handleSearch('weather')
+  }
 
-        this.setState({
-          query: {
-            lat,
-            lon,
-          }
-        }, () => {
-          fetchWeather()
-        });
-      });
-    }
-    const fetchWeather = async () => {
-      this.setState({loading: true})
-      const units = this.state.units
-      await getFormattedWeatherData({ ...this.state.query, units }).then((data) => {
-
-        this.setState({ weather: data });
-      });
-      this.setState({loading: false})
-    };
-
-  };
-  handleUnitsChange = async (unit) => {
-    this.setState({ units: unit }, () => {
-      fetchWeather()
-    })
-    const fetchWeather = async () => {
-      this.setState({loading: true})
-      const units = this.state.units
-      await getFormattedWeatherData({ ...this.state.query, units }).then((data) => {
-
-        this.setState({ weather: data });
-      });
-      this.setState({loading: false})
-    };
-
-  };
   componentDidMount() {
+    this.handleSearch()
     this.handleLocationClick()
   }
   render() {
@@ -67,37 +30,37 @@ export class index extends Component {
           <span className='btn' onClick={this.handleLocationClick}><ion-icon name="location-outline" /></span>
           <span><small className='btn' name="metric" onClick={() => this.handleUnitsChange('metric')}>°C</small> | <small className='btn' name="imperial" onClick={() => this.handleUnitsChange('imperial')}>°F</small></span>
         </div>
-        {this.state.loading ? <div className='loader'> 
+        {this.props.loading ? <div className='loader'> 
           <CircularProgress color="white" size="50px" />
         </div>
         : <>
-        {this.state.weather && <>
+        {this.props.weather && <>
           <div className='middle'>
 
             <small className='times'>
-              {formatToLocalTime(this.state.weather.dt, this.state.weather.timezone)}
+              {formatToLocalTime(this.props.weather.dt, this.props.weather.timezone)}
             </small>
-            <span className='contry'>{this.state.weather.name} , {this.state.weather.country}</span>
-            <img src={iconUrlFromCode(this.state.weather.icon)} alt="" className="w-20" />
+            <span className='contry'>{this.props.weather.name} , {this.props.weather.country}</span>
+            <img src={iconUrlFromCode(this.props.weather.icon)} alt="" className="w-20" />
             <div className='details'>
               <div>
-                <p className="temp">{`${this.state.weather.temp.toFixed()}°`}</p>
+                <p className="temp">{`${this.props.weather.temp.toFixed()}°`}</p>
               </div>
               <div className='right'>
-                <small>Real fell: {`${this.state.weather.feels_like.toFixed()}°`}</small>
-                <small>Humidity: {`${this.state.weather.humidity.toFixed()}%`}</small>
-                <small>Wind: {`${this.state.weather.speed.toFixed()} km/h`}</small>
+                <small>Real fell: {`${this.props.weather.feels_like.toFixed()}°`}</small>
+                <small>Humidity: {`${this.props.weather.humidity.toFixed()}%`}</small>
+                <small>Wind: {`${this.props.weather.speed.toFixed()} km/h`}</small>
               </div>
             </div>
             <div className='feet'>
               <span><ion-icon name="sunny-outline" /></span>
-              <small>Rise: {formatToLocalTime(this.state.weather.sunrise, this.state.weather.timezone, "hh:mm a")} | </small>
+              <small>Rise: {formatToLocalTime(this.props.weather.sunrise, this.props.weather.timezone, "hh:mm a")} | </small>
               <span><ion-icon name="partly-sunny-outline" /></span>
-              <small>Set: {formatToLocalTime(this.state.weather.sunset, this.state.weather.timezone, "hh:mm a")} | </small>
+              <small>Set: {formatToLocalTime(this.props.weather.sunset, this.props.weather.timezone, "hh:mm a")} | </small>
               <span><ion-icon name="arrow-up-outline" /></span>
-              <small>High: {`${this.state.weather.temp_max.toFixed()}°`} | </small>
+              <small>High: {`${this.props.weather.temp_max.toFixed()}°`} | </small>
               <span><ion-icon name="arrow-down-outline" /></span>
-              <small>Low: {`${this.state.weather.temp_min.toFixed()}°`}</small>
+              <small>Low: {`${this.props.weather.temp_min.toFixed()}°`}</small>
             </div>
 
           </div>
@@ -106,7 +69,7 @@ export class index extends Component {
               <span>Hourly forecast</span>
             </div>
             <div className='contents'>
-              {this.state.weather.hourly.map((item, index) => (
+              {this.props.weather.hourly.map((item, index) => (
                 <div className='items' key={index}>
                   <small>{item.title}</small>
                   <img src={iconUrlFromCode(item.icon)} alt="" />
@@ -118,7 +81,7 @@ export class index extends Component {
               <span>Daily forecast</span>
             </div>
             <div className='contents'>
-              {this.state.weather.daily.map((item, index) => (
+              {this.props.weather.daily.map((item, index) => (
                 <div className='items' key={index}>
                   <small>{item.title}</small>
                   <img src={iconUrlFromCode(item.icon)} alt="" />

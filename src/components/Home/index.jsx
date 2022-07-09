@@ -4,7 +4,7 @@ import Post from '../Post'
 import Add from '../Add'
 import { Route, Switch, withRouter, Link } from 'react-router-dom'
 import { themeUpdate } from "../../context/userRedux";
-import { rmvPub } from "../../context/allRedux"
+import { rmvPub, addPub } from "../../context/allRedux"
 import { publicRequest, userRequest, parseRequest } from '../../requestMethods'
 import { useQuery } from "react-query";
 import Left from '../Left'
@@ -19,10 +19,9 @@ import Video from '../VideoList'
 import Player from '../VideoPlayer'
 import NavBar from '../NavaBar'
 import PubPage from '../PubPage'
+import getFormattedWeatherData from "../Weather/services/weatherService";
 import { toast } from 'react-toastify'
 import './style.css'
-import { FormatListNumberedRtlTwoTone } from '@material-ui/icons'
-import { light } from '@material-ui/core/styles/createPalette'
 
 function Query(props) {
 	return (props.children(useQuery(props.keyName, props.fn, props.options)));
@@ -47,26 +46,37 @@ export class index extends Component {
 			menu3: false,
 			menu4: false,
 			publication: [],
-			page: 1,
+			page: 2,
+			more_exist: true,
 			search: '',
-			results: [],
-			loading: '',
+			results: null,
+			loading: false,
 			engine: '',
 			checked: false,
 			request: false,
 			requests: [],
 			modal: false,
 			friendReq: [],
+			weather: null,
+			weatherLoad: false,
+			units: 'metric',
+			query: {
+				q: 'toamasina'
+			},
 
 		}
+
 		this.handleToUpdate = this.handleToUpdate.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
-		
-		
+
+
 		this.postDelete = this.postDelete.bind(this);
 		this.sendFriend = this.sendFriend.bind(this);
 		this.theme = this.theme.bind(this);
 		this.search = this.search.bind(this);
+		this.locationWeather = this.locationWeather.bind(this);
+		this.handleUnitsChange = this.handleUnitsChange.bind(this);
+		this.getPub = this.getPub.bind(this);
 	}
 	handleToUpdate(data) {
 		this.setState({ publication: [data].concat(this.state.publication) });
@@ -122,7 +132,7 @@ export class index extends Component {
 			this.setState({ menu4: !this.state.menu4, menu1: false, menu2: false, menu3: false })
 		}
 	}
-	
+
 
 	getPub = async () => {
 		try {
@@ -130,6 +140,9 @@ export class index extends Component {
 			let data = await userRequest.get(`userapp/publication/?page=${this.state.page}`)
 				.then(({ data }) => data)
 			this.setState({ publication: this.state.publication.concat(data.results), loading: false })
+			data.results.map(pub => {
+				this.props.dispatchs(addPub(pub))
+			})
 			if (data.next) {
 				this.setState({ page: this.state.page + 1 })
 			} else {
@@ -137,7 +150,7 @@ export class index extends Component {
 			}
 
 		} catch (error) {
-			window.location.reload(true);
+			console.log(error)
 		}
 	};
 
@@ -151,6 +164,19 @@ export class index extends Component {
 			let data = await userRequest.get(`shop/product/?search=${query}`)
 				.then(({ data }) => data)
 			this.setState({ results: data.results, loading: false })
+		} else if (this.state.engine === 'weather') {
+			this.setState({ query: { q: query } }, () => {
+				fetchWeather();
+			});
+			const fetchWeather = async () => {
+				this.setState({ weatherLoad: true })
+				const units = this.state.units
+				await getFormattedWeatherData({ ...this.state.query, units }).then((data) => {
+
+					this.setState({ results: data });
+				});
+				this.setState({ weatherLoad: false })
+			};
 		}
 	}
 	theme = async () => {
@@ -186,7 +212,7 @@ export class index extends Component {
 		}
 		return data;
 	};
-	
+
 	getRequest = async () => {
 		let data = await userRequest.get(`userapp/friendrequest/`)
 			.then(({ data }) => data)
@@ -198,7 +224,7 @@ export class index extends Component {
 		socket.on("getRequest", (data) => {
 			this.setState({ friendReq: [data].concat(this.state.friendReq) })
 		})
-		
+
 	}
 
 	dltRequest = async (id) => {
@@ -229,15 +255,68 @@ export class index extends Component {
 		toast.info('Request accepted')
 	}
 
+	locationWeather = () => {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition((position) => {
+				let lat = position.coords.latitude;
+				let lon = position.coords.longitude;
+
+				this.setState({
+					query: {
+						lat,
+						lon,
+					}
+				}, () => {
+					fetchWeather()
+				});
+			});
+		}
+		const fetchWeather = async () => {
+			this.setState({ weatherLoad: true })
+			const units = this.state.units
+			await getFormattedWeatherData({ ...this.state.query, units }).then((data) => {
+
+				this.setState({ weather: data });
+			});
+			this.setState({ weatherLoad: false })
+		};
+
+	};
+
+	handleUnitsChange = async (unit) => {
+		this.setState({ units: unit }, () => {
+			fetchWeather()
+		})
+		const fetchWeather = async () => {
+			this.setState({ weatherLoad: true })
+			const units = this.state.units
+			await getFormattedWeatherData({ ...this.state.query, units }).then((data) => {
+
+				this.setState({ weather: data });
+			});
+			this.setState({ weatherLoad: false })
+		};
+
+	};
+
 	componentDidMount() {
 		this.getCurrent()
-		this.getPub()
 		this.getRequest()
+		window.addEventListener('scroll', () => {
+			if (window.scrollY + window.innerHeight >=
+				document.documentElement.scrollHeight) {
+				if (this.state.engine === 'publication') {
+					if (this.state.more_exist) {
+						this.getPub();
+					}
+				}
+			}
+		});
 	};
 	render() {
 		return (
 			<div className='home-container' data-theme={this.state.theme}>
-				<NavBar theme={this.theme} search={this.search}/>
+				<NavBar theme={this.theme} search={this.search} />
 				<main>
 					<Left getActiveMenu={this.getActiveMenu} />
 					<Switch>
@@ -245,14 +324,15 @@ export class index extends Component {
 							<Route exact path='/'>
 								<Add publication={this.handleToUpdate} />
 								<Post publication={this.state.search === '' ? this.props.publication : this.state.results} handleSearch={this.handleSearch}
-									postDelete={this.postDelete} />
+									postDelete={this.postDelete}  loading={this.props.loading}/>
 
 							</Route>
 							<Route path='/shop'>
 								<Shop results={this.state.results} search={this.state.search} handleSearch={this.handleSearch} />
 							</Route>
 							<Route path='/weather'>
-								<Weather search={this.state.search}/>
+								<Weather weather={this.state.search === '' ? this.state.weather : this.state.results} loading={this.state.weatherLoad}
+									locationWeather={this.locationWeather} handleUnitsChange={this.handleUnitsChange} handleSearch={this.handleSearch} />
 							</Route>
 							<Route path={`/messenger`}>
 								<Messenger />

@@ -272,7 +272,7 @@ export class index extends Component {
 			});
 		}
 		const fetchWeather = async () => {
-			this.setState({ weatherLoad: true })
+			this.setState({ weatherLoad: true, search: '' })
 			const units = this.state.units
 			await getFormattedWeatherData({ ...this.state.query, units }).then((data) => {
 
@@ -280,6 +280,7 @@ export class index extends Component {
 			});
 			this.setState({ weatherLoad: false })
 		};
+
 
 	};
 

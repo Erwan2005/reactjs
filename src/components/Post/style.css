@@ -1,5 +1,5 @@
 .post-container{
-	width: 100%;
+	width: 80%;
 	background: var(--background);
 	display: flex;
 	flex-direction: column;
@@ -215,26 +215,45 @@
 }
 
 .card-action{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	color: var(--text-primary);
+	font-family: var(--light);
+}
+
+.card-action .item{
+	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
 
-.card-action .item{
+.card-action .item > .icon{
+	width: calc(100% / 4);
+	font-size: 20px;
+	color: var(--text-primary);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 8px 2px;
+	gap: 5px;
+}
+
+.card-action .item > .liked{
+	color: var(--green);
+}
+
+.card-action .item > .icon:hover{
+	background: var(--bgbtn);
+	border-radius: 2px;
+}
+.card-action .item .text{
+	font-size: 14px;
 	display: flex;
 	align-items: center;
 	gap: 10px;
-}
-
-.card-action .item .icon{
-	font-size: 25px;
-	color: var(--text-primary);
-}
-
-.card-action .item .text{
-	font-size: 14px;
-	font-family: var(--fontlight);
-	color: var(--text-primary);
 }
 
 .col-head{
@@ -316,4 +335,10 @@
 	color: var(--text-primary);
 	font-family: var(--fontlight);
 
+}
+
+@media(max-width: 720px) {
+	.post-container {
+		width: 100%;
+	}
 }

@@ -167,22 +167,21 @@ export class index extends Component {
 									<h4>{pub.message}</h4>
 								</CardContent>
 								<CardActions className="card-action">
-									<div className="item">
+									<div className='item'>
+										<span className='text'><NumericLabel params={{ shortFormat: true, }}>{this.state.like.filter(item => item.post_connected === pub.id).length}</NumericLabel> Likes</span>
+										<span className='text'><NumericLabel params={{ shortFormat: true, }}>{this.state.comments.filter(item => item.post_connected === pub.id).length}</NumericLabel> Comments</span>
+									</div>
+									<div className='item'>
 										{(this.checkLiked(this.props.user.id, pub.id)) ? (
-											<span className='icon' onClick={() => this.dltLike(this.props.user.id, pub.id)}><ion-icon name="heart" /></span>
+											<span className='icon liked' onClick={() => this.dltLike(this.props.user.id, pub.id)}><ion-icon name="heart" /><small>Like</small></span>
 										) : (
-											<span className='icon' onClick={() => this.postLike(this.props.user.id, pub.id)}><ion-icon name="heart-outline" /></span>
+											<span className='icon' onClick={() => this.postLike(this.props.user.id, pub.id)}><ion-icon name="heart-outline" /><small>Like</small></span>
 										)
 										}
-										<small className='text'><NumericLabel params={{ shortFormat: true, }}>{this.state.like.filter(item => item.post_connected === pub.id).length}</NumericLabel></small>
-									</div>
-									<div className="item">
 										<span className='icon'
 											onClick={() => this.handleExpandClick(pub.id)}
-											aria-expanded={this.state[`expanded_${pub.id}`] || false}><ion-icon name="chatbubble-ellipses-outline" /></span>
-										<small className='text'><NumericLabel params={{ shortFormat: true, }}>{this.state.comments.filter(item => item.post_connected === pub.id).length}</NumericLabel></small>
-										<span className='icon'><ion-icon name="share-social-outline" /></span>
-										<small className='text'>11k</small>
+											aria-expanded={this.state[`expanded_${pub.id}`] || false}><ion-icon name="chatbubble-ellipses-outline" /> <small>Comment</small></span>
+										<span className='icon'><ion-icon name="share-social-outline" /> <small>Share</small></span>
 									</div>
 								</CardActions>
 								<Collapse in={this.state[`expanded_${pub.id}`] || false} timeout="auto" unmountOnExit>

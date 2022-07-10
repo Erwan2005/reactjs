@@ -47,9 +47,9 @@ export class index extends React.Component {
             this.setState({ menu2: !this.state.menu2, menu1: false, menu3: false })
         } else if (menu === 'menu3') {
             this.setState({ menu3: !this.state.menu3, menu1: false, menu2: false })
-        }else{
-            if(this.state.menu1 || this.state.menu2 || this.state.menu3){
-               this.setState({menu1: false, menu2: false, menu3: false}) 
+        } else {
+            if (this.state.menu1 || this.state.menu2 || this.state.menu3) {
+                this.setState({ menu1: false, menu2: false, menu3: false })
             }
         }
     }
@@ -75,6 +75,17 @@ export class index extends React.Component {
                         <li>
                             <NavLink to={'/video'} className={({ isActive }) => (isActive ? 'link active' : 'link')} >
                                 <span><ion-icon name="desktop-outline" /></span>
+                            </NavLink>
+                        </li>
+                        <li><span><ion-icon name="images-outline" /></span></li>
+                        <li>
+                            <NavLink exact to={'/weather'} className={({ isActive }) => (isActive ? 'link active' : 'link')} >
+                                <span><ion-icon name="thunderstorm-outline" /></span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink exact to={'/shop'} className={({ isActive }) => (isActive ? 'link active' : 'link')}>
+                                <span><ion-icon name="bag-handle-outline" /></span>
                             </NavLink>
                         </li>
                         <li><span><ion-icon name="grid-outline" /></span></li>

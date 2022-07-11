@@ -18,6 +18,7 @@ export class index extends Component {
             comment: '',
             comments: [],
             emoji: false,
+            menu: false,
         }
     }
     prevNext = (action, array) => {
@@ -78,13 +79,23 @@ export class index extends Component {
     }
 
     onEmojiClick = (emojiObject) => {
-        this.setState({comment: this.state.comment.concat(emojiObject)})
+        this.setState({ comment: this.state.comment.concat(emojiObject) })
     };
+    deleteCom = async (id) => {
+        const new_data = this.state.comments.filter(com => {
+			if (com.id === id) {
+				return false
+			}
+			return true;
+		})
+		this.setState({ comments: new_data })
+        await userRequest.delete(`userapp/comment/${id}`)
+    }
     componentDidMount() {
         this.getLike()
         this.getCom()
         const pub = this.props.publication.filter((pub) => pub.id == this.props.match.params.id)
-        this.setState({publication: pub[0]})
+        this.setState({ publication: pub[0] })
 
         const keyDownHandler = event => {
             console.log('User pressed: ', event.key);
@@ -124,34 +135,30 @@ export class index extends Component {
                         </span>
                     </div>
                     <div className='action'>
-                        <div>
+                        <div className='item'>
+                            <small><NumericLabel params={{ shortFormat: true, }}>{this.state.like.filter(item => item.post_connected === this.state.publication.id).length}</NumericLabel> Likes</small>
+                            <small><NumericLabel params={{ shortFormat: true, }}>{this.state.comments.filter(item => item.post_connected === this.state.publication.id).length}</NumericLabel> Comments</small>
+                        </div>
+                        <div className='item'>
                             {(this.checkLiked(this.props.user.id, this.state.publication.id)) ? (
-                                <span className='icon' onClick={() => this.dltLike(this.props.user.id, this.state.publication.id)}><ion-icon name="heart" /></span>
+                                <span className='icon liked' onClick={() => this.dltLike(this.props.user.id, this.state.publication.id)}><ion-icon name="heart" /> <small className='liked'>Like</small></span>
                             ) : (
-                                <span className='icon' onClick={() => this.postLike(this.props.user.id, this.state.publication.id)}><ion-icon name="heart-outline" /></span>
+                                <span className='icon' onClick={() => this.postLike(this.props.user.id, this.state.publication.id)}><ion-icon name="heart-outline" /> <small>Like</small></span>
                             )
                             }
-                            <small><NumericLabel params={{ shortFormat: true, }}>{this.state.like.filter(item => item.post_connected === this.state.publication.id).length}</NumericLabel></small>
-                        </div>
-
-                        <div>
-                            <span className='icon'>
-                                <ion-icon name="chatbubble-ellipses-outline" />
-                            </span>
-                            <small><NumericLabel params={{ shortFormat: true, }}>{this.state.comments.filter(item => item.post_connected === this.state.publication.id).length}</NumericLabel></small>
                             <span className='icon'>
                                 <ion-icon name="share-social-outline" />
+                                <small>Share</small>
                             </span>
-                            <small></small>
                         </div>
                     </div>
 
                     <label className='text-input'>
                         <img src={this.props.user.avatar ? this.props.user.avatar : User} alt="" />
-                        
+
                         <input type="text" placeholder='Your text' value={this.state.comment} onChange={e => this.setState({ comment: e.target.value })} />
                         <span onClick={this.emojiFunc}><ion-icon name="happy-outline" /></span>
-                        {this.state.emoji && <Emoji onEmojiClick={this.onEmojiClick} class= 'right'/>}
+                        {this.state.emoji && <Emoji onEmojiClick={this.onEmojiClick} class='right' />}
                     </label>
                     {this.state.comments && this.state.comments.map(com => {
                         if (com.post_connected === this.state.publication.id) {
@@ -163,7 +170,18 @@ export class index extends Component {
                                         <small>{com.content}</small>
                                         <small>{format(com.date_posted)}</small>
                                     </div>
-                                </div>
+                                    {com.author === this.props.user.id &&
+                                        <span className='right' onClick={() => this.setState({ menu: !this.state.menu })}>
+                                            <div className='menu'>
+                                                <ion-icon name="ellipsis-vertical-outline" />
+                                                {this.state.menu &&
+                                                    <div className='item-menu'>
+                                                        <small>Edit</small>
+                                                        <small onClick={()=> this.deleteCom(com.id)}>Delete</small>
+                                                    </div>}
+                                            </div>
+                                        </span>
+                                    }</div>
                             )
                         } else return null
                     })}

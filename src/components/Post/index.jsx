@@ -190,7 +190,7 @@ export class index extends Component {
 											<img src={this.props.user.avatar ? this.props.user.avatar : User} alt='' />
 											<input type='text' value={this.state.comment} placeholder="What you thing?" onChange={e => this.setState({ comment: e.target.value })} />
 											<span className='send'
-												onClick={() => this.btnComment(this.state.comment, pub.id)}><ion-icon name="send-outline" /></span>
+												onClick={() => this.btnComment(this.state.comment, pub.id)}><ion-icon name="paper-plane-outline"/></span>
 										</div>
 										<div className='col-feet'>
 											{this.state.comments && this.state.comments.map(com => {

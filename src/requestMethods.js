@@ -1,5 +1,5 @@
 import axios from "axios";
-const url = "http://127.0.0.1:8000/" || "https://guy221293.pythonanywhere.com/";
+const url = "https://guy221293.pythonanywhere.com/";
 export const BASE_URL = url;
 // const TOKEN =
 //   JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser

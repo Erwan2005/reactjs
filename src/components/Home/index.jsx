@@ -313,6 +313,7 @@ export class index extends Component {
 				}
 			}
 		});
+		console.log(this.props.user)
 	};
 	render() {
 		return (

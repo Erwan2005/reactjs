@@ -63,8 +63,8 @@ export class index extends Component {
     };
 
     btnComment = async (content, id_post) => {
-        let author = parseInt(this.props.user.id, 10)
-        let post_connected = parseInt(id_post, 10)
+        let author = this.props.user.id
+        let post_connected = id_post
         var contents = { content: content, author: author, post_connected: post_connected }
         let data = await userRequest.post('userapp/comment/', contents)
             .then(({ data }) => data)

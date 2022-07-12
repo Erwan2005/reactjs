@@ -73,8 +73,7 @@ export class index extends Component {
     btnShare = async () => {
         this.setState({ sending: true })
         const formData = new FormData();
-        let author = parseInt(this.props.user.id, 10)
-        formData.append("user", author)
+        formData.append("user", this.props.user.id)
         formData.append("message", this.state.share)
         if (this.state.video !== null) {
             formData.append(

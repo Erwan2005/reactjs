@@ -5,6 +5,7 @@ import { withRouter, NavLink, Link } from 'react-router-dom'
 import Menu from '../MenuBox'
 import Modal from '../Modal'
 import Logo from '../../assets/logo.png'
+import socket from '../../Socket.js'
 import './style.css'
 export class index extends React.Component {
     constructor(props) {
@@ -52,6 +53,9 @@ export class index extends React.Component {
                 this.setState({ menu1: false, menu2: false, menu3: false })
             }
         }
+    }
+    componentDidMount() {
+        socket.emit("findMe", this.props.user.id)
     }
     render() {
         return (

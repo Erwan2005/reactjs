@@ -96,7 +96,9 @@ export class index extends Component {
 		this.handleSearch()
 
 	};
-
+	componentWillUnmount() {
+		this.props.handleSearch('')
+	}
 	render() {
 		return (
 			<div className='post-container'>

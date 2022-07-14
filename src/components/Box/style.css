@@ -67,16 +67,114 @@
 
 .box-message .box-middle{
 	flex-grow: 1;
+	width: 100%;
+	padding: 5px 5px 5px 5px;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	overflow-y: auto;
+	overflow-x: hidden;
+	gap: 5px;
 }
 
+.box-message .box-middle .friend{
+	justify-content: flex-start;
+	display: flex;
+	gap: 10px;
+	position: relative;
+	width: 100%;
+	max-width: 100%;
+	max-height: 200px;
+	align-items: flex-end;
+}
+
+.box-message .box-middle .friend .avatar{
+	min-height: 30px;
+	min-width: 30px;
+	max-height: 30px;
+	max-width: 30px;
+	object-fit: cover;
+	border-radius: 50%;
+}
+
+.box-message .box-middle .friend .ms-contents{
+	max-width: 60%;
+	min-height: 30px;
+	background: #7A7A7A;
+	position: relative;
+	color: var(--white);
+	font-weight: 500;
+	border-radius: 5px;
+}
+
+.box-message .box-middle .friend .ms-contents > span{
+	width: 100%;
+	padding: 5px;
+}
+
+.box-message .box-middle .friend .ms-contents::before{
+	content: '';
+	position: absolute;
+	left: -4px;
+	bottom: 8px;
+	width: 8px;
+	height: 8px;
+	background: #7A7A7A;
+	transform: rotate(45deg);
+	z-index: 0;
+}
+
+.box-message .box-middle .me{
+	justify-content: flex-end;
+	display: flex;
+	gap: 5px;
+	position: relative;
+	width: 100%;
+	max-height: 200px;
+	padding-right: 10px;
+}
+.box-message .box-middle .me .owner{
+	max-width: 60%;
+	display: flex;
+	flex-direction: column;
+
+}
+
+.box-message .box-middle .me .owner .ms-contents{
+	background: var(--green);
+	position: relative;
+	min-height: 30px;
+	border-radius: 5px;
+	color: var(--white);
+}
+
+.box-message .box-middle .me .owner .ms-contents::before{
+	content: '';
+	position: absolute;
+	right: -4px;
+	bottom: 8px;
+	width: 8px;
+	height: 8px;
+	background: var(--green);
+	transform: rotate(45deg);
+	z-index: 0;
+}
+
+.box-message .box-middle .me .owner small{
+	width: 100%;
+	text-align: right;
+	font-family: var(--light);
+	font-size: 10px;
+	color: var(--text-primary);
+	padding-top: 5px;
+}
 .box-message .box-footer{
 	width: 100%;
-	min-height: 40px;
 	background: var(--bgbtn);
 	display: flex;
 	align-items: center;
 	gap: 5px;
-	padding: 5px 5px;
+	padding: 10px 5px;
 	overflow: hidden;
 	color: var(--text-primary);
 }
@@ -85,8 +183,11 @@
 }
 
 .box-message .box-footer textarea{
+	height: 35px;
+	max-height: 150px;
 	resize: block;
 	flex-grow: 1;
+	resize: none;
 	background: transparent;
 	border: 1px solid var(--bgbtn);
 	border-radius: 5px;
@@ -97,6 +198,9 @@
 	overflow: auto;
 }
 
+.box-message .box-footer textarea::-webkit-scrollbar{
+	width: 0px;
+}
 .box-message .box-footer textarea:focus{
 	outline: none;
 }

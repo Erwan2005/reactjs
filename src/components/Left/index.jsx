@@ -30,30 +30,40 @@ export class index extends Component {
                 <div className='left-top'>
                     <ul>
                         <li>
-                            <span><ion-icon name="images-outline" /></span>
-                            <span>Image Gallery</span>
-                        </li>
-                        <li>
-                            <NavLink exact to={'/shop'} className={({ isActive }) => (isActive ? 'link active' : 'link')}>
-                                <span><ion-icon name="bag-handle-outline" /></span>
-                                <span>Shop</span>
-                            </NavLink>
-                        </li>
-                        <li>
                             <NavLink exact to={'/messenger'} className={({ isActive }) => (isActive ? 'link active' : 'link')} >
                                 <span><ion-icon name="chatbubbles-outline" /></span>
                                 <span>Messenger</span>
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink exact to={'/weather'} className={({ isActive }) => (isActive ? 'link active' : 'link')} >
-                                <span><ion-icon name="thunderstorm-outline" /></span>
-                                <span>Weather</span>
+                            <NavLink exact to={'/messenger'} className={({ isActive }) => (isActive ? 'link active' : 'link')} >
+                                <span><ion-icon name="create-outline"/></span>
+                                <span>Pages</span>
                             </NavLink>
                         </li>
                         <li>
-                            <span><ion-icon name="settings-outline" /></span>
-                            <span>Settings</span>
+                            <NavLink exact to={'/messenger'} className={({ isActive }) => (isActive ? 'link active' : 'link')} >
+                                <span><ion-icon name="people-circle-outline"/></span>
+                                <span>Groups</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink exact to={'/messenger'} className={({ isActive }) => (isActive ? 'link active' : 'link')} >
+                                <span><ion-icon name="newspaper-outline"/></span>
+                                <span>News</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink exact to={'/messenger'} className={({ isActive }) => (isActive ? 'link active' : 'link')} >
+                                <span><ion-icon name="film-outline"/></span>
+                                <span>Movies</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink exact to={'/messenger'} className={({ isActive }) => (isActive ? 'link active' : 'link')} >
+                                <span><ion-icon name="copy-outline"/></span>
+                                <span>Sports</span>
+                            </NavLink>
                         </li>
                     </ul>
                 </div>

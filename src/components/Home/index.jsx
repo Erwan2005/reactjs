@@ -97,9 +97,8 @@ export class index extends Component {
 			return true;
 		})
 		this.setState({ publication: new_data })
-		let data = await userRequest.delete(`userapp/publication/${id}/`)
-			.then(({ data }) => data)
-		toast.success('Post deleted')
+		await userRequest.delete(`userapp/publication/${id}/`)
+		toast.info('Post deleted')
 	}
 
 	sendFriend = async (id) => {
@@ -303,17 +302,18 @@ export class index extends Component {
 	componentDidMount() {
 		this.getCurrent()
 		this.getRequest()
-		window.addEventListener('scroll', () => {
-			if (window.scrollY + window.innerHeight >=
-				document.documentElement.scrollHeight) {
-				if (this.state.engine === 'publication') {
-					if (this.state.more_exist) {
-						this.getPub();
+		if (this.state.engine === 'publication') {
+			window.addEventListener('scroll', () => {
+				if (window.scrollY + window.innerHeight >=
+					document.documentElement.scrollHeight) {
+					if (this.state.engine === 'publication') {
+						if (this.state.more_exist) {
+							this.getPub();
+						}
 					}
 				}
-			}
-		});
-		console.log(this.props.user)
+			});
+		}
 	};
 	render() {
 		return (
@@ -326,7 +326,7 @@ export class index extends Component {
 							<Route exact path='/'>
 								<Add publication={this.handleToUpdate} />
 								<Post publication={this.state.search === '' ? this.props.publication : this.state.results} handleSearch={this.handleSearch}
-									postDelete={this.postDelete}  loading={this.props.loading}/>
+									postDelete={this.postDelete} loading={this.props.loading} />
 
 							</Route>
 							<Route path='/shop'>
@@ -352,7 +352,7 @@ export class index extends Component {
 								<Profile sendFriend={this.sendFriend} />
 							</Route>
 							<Route path='/publication/:id'>
-								<PubPage />
+								<PubPage handleSearch={this.handleSearch} />
 							</Route>
 						</div>
 					</Switch>

@@ -20,6 +20,7 @@ export class index extends Component {
             emoji: false,
             menu: false,
         }
+        this.handleSearch = this.handleSearch.bind(this)
     }
     prevNext = (action, array) => {
         if (action === 'prev') {
@@ -64,8 +65,7 @@ export class index extends Component {
 
     btnComment = async (content, id_post) => {
         let author = this.props.user.id
-        let post_connected = id_post
-        var contents = { content: content, author: author, post_connected: post_connected }
+        var contents = { content: content, author: author, post_connected: id_post }
         let data = await userRequest.post('userapp/comment/', contents)
             .then(({ data }) => data)
         this.setState({ comments: [data].concat(this.state.comments) })
@@ -83,34 +83,35 @@ export class index extends Component {
     };
     deleteCom = async (id) => {
         const new_data = this.state.comments.filter(com => {
-			if (com.id === id) {
-				return false
-			}
-			return true;
-		})
-		this.setState({ comments: new_data })
+            if (com.id === id) {
+                return false
+            }
+            return true;
+        })
+        this.setState({ comments: new_data })
         await userRequest.delete(`userapp/comment/${id}`)
     }
+    handleSearch = () => {
+        this.props.handleSearch('pubPage')
+    }
+    keyDownHandler = event => {
+        if (this.state.comment !== '') {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                this.btnComment(this.state.comment, this.state.publication.id)
+            }
+        }
+    };
     componentDidMount() {
         this.getLike()
         this.getCom()
+        this.handleSearch()
         const pub = this.props.publication.filter((pub) => pub.id == this.props.match.params.id)
         this.setState({ publication: pub[0] })
-
-        const keyDownHandler = event => {
-            console.log('User pressed: ', event.key);
-
-            if (event.key === 'Enter') {
-                event.preventDefault();
-
-                this.btnComment(this.state.comment, this.state.publication.id)
-            }
-        };
-        document.addEventListener('keydown', keyDownHandler);
-
-        return () => {
-            document.removeEventListener('keydown', keyDownHandler);
-        };
+        document.addEventListener('keydown', this.keyDownHandler, false);
+    }
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.keyDownHandler, false);
     }
     render() {
         return (
@@ -177,7 +178,7 @@ export class index extends Component {
                                                 {this.state.menu &&
                                                     <div className='item-menu'>
                                                         <small>Edit</small>
-                                                        <small onClick={()=> this.deleteCom(com.id)}>Delete</small>
+                                                        <small onClick={() => this.deleteCom(com.id)}>Delete</small>
                                                     </div>}
                                             </div>
                                         </span>

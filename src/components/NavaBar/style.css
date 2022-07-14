@@ -78,9 +78,9 @@
 	height: 100%;
 }
 
-.navbar .center>ul>li {
+.navbar .center > ul > li {
 	list-style: none;
-	width: 50px;
+	width: 65px;
 	height: 100%;
 	display: flex;
 	align-items: center;

@@ -23,6 +23,9 @@ export class index extends Component {
     this.handleSearch()
     this.handleLocationClick()
   }
+  componentWillUnmount() {
+    this.props.handleSearch('')
+  }
   render() {
     return (
       <div className='weather'>

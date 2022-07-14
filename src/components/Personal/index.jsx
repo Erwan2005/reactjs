@@ -174,7 +174,7 @@ export class index extends Component {
             }}><span><PhotoCamera /></span></div>
             <input type='file' onChange={(e) => {
               this.docHandler(e);
-            }} ref={this.refImg} style={{ display: 'none' }} name='covert' />
+            }} ref={this.refImg} style={{ display: 'none' }} name='covert' accept='image/*'/>
             <div className='avatar'>
               <div className='avatar-relative'>
                 <img src={this.props.user.avatar ? this.props.user.avatar : Avatar} alt='avatar' />
@@ -184,7 +184,7 @@ export class index extends Component {
                 }}><PhotoCamera /></span>
                 <input type='file' onChange={(e) => {
                   this.docHandler(e);
-                }} ref={this.refAv} style={{ display: 'none' }} name='avatar' />
+                }} ref={this.refAv} style={{ display: 'none' }} name='avatar' accept='image/*'/>
               </div>
             </div>
           </div>

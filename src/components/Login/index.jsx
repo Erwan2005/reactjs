@@ -73,20 +73,21 @@ export class index extends React.Component {
 
 	componentDidMount() {
 		this.preferedTheme()
-		const keyDownHandler = event => {
-			console.log('User pressed: ', event.key);
+		if (this.state.values.username !== '' && this.state.values.password !== '') {
+			const keyDownHandler = event => {
 
-			if (event.key === 'Enter') {
-				event.preventDefault();
+				if (event.key === 'Enter') {
+					event.preventDefault();
 
-				this.login()
-			}
-		};
-		document.addEventListener('keydown', keyDownHandler);
+					this.login()
+				}
+			};
+			document.addEventListener('keydown', keyDownHandler);
 
-		return () => {
-			document.removeEventListener('keydown', keyDownHandler);
-		};
+			return () => {
+				document.removeEventListener('keydown', keyDownHandler);
+			};
+		}
 	};
 	render() {
 		return (

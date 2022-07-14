@@ -105,10 +105,8 @@
 .bottom-header{
     position: relative;
     width: 100%;
-    height: 60%;
     border-bottom: 1px solid var(--bgbtn);
     display: flex;
-    align-items: center;
     gap: 15px;
 }
 .bottom-header img{
@@ -128,6 +126,7 @@
     width: 100%;
     flex-grow: 1;
     border: none;
+    resize: none;
     background: var(--bgbtn);
     padding: 10px 10px;
     padding-left: 45px;

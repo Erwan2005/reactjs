@@ -134,8 +134,10 @@
 	border-bottom: 1px solid var(--green);
 	border-radius: 0;
 	color: var(--text-primary);
-	font-family: var(--textlight);
+	font-family: var(--fontlight);
 	font-size: 15px;
+	padding: 10px;
+	padding-left: 30px;
 }
 
 .manage .bottom label span{

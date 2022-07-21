@@ -1,17 +1,19 @@
 import React from 'react'
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
-import { userRequest } from '../../../requestMethods';
+import { parseRequest,publicRequest } from '../../../requestMethods';
 import { toast } from 'react-toastify';
 
 import _ from 'lodash';
 import './style.css'
 export class index extends React.Component {
+	fileObj = [];
+	fileArray = [];
 	constructor(props) {
 		super(props);
 		this.refImg = React.createRef();
 		this.state = {
-			images: [],
+			images: null,
 			img: false,
 			name: '',
 			desc: '',
@@ -23,44 +25,73 @@ export class index extends React.Component {
 	};
 
 	imageHandler = async (e) => {
-		const MAX_LENGTH = 5;
-		if (Array.from(e.target.files).length > MAX_LENGTH) {
-			e.preventDefault();
-			alert(`Cannot upload files more than ${MAX_LENGTH}`);
-			return;
+		this.fileObj = [];
+		this.fileArray = [];
+		this.setState({ images: null, img: false })
+		const reader = new FileReader();
+		reader.onload = () => {
+			if (reader.readyState === 2) {
+				console.log('File ready')
+			}
+		}
+		this.fileObj.push(e.target.files)
+		reader.readAsDataURL(e.target.files[0])
+		const file = e.target.files;
+		let size = 0;
+		let ext = [];
+		for (let i = 0; i < file.length; i++) {
+			let type = file[i].type.split('/')[0];
+			if (ext.indexOf(type) < 0) {
+				ext.push(type)
+			}
+			size += file[i].size
+		}
+		if (size > 25e6) {
+			toast.error("Please upload a file smaller than 25 MB");
+			this.fileObj = [];
+			this.fileArray = [];
+			return false;
+		} else if (ext.length > 1) {
+			toast.error("Please upload only image");
+			this.fileObj = [];
+			this.fileArray = [];
+			return false;
 		} else {
-			let files = Array.from(e.target.files).map(file => {
-				let reader = new FileReader();
-				return new Promise(resolve => {
-					reader.onload = () => resolve(reader.result);
-					reader.readAsDataURL(file)
-
-				});
-
-			});
-			let res = await Promise.all(files);
-			this.setState({ images: res, img: true })
+			if (ext[0] === 'image') {
+				for (let i = 0; i < this.fileObj[0].length; i++) {
+					this.fileArray.push(URL.createObjectURL(this.fileObj[0][i]))
+				}
+				this.setState({ images: file, img: true})
+			} else {
+				toast.error("Please upload image only");
+				this.fileObj = [];
+				this.fileArray = [];
+				return false;
+			}
 		}
 	};
 
 	addProd = async () => {
-		if (this.state.name === '' || this.state.desc === '' || this.state.price === '' || this.state.qty === '' || this.state.images.length === 0) {
-			console.log("Something wrong !")
-		} else {
-			let data = await userRequest.post('shop/product/', {
-				seller: this.props.user.id, name: this.state.name, desc: this.state.desc
-				, price: this.state.price, qtystock: this.state.qty, pic1: this.state.images[0], pic2: this.state.images[1] && this.state.images[1]
-				, pic3: this.state.images[2] && this.state.images[2], pic4: this.state.images[3] && this.state.images[3], pic5: this.state.images[4] && this.state.images[4]
-			})
-				.then(({ data }) => data)
-			toast.success("Product added succefully !")
-			this.setState({ products: this.state.products.concat(data), images: [], name: '', price: '', qty: '', desc: '', img: false })
-
+		const formData = new FormData();
+		formData.append("seller", this.props.user.id)
+		formData.append("name", this.state.name)
+		formData.append("desc", this.state.desc)
+		formData.append("price", this.state.price)
+		formData.append("images", this.state.images)
+		if (this.state.images !== null) {
+			for (let i = 0; i < this.state.images.length; i++) {
+				formData.append("images", this.state.images[i]);
+			}
 		}
+		let data = await parseRequest.post('shop/product/', formData)
+			.then(({ data }) => data)
+
+		toast.success("Product added succefully !")
+		this.setState({ products: this.state.products.concat(data), images: null, name: '', price: '', qty: '', desc: '', img: false })
 	}
 
 	getProduct = async () => {
-		let data = await userRequest.get('shop/product')
+		let data = await publicRequest.get('shop/product')
 			.then(({ data }) => data)
 		this.setState({ item: _.sortBy(data.results, "id") })
 		//await this.state.messages.filter(item=> (item.sender === parseInt(id, 10) && item.receiver=== parseInt(this.id, 10)) || (item.receiver === parseInt(id, 10) && item.sender=== parseInt(this.id, 10))).map(checked=>(this.setState({private_message:checked})))
@@ -72,8 +103,7 @@ export class index extends React.Component {
 	};
 
 	delProd = async (id) => {
-		let data = await userRequest.delete(`shop/product/${id}`)
-			.then(({ data }) => data)
+		await publicRequest.delete(`shop/product/${id}`)
 		const new_data = this.state.products.filter(product => {
 			if (product.id === id) {
 				return false
@@ -126,13 +156,11 @@ export class index extends React.Component {
 						}} ref={this.refImg} style={{ display: 'none' }} multiple accept="image/*" />
 						{this.state.img &&
 							<div className="pic">
-								{this.state.images.map(image => {
-									return (
-										<img src={image} alt="pic" />
-									)
-								})
-
-								}
+								{(this.fileArray || []).map(img => {
+                                    return (
+                                        <img src={img} alt="" />
+                                    )
+                                })}
 							</div>}
 						<button onClick={this.addProd}>Add</button>
 					</div>
@@ -147,7 +175,7 @@ export class index extends React.Component {
 							{this.state.products && this.state.products.map(product => {
 								return (
 									<tr key={product.id}>
-										<th><img className="product-img" src={product.pic1} alt="" /></th>
+										<th><img className="product-img" src={product.images && product.images[0].image} alt="" /></th>
 										<th>
 											<div className='desc'>
 												<span>{product.name}</span>

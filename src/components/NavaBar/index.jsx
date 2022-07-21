@@ -37,7 +37,7 @@ export class index extends React.Component {
         this.setState({ modal: !this.state.modal })
     }
     logout = () => {
-        //this.props.navigation.navigate('/')
+        this.props.history.push('/')
         localStorage.clear()
         window.location.reload(false);
     };

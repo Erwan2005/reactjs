@@ -42,7 +42,7 @@ export class index extends React.Component {
 						return (
 							<div className="card" key={prod.id}>
 								<div className="imgBox">
-									<img src={prod.pic1} alt="product" />
+									<img src={prod.images && prod.images[0].image} alt="product" />
 									<ul className="action">
 										<Link to={`${this.props.match.url}/products/${prod.id}`} style={{ textDecoration: 'none' }} exact={true}>
 											<li>

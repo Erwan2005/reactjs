@@ -5,12 +5,14 @@ import './style.css'
 export class index extends Component {
     constructor(props) {
         super(props);
+		this.defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         this.state = {
             newpass: '',
             repeatpass: '',
             error: false,
             textError: '',
             disable: true,
+            theme: '',
         }
     }
     newPass = (e) => {
@@ -43,9 +45,17 @@ export class index extends Component {
             this.setState({ error: true, textError: 'Token is deprecated,Please try again' })
         }
     }
+    preferedTheme = () => {
+		if (this.defaultDark) {
+			this.setState({ theme: 'dark' })
+		}
+	}
+    componentDidMount() {
+        this.preferedTheme()
+    }
     render() {
         return (
-            <div className='confirm'>
+            <div className='confirm' data-theme={this.state.theme}>
                 <div className='container'>
                     <span className='header'>Wantechcorp new password</span>
                     <input type='password' placeholder='New password'

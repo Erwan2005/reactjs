@@ -90,12 +90,13 @@
 .manage .middle .right .pic{
 	display: flex;
 	flex-direction: row;
-	gap: 5px;
+	width: 100%;
+	gap: 1px;
 	height: 40%;
 	align-items: center;
 }
 .manage .middle .right .pic img{
-	width: 18.5%;
+	width: calc(100% / 5.1);
 	height: 100%;
 	object-fit: cover;
 }

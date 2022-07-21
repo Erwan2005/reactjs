@@ -54,6 +54,7 @@ export class index extends React.Component {
 	}
 
 	handleMouseOver = (src) => {
+		console.log(src)
 		this.setState({ image: src })
 	}
 	componentDidMount() {
@@ -65,12 +66,13 @@ export class index extends React.Component {
 		return (
 			<div className="det-prod">
 				<div className="card-left">
-					<img src={this.state.image ? this.state.image : this.state.product.pic1} alt="product" />
+					<img src={this.state.image !== '' ? this.state.image : this.state.product.images && this.state.product.images[0].image} alt="" />
 					<div className="pic-bottom">
-						<img src={this.state.product.pic1} alt="product" onMouseOver={() => this.handleMouseOver(this.state.product.pic1)} />
-						{this.state.product.pic2 && <img src={this.state.product.pic2} alt=" " onMouseOver={() => this.handleMouseOver(this.state.product.pic2)} />}
-						{this.state.product.pic3 && <img src={this.state.product.pic3} alt=" " onMouseOver={() => this.handleMouseOver(this.state.product.pic3)} />}
-						{this.state.product.pic4 && <img src={this.state.product.pic4} alt=" " onMouseOver={() => this.handleMouseOver(this.state.product.pic4)} />}
+						{this.state.product.images && this.state.product.images.map(img =>{
+							return(
+								<img src={img.image} alt="" onMouseOver={() => this.handleMouseOver(img.image)} />
+							)
+						})}
 					</div>
 				</div>
 				<div className="card-right">
